@@ -21,7 +21,11 @@
     "include-all": "~0.1.6",
     "rc": "1.0.1",
     "sails": "~0.12.4",
-    "sails-disk": "~0.10.9"
+    "sails-disk": "~0.10.9",
+    "sails-hook-autoreload": "^0.13.2",
+    "sails-mongo": "^0.12.1",
+    "waterlock": "^0.1.2-rc1",
+    "waterlock-local-auth": "^0.1.2-rc1"
   },
   "scripts": {
     "debug": "node debug app.js",
