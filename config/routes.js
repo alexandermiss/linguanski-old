@@ -34,7 +34,9 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  'GET /exercise1': { controller : "Exercise", action:  'word'}
 
   /***************************************************************************
   *                                                                          *
