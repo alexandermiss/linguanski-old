@@ -1,0 +1,15 @@
+<h1>Super dashboard</h1>
+
+<h2><%= __('Traductions') %> </h2>
+
+<ul id="list">
+	<li v-for="it in ts">
+	{{it.comment_text}}
+		<ul>
+			<item v-for="t in it.phrase"></item>
+		</ul>
+		<hr>
+	</li>
+</ul>
+
+<a href="/auth/logout">Salir de sesion</a>

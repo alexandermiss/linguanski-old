@@ -9,10 +9,7 @@
  */
 
 module.exports = require('waterlock').waterlocked({
-  /* e.g.
-    action: function(req, res){
-  
+    loginform: function ( req, res, next){
+  		return res.view('auth/signin', {layout:false});
     }
-  */
-
 });
