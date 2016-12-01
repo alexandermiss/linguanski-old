@@ -32,12 +32,15 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {controller: 'HomeController', action: 'index'},
-  '/account/signin': {controller: 'AuthController', action: 'loginform'},
-  // '/account/signup': {controller: 'AuthController', action: 'registerform'},
 
+  '/':                    'HomeController.index',
+  '/account/signin':      'AuthController.loginform',
+  // '/account/signup':   'AuthController.registerform'},
   
-  '/dashboard': {controller: 'DashboardController', action: 'init'},
+  '/dashboard':           'DashboardController.init',
+
+  'GET /exercise1':       'Exercise.word',
+
 
   /***************************************************************************
   *                                                                          *
