@@ -13,7 +13,7 @@
  */
 module.exports = function(grunt) {
   grunt.registerTask('compileAssets', [
-    'webpack:dev',
+    // 'webpack:dev',
     'clean:dev',
     'jst:dev',
     'less:dev',

@@ -1,0 +1,36 @@
+<div id="modal-phrases" class="ui small modal">
+  <div class="header"><%= __('Add Phrase') %> </div>
+  <div class="content">
+    <div class="ui form">
+      <div class="field">
+        <label><%= __('Phrase') %> </label>
+        <input type="text" id="phrase" placeholder="<%= __('Write a phrase') %>">
+      </div>
+      <div class="field">
+        <label><%= __('Pronuntiation') %> </label>
+        <input type="text" id="pronuntiation" placeholder="<%= __('Write a pronuntiation') %>">
+      </div>
+      <div class="field">
+        <label><%= __('Comment') %> </label>
+        <input type="text" id="comment" placeholder="<%= __('Write a comment') %>">
+      </div>
+      <div class="field">
+        <label><%= __('Language') %> </label>
+        <div class="ui selection dropdown">
+          <input type="hidden" id="language">
+          <i class="dropdown icon"></i>
+          <div class="default text">Espanol</div>
+          <div class="menu">
+              <div class="item" data-value="0">Espanol</div>
+              <div class="item" data-value="1">Ingles</div>
+              <div class="item" data-value="1">Ruso</div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui approve green button"><%= __('Approve') %> </div>
+    <div class="ui cancel red button"><%= __('Cancel') %> </div>
+  </div>
+</div>

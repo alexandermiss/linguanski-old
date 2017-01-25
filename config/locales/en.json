@@ -1,5 +1,25 @@
 {
 	"Welcome": "Welcome",
 	"A brand new app.": "A brand new app.",
-	"Traductions": "Traductions"
+	"Traductions": "Traductions",
+	"Start": "Start",
+	"Friends": "Friends",
+	"Followers": "Followers",
+	"Phrases": "Phrases",
+	"Phrase": "Phrase",
+	"Conversations": "Conversations",
+	"Comment": "Comment",
+	"Actions": "Actions",
+	"Dashboard": "Dashboard",
+	"Add Traduction": "Add Traduction",
+	"Add Phrase": "Add Phrase",
+	"Pronuntiation": "Pronuntiation",
+	"Language": "Language",
+	"Write a comment": "Write a comment",
+	"Approve": "Approve",
+	"Cancel": "Cancel",
+	"Sign Up": "Sign Up",
+	"Logout": "Logout",
+	"Write a phrase": "Write a phrase",
+	"Write a pronuntiation": "Write a pronuntiation"
 }

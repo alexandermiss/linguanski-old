@@ -18,7 +18,10 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'someMongodbServer'
-  }
+    connection: 'mongoDbServerDev',
+  	migrate: 'alter',
+  	_hookTimeout: 2000000
+  },
+
 
 };

@@ -26,7 +26,6 @@
     "sails-hook-autoreload": "^0.13.2",
     "sails-mongo": "^0.12.1",
     "socket.io-redis": "1.0.0",
-    "vue": "^2.0.5",
     "waterlock": "^0.1.2-rc1",
     "waterlock-local-auth": "^0.1.2-rc1"
   },
@@ -49,10 +48,6 @@
     "babel-runtime": "^6.18.0",
     "css-loader": "^0.25.0",
     "grunt-webpack": "^1.0.18",
-    "vue-hot-reload-api": "^2.0.6",
-    "vue-html-loader": "^1.2.3",
-    "vue-loader": "^9.8.1",
-    "vue-style-loader": "^1.0.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
   }

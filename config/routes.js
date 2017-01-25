@@ -38,6 +38,8 @@ module.exports.routes = {
   // '/account/signup':   'AuthController.registerform'},
   
   '/dashboard':           'DashboardController.init',
+  '/traductions':         'AppController.traductions',
+  '/phrases':             'AppController.phrases',
 
   'GET /exercise1':       'Exercise.word',
 

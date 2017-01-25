@@ -1,0 +1,34 @@
+
+<div class="ui stackable pointing menu">
+  
+  <a class="active item">
+    <%= __('Start') %>
+  </a>
+  <a class="item" href="/traductions">
+    <%= __('Traductions') %>
+  </a>
+  <a class="item" href="/phrases">
+    <%= __('Phrases') %>
+  </a>
+  <a class="item">
+    <%= __('Conversations') %>
+  </a>
+
+  <div class="right menu">
+    <div class="ui dropdown item">
+      <%= __('Language') %> <i class="dropdown icon"></i>
+      <div class="menu">
+        <a class="item">English</a>
+        <a class="item">Russian</a>
+        <a class="item">Spanish</a>
+      </div>
+    </div>
+    <div class="item">
+        <% if(req.session.authenticated){ %>
+        <a class="ui primary button"><%= __('Logout') %></a>
+        <% }else{ %>
+        <a class="ui primary button"><%= __('Sign Up') %></a>
+        <% } %>
+    </div>
+  </div>
+</div>

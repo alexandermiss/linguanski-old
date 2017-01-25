@@ -1,15 +1,15 @@
-<h1>Super dashboard</h1>
+<%- include ../menu %>
 
-<h2><%= __('Traductions') %> </h2>
+<div class="ui container">
 
-<ul id="list">
-	<li v-for="it in ts">
-	{{it.comment_text}}
-		<ul>
-			<item v-for="t in it.phrase"></item>
-		</ul>
-		<hr>
-	</li>
-</ul>
+	<div class="ui grid">
+		<div class="row">
+			<div class="column">
+					<h1><%= __('Dashboard') %> </h1>	
+			</div>
+		</div>
 
-<a href="/auth/logout">Salir de sesion</a>
+	</div>
+
+
+</div>

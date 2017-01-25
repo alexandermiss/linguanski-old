@@ -1,36 +1,85 @@
-Vue.component('item', {
-	props: ['t'],
-	template: '<li>{{ t.comment_text }}</li>'
-});
+$(function (){
+	var apptradview;
 
-var vue = new Vue({
-	el: '#list',
-	data: {
-		ts: []
+	var Traduction = Backbone.Model.extend({
+		urlRoot: '/traduction'
+	});
+
+	var Traductions = Backbone.Collection.extend({
+		model: Traduction,
+		url: '/traduction',
+		initialize: function (){
+			this.fetch({reset:true});
+		}
+	});
+
+	var traductions = new Traductions();
+
+	var TraductionRowView = Marionette.View.extend({
+		tagName: 'tr',
+		template: H.Template.table_item
+	});
+
+	var TableEmptyView = Marionette.View.extend({
+		template: _.template('<tr colspan="2">No items</tr>')
+	});
+
+	var MyCollectionView = Marionette.CollectionView.extend({
+		tagName: 'tbody',
+		collection: new Traductions(),
+		childView: TraductionRowView,
+		emptyView: TableEmptyView
+	});
+
+	var TableView = Marionette.View.extend({
+		tagName: 'table',
+		className: 'ui celled table',
+		template: H.Template.table_traduction,
+		regions: {
+			body:{
+				el: 'tbody', replaceElement: true
+			}
+		},
+		onRender: function (){
+			this.showChildView('body', new MyCollectionView());
+		}
+	});
+
+	if ($('#content-traductions').length){
+		apptradview = new TableView();
+		apptradview.render();
+		$('#content-traductions').html(apptradview.$el);
 	}
-});
 
-io.socket.get('/traduction', function (datas){
-	console.log('datas', datas);
-	vue.$data.ts = datas;
-});
 
-io.socket.on('traduction', function (msg){
-	console.log('msg', msg);
+	io.socket.on('traduction', function (msg){
+		console.log('msg', msg);
 
-	switch(msg.verb){
-		case 'updated':
+		    switch (msg.method) {
+		        case 'created': traductions.add(msg.data); break;
+		        case 'updated': traductions.get(msg.id).set(msg.previous); break;
+		        case 'destroyed': traductions.remove(traductions.get(msg.id)); break;
+		    }
 
-			var data = msg.data;
-			var prev = msg.data;
+	});
 
-			var datas = _.map(vue.$data.ts, function (t){
-				console.log('t', t);
-				if( _.eq( t, prev ) ) return data;
+	$('#add-traduction').on('click', function (e){
+		$('#modal-traductions').modal({
+		  transition: 'scale',
+		  closable: false,
+		  onDeny    : function(){
+		    // return false;
+		  },
+		  onApprove : function() {
+		    var $c = $('#comment'), comment = $c.val();
+		    traductions.create({ comment_text: comment });
+		    $c.val('');
+		  },
+		  onShow    : function(){
+		  },
+		}).modal('show');
+	});
 
-				return t;
-			});
+	$('.ui.dropdown').dropdown();
 
-		break;
-	}
 });

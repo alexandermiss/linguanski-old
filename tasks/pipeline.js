@@ -17,6 +17,7 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+  'styles/semantic.css',
   'styles/**/*.css'
 ];
 
@@ -29,6 +30,12 @@ var jsFilesToInject = [
   'js/dependencies/sails.io.js',
 
   // Dependencies like jQuery, or Angular are brought in here
+  'js/dependencies/jquery-3.1.1.js',
+  'js/dependencies/lodash.js',
+  'js/dependencies/backbone.js',
+  'js/dependencies/backbone.radio.js',
+  'js/dependencies/backbone.marionette.js',
+  'js/dependencies/H.js',
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files

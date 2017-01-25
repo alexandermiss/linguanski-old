@@ -7,6 +7,7 @@
 
 module.exports = {
   schema: true,
+  autosuscribe: true,
   attributes: {
   	phrase: {collection: 'phrase', via: 'traduction', dominant: true},
   	conversation: {model: 'conversationdetail'},
