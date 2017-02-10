@@ -9,9 +9,8 @@ module.exports = {
   schema: true,
   autosuscribe: true,
   attributes: {
-  	phrase: {collection: 'phrase', via: 'traduction', dominant: true},
+  	phrases: {collection: 'phrase', via: 'traduction'},
   	conversation: {model: 'conversationdetail'},
   	comment_text: {type: 'string'}
   }
 };
-

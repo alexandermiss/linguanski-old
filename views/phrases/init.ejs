@@ -1,13 +1,13 @@
 <%- include ../menu %>
 
-<%- include ../modals/phrase_modal_form %>
+<%- include ../modals/three_phrase_modal_form %>
 
-<div class="ui container">
+<div class="ui container segment">
 
 	<div class="ui grid">
 		<div class="two column row">
 			<div class="left floated column">
-				<h1><%= __('Phrases') %> </h1>
+				<h1 class="ui header"><%= __('Phrases') %> </h1>
 			</div>
 			<div class="floated right aligned column">
 				<button id="add-phrase" class="ui blue button">
@@ -17,15 +17,21 @@
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="sixteen column">
-				<div id="content" class="ui segment">
-	
+		<div class="ui center aligned three column row">
+				<div class="column">
+					<h3 class="ui header">Ruso</h3>
 				</div>
-			</div>
+				<div class="column">
+					<h3 class="ui header">Español</h3>
+				</div>
+				<div class="column">
+					<h3 class="ui header">Ingles</h3>
+				</div>
 		</div>
 
+		<div class="ui one column row">
+			<div id="phrase-content" class="column">
+			</div>
+		</div>
 	</div>
-
-
 </div>

@@ -17,7 +17,7 @@ $(function (){
 
 	var TraductionRowView = Marionette.View.extend({
 		tagName: 'tr',
-		template: H.Template.table_item
+		template: Template.get('table_item')
 	});
 
 	var TableEmptyView = Marionette.View.extend({
@@ -34,7 +34,7 @@ $(function (){
 	var TableView = Marionette.View.extend({
 		tagName: 'table',
 		className: 'ui celled table',
-		template: H.Template.table_traduction,
+		template: Template.get('table_traduction'),
 		regions: {
 			body:{
 				el: 'tbody', replaceElement: true
@@ -62,6 +62,7 @@ $(function (){
 		    }
 
 	});
+
 
 	$('#add-traduction').on('click', function (e){
 		$('#modal-traductions').modal({

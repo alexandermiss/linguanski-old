@@ -1,9 +1,14 @@
 var H = H || {}
-	H.Template = {},
-	t = {};
+,		Template = {};
 
+Template = {
+	get: function(name){
+		return JST['assets/templates/'+name+'.html'];
+	}
+};
 
-for(var j in JST){
-	var n = j.replace('assets/templates/', '').replace('.html', '');
-	H.Template[n] = t[n] = JST[j];
-}
+(function($){
+	$(function(){
+
+	});
+})(jQuery);

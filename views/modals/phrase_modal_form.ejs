@@ -19,11 +19,11 @@
         <div class="ui selection dropdown">
           <input type="hidden" id="language">
           <i class="dropdown icon"></i>
-          <div class="default text">Espanol</div>
+          <div class="default text">Seleccione</div>
           <div class="menu">
-              <div class="item" data-value="0">Espanol</div>
-              <div class="item" data-value="1">Ingles</div>
-              <div class="item" data-value="1">Ruso</div>
+            <% _.each(langs, function (lang){ %>
+              <div class="item" data-value="<%= lang.id %>"><%= lang.name %></div>
+            <% }) %>
           </div>
       </div>
       </div>

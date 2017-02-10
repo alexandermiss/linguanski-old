@@ -21,5 +21,11 @@
 	"Sign Up": "Sign Up",
 	"Logout": "Logout",
 	"Write a phrase": "Write a phrase",
-	"Write a pronuntiation": "Write a pronuntiation"
+	"Write a pronuntiation": "Write a pronuntiation",
+	"Write a english phrase": "Write a english phrase",
+	"Write a russian phrase": "Write a russian phrase",
+	"Write a spanish phrase": "Write a spanish phrase",
+	"English": "English",
+	"Russian": "Russian",
+	"Spanish" : "Spanish"
 }

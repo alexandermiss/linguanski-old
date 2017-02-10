@@ -33,25 +33,28 @@ module.exports.routes = {
   ***************************************************************************/
 
 
-  '/':                    'HomeController.index',
-  '/account/signin':      'AuthController.loginform',
+  '/'                   : 'HomeController.index',
+  '/account/signin'     : 'AuthController.loginform',
   // '/account/signup':   'AuthController.registerform'},
-  
-  '/dashboard':           'DashboardController.init',
-  '/traductions':         'AppController.traductions',
-  '/phrases':             'AppController.phrases',
 
-  'GET /exercise1':       'Exercise.word',
+  '/dashboard'          : 'DashboardController.init',
+  '/traductions'        : 'AppController.traductions',
+  '/phrases'            : 'AppController.phrases',
+
+  'GET /exercise1'      : 'Exercise.word',
 
 
   /***************************************************************************
   *                                                                          *
-  * Custom routes here...                                                    *
+  * Api...                                                    *
   *                                                                          *
   * If a request to a URL doesn't match any of the custom routes above, it   *
   * is matched against Sails route blueprints. See `config/blueprints.js`    *
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
+  '/api/v1/phrases'     : 'PhraseController.getPhrases',
+  'POST /api/v1/add_phrase'  : 'PhraseController.addPhrase',
 
 };

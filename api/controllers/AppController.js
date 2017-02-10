@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	
+
 	traductions: function (req, res, next){
 		Traduction.find({}).populate('phrase').exec(function (err, trads ){
 			if (err) { return res.negotiate(err); }
@@ -15,11 +15,10 @@ module.exports = {
 	},
 
 	phrases: function (req, res, next){
-		Phrase.find({}).populateAll().exec(function (err, trads ){
+		Language.find({}).exec(function (err, langs ){
 			if (err) { return res.negotiate(err); }
-			return res.view('phrases/init', { trads: trads });
+			return res.view('phrases/init', { langs: langs });
 		});
 	}
 
 };
-

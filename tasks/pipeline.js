@@ -33,6 +33,7 @@ var jsFilesToInject = [
   'js/dependencies/jquery-3.1.1.js',
   'js/dependencies/lodash.js',
   'js/dependencies/backbone.js',
+  'js/dependencies/sails.io.backbone.js',
   'js/dependencies/backbone.radio.js',
   'js/dependencies/backbone.marionette.js',
   'js/dependencies/H.js',
@@ -90,5 +91,3 @@ module.exports.templateFilesToInject = templateFilesToInject.map(function(tplPat
   }
   return require('path').join('assets/',tplPath);
 });
-
-
