@@ -76,6 +76,9 @@ $(function (){
 					source: src
 				}, {wait: true});
 
+				$('#phrase_ru, #phrase_en, #phrase_es').val('');
+				$('#source').dropdown('clear')
+
 		  },
 		  onShow    : function(){
 		  },

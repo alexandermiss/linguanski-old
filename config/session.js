@@ -44,7 +44,7 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  adapter: 'redis',
+  // adapter: 'redis',
   // adapter: 'connect-redis',
 
   /***************************************************************************
@@ -56,16 +56,16 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  host: 'localhost',
-  port: 6379,
-  ttl: 84000,
-  db: 0,
-  pass: '',
-  prefix: 'sess:',
+  // host: 'localhost',
+  // port: 6379,
+  // ttl: 84000,
+  // db: 0,
+  // pass: '',
+  // prefix: 'sess:',
 
  // host: 'tarpon.redistogo.com',
  //  port: 11939,
- //  // ttl: 84000,
+ //  ttl: 84000,
  //  db: 'redistogo',
  //  pass: 'e41c936bb0929a8c44bc3a425117934b',
  //  prefix: 'sess:',
@@ -81,8 +81,8 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  // adapter: 'mongo',
-  // url: 'mongodb://user:password@localhost:27017/dbname', // user, password and port optional
+  adapter: 'mongo',
+  url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom', // user, password and port optional
 
   /***************************************************************************
   *                                                                          *
@@ -96,7 +96,7 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  // collection: 'sessions',
+  collection: 'sessions',
   // stringify: true,
   // mongoOptions: {
   //   server: {

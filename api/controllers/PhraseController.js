@@ -23,7 +23,6 @@ module.exports = {
 		var p = req.params.all();
 		console.log(p);
 
-		// res.json(p);
 		Phrase.addPhrase(p, function(err, phrases){
 			if(err) return res.negotiate(err);
 			res.json(phrases);
