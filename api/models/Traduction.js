@@ -11,6 +11,7 @@ module.exports = {
   attributes: {
   	phrases: {collection: 'phrase', via: 'traduction'},
   	conversation: {model: 'conversationdetail'},
+    source: {model: 'source'},
   	comment_text: {type: 'string'}
   }
 };

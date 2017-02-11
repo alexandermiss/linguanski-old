@@ -12,7 +12,20 @@
       </div>
       <div class="field">
         <label><%= __('Spanish') %> </label>
-        <input type="text" id="phrase_mx" placeholder="<%= __('Write a spanish phrase') %>">
+        <input type="text" id="phrase_es" placeholder="<%= __('Write a spanish phrase') %>">
+      </div>
+      <div class="field">
+        <label><%= __('Source') %> </label>
+        <div id="source" class="ui selection dropdown">
+          <input type="hidden">
+          <i class="dropdown icon"></i>
+          <div class="default text">Seleccione</div>
+          <div class="menu">
+            <% _.each(sources, function (source){ %>
+              <div class="item" data-value="<%= source.id %>"><%= source.name %></div>
+            <% }) %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

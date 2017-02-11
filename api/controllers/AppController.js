@@ -17,7 +17,10 @@ module.exports = {
 	phrases: function (req, res, next){
 		Language.find({}).exec(function (err, langs ){
 			if (err) { return res.negotiate(err); }
-			return res.view('phrases/init', { langs: langs });
+			Source.find().exec(function(err, sources){
+				if (err) { return res.negotiate(err); }
+				return res.view('phrases/init', { langs: langs, sources: sources });
+			});
 		});
 	}
 

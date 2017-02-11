@@ -12,7 +12,6 @@ module.exports = {
   	pronuntiation: {type: 'string'},
   	comment_text: {type: 'string'},
   	language: {model: 'language'},
-  	source: {model: 'source'},
   	traduction:{model: 'traduction'}
   },
   combineLanguages: function (opts, cb){
@@ -29,7 +28,7 @@ module.exports = {
 				_.each(trads[t], function(ph){
           var obj = {};
 					if ( ph.language.prefix == 'es' )
-						    obj = { phrase_mx: ph.phrase };
+						    obj = { phrase_es: ph.phrase };
 					else if ( ph.language.prefix == 'ru' )
 						    obj = { phrase_ru: ph.phrase };
 					else
@@ -45,31 +44,35 @@ module.exports = {
     });
   },
   addPhrase: function (opts, cb){
-    Traduction.findOrCreate({comment_text: 'jajajaja'}).exec(function(err, trad){
+    Traduction.findOrCreate({comment_text: opts.comment_text || new Date().toJSON()}).exec(function(err, trad){
       if (err) return cb(err);
       if(_.isArray(trad)) trad = trad[0];
 
-      console.log(trad);
+      var prefixes = ['ru', 'en', 'es'];
 
-      var phrases = _.map(['ru', 'en', 'mx'], function (pre){
-        var _pre = ['phrase_'+pre], _ph = opts[ _pre ];
-        return {
-          phrase: _ph,
-          pronuntiation: _ph,
-          comment_text: _ph
-        }
+      Language.find({ prefix: prefixes }).exec(function (err, langs){
+        if (err) return cb(err);
+
+        var phrases = _.map(prefixes, function (pre){
+          var _pre = ['phrase_'+pre], _ph = opts[ _pre ];
+          return {
+            phrase: _ph,
+            pronuntiation: _ph,
+            comment_text: _ph,
+            language: _.find(langs, { prefix: pre }),
+            traduction: trad.id
+          }
+        });
+
+        Phrase.create(phrases).exec(function(err, phs){
+          if (err){
+            return cb(err);
+          }
+          _.extend(opts, {id: trad.id});
+          return cb(null, _.omit(opts, 'comment_text'));
+        });
+
       });
-
-      // Phrase.create(
-      //
-      // ).exec(function(err, phs){
-      //   if (err){
-      //     console.log(err);
-      //     return cb(err);
-      //   }
-      //   console.log(phs);
-      //   return cb(null, trad);
-      // });
 
     });
   }

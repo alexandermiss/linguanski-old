@@ -64,14 +64,16 @@ $(function (){
 		    // return false;
 		  },
 		  onApprove : function() {
-		    var ru = $('#phrase_ru').val()
-				,		en = $('#phrase_en').val()
-				,		mx = $('#phrase_mx').val();
+		    var ru 	= $('#phrase_ru').val()
+				,		en 	= $('#phrase_en').val()
+				,		es 	= $('#phrase_es').val()
+				, 	src = $('#source').dropdown('get value');
 
 		    phrases.create({
 					phrase_ru: ru,
 					phrase_en: en,
-					phrase_mx: mx
+					phrase_es: es,
+					source: src
 				}, {wait: true});
 
 		  },
