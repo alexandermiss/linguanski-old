@@ -82,7 +82,8 @@ module.exports.session = {
   ***************************************************************************/
 
   adapter: 'mongo',
-  url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom', // user, password and port optional
+  // url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom', // user, password and port optional
+  url: 'mongodb://localhost:27017/sesopenidiom', // user, password and port optional
 
   /***************************************************************************
   *                                                                          *
