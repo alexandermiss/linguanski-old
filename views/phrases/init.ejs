@@ -5,17 +5,19 @@
 <div class="ui container segment">
 
 	<div class="ui grid">
+
 		<div class="two column row">
 			<div class="left floated column">
 				<h1 class="ui header"><%= __('Phrases') %> </h1>
 			</div>
 			<div class="floated right aligned column">
-				<button id="add-phrase" class="ui blue button">
+				<button id="add-phrase" class="ui blue basic button">
 					<i class="add icon"></i>
 					<%= __('Add Phrase') %>
 				</button>
 			</div>
 		</div>
+		<div class="ui section divider"></div>
 
 		<div class="ui center aligned three column row">
 				<div class="column">
@@ -29,9 +31,24 @@
 				</div>
 		</div>
 
-		<div class="ui one column row">
-			<div id="phrase-content" class="column">
-			</div>
+		<div id="phrase-content" class="one column row">
 		</div>
+
+		<div id="pagination" class="two column row">
+
+		</div>
+
+	</div>
+</div>
+
+<div style="position: fixed; bottom:0; width:100%;" class="ui one column row">
+	<div class="ui right floated horizontal list">
+		<a class="disabled item" href="#">© OpenIdiom, Inc.</a>
+		<a class="item" href="#">Terminos</a>
+		<a class="item" href="#">Privacidad</a>
+	</div>
+	<div class="ui horizontal list">
+		<a class="item" href="#">Acerca de</a>
+		<a class="item" href="#">Desarrolladores</a>
 	</div>
 </div>

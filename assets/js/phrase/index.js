@@ -13,7 +13,7 @@ $(function (){
 
 	var PhraseView = Marionette.View.extend({
 		tagName: 'div',
-		className: 'three basic ui buttons',
+		className: 'three column row',
 		template: Template.get('list'),
 		ui: {
 			phrase_ru: '.phrase_ru',
@@ -36,7 +36,7 @@ $(function (){
 
 	var PhraseCollectionView = Marionette.CollectionView.extend({
 		tagName: 'div',
-		className: 'ui list',
+		className: 'ui vertically divided grid container',
 		collection: new Phrases(),
 		childView: PhraseView,
 		emptyView: EmptyView
@@ -57,6 +57,14 @@ $(function (){
 			},
 		}
 	});
+
+	var Pagination = Marionette.View.extend({
+		el: '#pagination',
+		template: Template.get('pagination_phrase')
+	});
+
+	var pagination = new Pagination();
+	pagination.render();
 
 	var MyApp = Marionette.Application.extend({
 		region: '#phrase-content',
