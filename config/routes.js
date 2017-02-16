@@ -34,7 +34,7 @@ module.exports.routes = {
 
 
   '/'                   : 'HomeController.index',
-  '/account/signin'     : 'AuthController.loginform',
+  '/account/signin'     : 'AppController.loginform',
   // '/account/signup':   'AuthController.registerform'},
 
   '/dashboard'          : 'DashboardController.init',
@@ -54,7 +54,7 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/api/v1/phrases'     : 'PhraseController.getPhrases',
-  'POST /api/v1/add_phrase'  : 'PhraseController.addPhrase',
+  '/api/v1/phrases'           : 'PhraseController.getPhrases',
+  'POST /api/v1/add_phrase'   : 'PhraseController.addPhrase',
 
 };

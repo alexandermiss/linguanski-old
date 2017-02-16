@@ -8,7 +8,12 @@ $(function (){
 
 	var Phrases = Backbone.Collection.extend({
 		model: Phrase,
-		url: '/api/v1/phrases'
+		url: '/api/v1/phrases',
+
+		parse: function (resp){
+			_.extend( this, _.omit(resp, 'results') );
+			return _.pick(resp, 'results').results;
+		}
 	});
 
 	var PhraseView = Marionette.View.extend({
@@ -60,18 +65,22 @@ $(function (){
 
 	var Pagination = Marionette.View.extend({
 		el: '#pagination',
-		template: Template.get('pagination_phrase')
-	});
+		template: Template.get('pagination_phrase'),
+		render: function(){
 
-	var pagination = new Pagination();
-	pagination.render();
+		}
+	});
 
 	var MyApp = Marionette.Application.extend({
 		region: '#phrase-content',
 
 		onStart: function (){
 			this.showView(new PhraseCollectionView());
-			var appRoute = new AppRoute({collection: this.getView().collection});
+			var col = this.getView().collection;
+			app.col = col;
+			var appRoute = new AppRoute({collection: col});
+			var pagination = new Pagination({collection: col});
+			pagination.render();
 			Backbone.history.start({ root: 'phrases' });
 			Backbone.history.navigate('index', {trigger:true});
 		}

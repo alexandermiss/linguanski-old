@@ -26,15 +26,26 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': false,
+  '*': false,
+
+  AppController: {
+    '*': 'loginNecessary'
+  },
 
   HomeController: {
     index: true,
   },
 
   AuthController: {
-    loginform: true,
-    registerform: true
+    '*': true
+  },
+
+  UserController: {
+    '*': true
+  },
+
+  PhraseController: {
+    '*': 'loginNecessary'
   },
 
   DashboardController: {
