@@ -13,7 +13,9 @@ $(function (){
 		parse: function (resp){
 			_.extend( this, _.omit(resp, 'results') );
 			return _.pick(resp, 'results').results;
-		}
+		},
+
+
 	});
 
 	var PhraseView = Marionette.View.extend({
@@ -66,8 +68,33 @@ $(function (){
 	var Pagination = Marionette.View.extend({
 		el: '#pagination',
 		template: Template.get('pagination_phrase'),
-		render: function(){
 
+		ui: {
+			'atras': '.atras',
+			'adelante': '.adelante'
+		},
+
+		events: {
+			'click @ui.atras': 'atrasEvent',
+			'click @ui.adelante': 'adelanteEvent',
+		},
+
+		atrasEvent: function (){
+			if( this.collection.page > 1 ) this.collection.page -= 1;
+			console.log(this.collection.page);
+			this.collection.reset(this.collection.toJSON());
+			this.collection.fetch({ data: { page: this.collection.page} });
+		},
+
+		adelanteEvent: function(){
+			this.collection.page += 1;
+			console.log(this.collection.page);
+			this.collection.reset(this.collection.toJSON());
+			this.collection.fetch({ data: { page: this.collection.page} });
+		},
+
+		onRender: function(){
+			console.log(this.collection);
 		}
 	});
 

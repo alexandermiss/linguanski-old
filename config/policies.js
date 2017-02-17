@@ -29,7 +29,8 @@ module.exports.policies = {
   '*': false,
 
   AppController: {
-    '*': 'loginNecessary'
+    '*': 'loginNecessary',
+    'loginform': true
   },
 
   HomeController: {
