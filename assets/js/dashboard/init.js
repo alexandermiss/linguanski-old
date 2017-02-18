@@ -7,10 +7,7 @@ $(function (){
 
 	var Traductions = Backbone.Collection.extend({
 		model: Traduction,
-		url: '/traduction',
-		initialize: function (){
-			this.fetch({reset:true});
-		}
+		url: '/traduction'
 	});
 
 	var traductions = new Traductions();

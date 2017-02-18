@@ -10,7 +10,9 @@ module.exports = {
 	getPhrases: function (req, res, next){
 		if (req.isSocket) console.log('getPhrasesSocket');
 		else console.log('getPhrasesAjax');
-		Phrase.combineLanguages({}, function(err, phrases){
+		var p = req.params.all();
+		sails.log.info(p);
+		Phrase.combineLanguages(p, function(err, phrases){
 			if(err) return res.negotiate(err);
 			res.json(phrases);
 		});
@@ -21,7 +23,7 @@ module.exports = {
 		else console.log('addPhraseAjax');
 
 		var p = req.params.all();
-		console.log(p);
+		sails.log.info(p);
 
 		Phrase.addPhrase(p, function(err, phrases){
 			if(err) return res.negotiate(err);

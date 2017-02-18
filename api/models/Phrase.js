@@ -16,11 +16,8 @@ module.exports = {
   },
   combineLanguages: function (opts, cb){
     if ( !_.has(opts, 'page') ) opts.page = 1;
-    if ( !_.has(opts, 'limit') ) opts.limit = 12;
+    if ( !_.has(opts, 'limit') ) opts.limit = 9;
 
-    console.log(opts);
-    console.log(_.omit(opts, 'page', 'limit'));
-    console.log(_.pick(opts, 'page', 'limit'));
     Phrase.find({}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas){
       Phrase.find({ id: _.pluck(datas, 'id') }).populateAll().exec(function(err, datas){
         if (err) cb(err);

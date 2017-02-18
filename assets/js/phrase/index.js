@@ -1,6 +1,6 @@
-var app = app || {};
 
 $(function (){
+	var app = {};
 
 	var Phrase = Backbone.Model.extend({
 		urlRoot: '/api/v1/add_phrase'
@@ -52,49 +52,77 @@ $(function (){
 	var AppRoute = Marionette.AppRouter.extend({
 		initialize: function (opts){
 			this.collection = opts.collection;
-			this.collection.fetch({reset:true});
 		},
-		appRoutes: {
+		routes: {
 			'update/:id' : 'update',
+			'page/:id' : 'pageNumber',
 		},
-		controller:{
-			update: function (id){
-				console.log('updating route', id);
-				$('#modal-phrases').modal('show');
-			},
-		}
+		update: function (id){
+			console.log('updating route', id);
+			$('#modal-phrases').modal('show');
+		},
+		pageNumber: function (id){
+			this.collection.fetch({ reset: true, data: { page: parseInt(id)} });
+		},
 	});
 
 	var Pagination = Marionette.View.extend({
 		el: '#pagination',
+		initialize: function (){
+			this.collection.page = 1;
+		},
 		template: Template.get('pagination_phrase'),
-
 		ui: {
 			'atras': '.atras',
 			'adelante': '.adelante'
 		},
-
 		events: {
 			'click @ui.atras': 'atrasEvent',
 			'click @ui.adelante': 'adelanteEvent',
 		},
+		collectionEvents: {
+			'reset': 'actionButtons'
+		},
+		actionButtons: function (){
+			var page = this.collection.page, size = this.collection.size();
+			if( !_.isNumber(page) ) page = parseInt(page);
 
+			this.ui.atras.removeClass('loading');
+			this.ui.adelante.removeClass('loading');
+
+			if( page == 1 && size ){
+				this.ui.atras.addClass('disabled');
+				this.ui.adelante.removeClass('disabled');
+			}else if( page > 1 && size ){
+				this.ui.atras.removeClass('disabled');
+				this.ui.adelante.removeClass('disabled');
+			}else if( !size ){
+				this.ui.atras.removeClass('disabled');
+				this.ui.adelante.addClass('disabled');
+			}
+
+		},
 		atrasEvent: function (){
-			if( this.collection.page > 1 ) this.collection.page -= 1;
-			console.log(this.collection.page);
-			this.collection.reset(this.collection.toJSON());
-			this.collection.fetch({ data: { page: this.collection.page} });
-		},
+			var page = this.collection.page;
+			if ( !_.isNumber(page) ) page = parseInt(page);
 
+			if ( page > 1 ){
+				page--;
+				this.ui.atras.addClass('loading');
+				this.collection.page = page;
+				Backbone.history.navigate('page/'+page, {trigger:true});
+			}
+		},
 		adelanteEvent: function(){
-			this.collection.page += 1;
-			console.log(this.collection.page);
-			this.collection.reset(this.collection.toJSON());
-			this.collection.fetch({ data: { page: this.collection.page} });
-		},
+			var page = this.collection.page;
+			if ( !_.isNumber(page) ) page = parseInt(page);
 
-		onRender: function(){
-			console.log(this.collection);
+			if( this.collection.size() ){
+				page++;
+				this.ui.adelante.addClass('loading');
+				this.collection.page = page;
+				Backbone.history.navigate('page/'+page, {trigger:true});
+			}
 		}
 	});
 
@@ -104,12 +132,11 @@ $(function (){
 		onStart: function (){
 			this.showView(new PhraseCollectionView());
 			var col = this.getView().collection;
-			app.col = col;
 			var appRoute = new AppRoute({collection: col});
 			var pagination = new Pagination({collection: col});
 			pagination.render();
 			Backbone.history.start({ root: 'phrases' });
-			Backbone.history.navigate('index', {trigger:true});
+			Backbone.history.navigate('page/1', {trigger:true});
 		}
 	});
 
@@ -136,8 +163,7 @@ $(function (){
 		  transition: 'scale',
 		  closable: false,
 		  onDeny    : function(){
-		    // return false;
-				Backbone.history.navigate('index', {trigger:true});
+				Backbone.history.navigate('page/'+phrases.page, {trigger:true});
 		  },
 		  onApprove : function() {
 		    var ru 	= $('#phrase_ru').val()
