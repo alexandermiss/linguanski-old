@@ -28,11 +28,18 @@ module.exports = {
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
 
-  // port: 80,
+  port: 1338,
+
+  session: {
+    adapter: 'mongo',
+    url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom',
+  }
 
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/
+
+
 
   // log: {
   //   level: "silent"
