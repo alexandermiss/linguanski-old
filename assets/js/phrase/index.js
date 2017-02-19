@@ -180,7 +180,7 @@ $(function (){
 
 				$('#phrase_ru, #phrase_en, #phrase_es').val('');
 				$('#source').dropdown('clear')
-				Backbone.history.navigate('index', {trigger:true});
+				Backbone.history.navigate('page/1', {trigger:true});
 		  },
 		  onShow    : function(){
 				Backbone.history.navigate('new', {trigger:true});

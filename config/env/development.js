@@ -23,7 +23,7 @@ module.exports = {
   	_hookTimeout: 2000000
   },
 
-  port: 1338,
+  port: 1337,
 
   session: {
     adapter: 'mongo',
