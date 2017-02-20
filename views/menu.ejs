@@ -7,8 +7,8 @@
   <a class="item" href="/phrases">
     <%= __('Phrases') %>
   </a>
-  <a class="item">
-    <%= __('Conversations') %>
+  <a class="item" href="/practice">
+    Practica
   </a>
 
   <div class="right menu">
@@ -22,7 +22,7 @@
     </div>
     <div class="item">
         <% if(req.session.authenticated){ %>
-        <a class="ui blue basic button"><%= __('Logout') %></a>
+        <a href="/account/logout" class="ui blue basic button"><%= __('Logout') %></a>
         <% }else{ %>
         <a class="ui blue basic button"><%= __('Sign Up') %></a>
         <% } %>

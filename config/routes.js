@@ -35,7 +35,9 @@ module.exports.routes = {
 
   '/'                   : 'HomeController.index',
   '/account/signin'     : 'AppController.loginform',
+  '/account/logout'     : 'AppController.logout',
   // '/account/signup':   'AuthController.registerform'},
+  '/account/info'       : 'AppController.info',
 
   '/dashboard'          : 'DashboardController.init',
   '/traductions'        : 'AppController.traductions',

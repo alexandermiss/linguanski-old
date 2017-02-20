@@ -26,6 +26,15 @@ module.exports = {
 				return res.view('phrases/init', { langs: langs, sources: sources });
 			});
 		});
+	},
+
+	info: function (req, res, next){
+		console.log(waterlock.methods);
+		return res.json(req.session || {});
+	},
+
+	logout: function (req, res){
+		waterlock.cycle.logout(req, res);
 	}
 
 };
