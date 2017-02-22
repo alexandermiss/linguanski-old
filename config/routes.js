@@ -42,6 +42,7 @@ module.exports.routes = {
   '/dashboard'          : 'DashboardController.init',
   '/traductions'        : 'AppController.traductions',
   '/phrases'            : 'AppController.phrases',
+  '/practise'           : 'AppController.practise',
 
   'GET /exercise1'      : 'Exercise.word',
 

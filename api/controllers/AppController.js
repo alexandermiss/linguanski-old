@@ -28,6 +28,10 @@ module.exports = {
 		});
 	},
 
+	practise: function (req, res, next){
+		return res.view('practise/index');
+	},
+
 	info: function (req, res, next){
 		console.log(waterlock.methods);
 		return res.json(req.session || {});

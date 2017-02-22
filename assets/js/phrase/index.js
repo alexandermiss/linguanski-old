@@ -1,6 +1,6 @@
 
 $(function (){
-	var app = {};
+	var app = {}, phrases = {};
 
 	var Phrase = Backbone.Model.extend({
 		urlRoot: '/api/v1/add_phrase'
@@ -134,6 +134,7 @@ $(function (){
 			var col = this.getView().collection;
 			var appRoute = new AppRoute({collection: col});
 			var pagination = new Pagination({collection: col});
+			phrases = app.getView().collection;
 			pagination.render();
 			Backbone.history.start({ root: 'phrases' });
 			Backbone.history.navigate('page/1', {trigger:true});
@@ -144,8 +145,6 @@ $(function (){
 		app = new MyApp();
 		app.start();
 	}
-
-	var phrases = app.getView().collection;
 
 	io.socket.on('phrase', function (msg){
 		console.log('msg', msg);
