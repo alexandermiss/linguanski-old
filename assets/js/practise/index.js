@@ -15,29 +15,38 @@ $(function(){
     className: 'ui basic label letter',
     template: Template.get('form_typing'),
     initialize: function (){
-
+      this.listenTo(this.model, 'focusItem', this.focusItem);
     },
     ui: {
       input: 'input'
     },
-    events: {
-      'keyup @ui.input': 'onKey'
-    },
     triggers:{
-      'click input': 'select:item'
+      'keyup @ui.input': 'typing:item'
     },
     onKey: function (e){
-      console.log('InputView item selected: ', this.model.toJSON());
+      console.log(e);
+      // console.log('InputView item selected: ', this.model.toJSON());
     },
+    focusItem: function (){
+      this.ui.input.focus();
+    }
   });
 
   var ListView = Marionette.CollectionView.extend({
     childView: InputView,
-    modelEvents: {
-      ''
-    },
-    onChildviewSelectItem: function (chilView){
-      console.log('ListView item selected: ', chilView.model.toJSON());
+
+    // onChildviewSelectItem: function (chilView){
+    //   var cursor = this.collection.cursor;
+    //   console.log('ListView item selected: ', chilView.model.toJSON(), cursor);
+    // },
+    onChildviewTypingItem: function (chilView){
+      console.log(arguments);
+      // if ( chilView.model.get('letter') == '' )
+      var cursor = this.collection.cursor++;
+      var m = this.collection.findWhere({i: cursor});
+      m.trigger('focusItem');
+      // console.log(m);
+      // console.log('Typing item selected: ', chilView.model.toJSON(), cursor);
     }
   });
 
@@ -53,6 +62,7 @@ $(function(){
         console.log(l, i);
         col.add( new Letter({letter: l, i: i}) );
       });
+      col.cursor = 1;
       self.showView( new ListView({ collection: col }) );
     }
   });
