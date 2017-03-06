@@ -1,6 +1,7 @@
 <%- include ../menu %>
 
 <style media="screen">
+
 .letter{
   padding: 0 !important;
 }
@@ -9,10 +10,16 @@
   height: 36px;
   margin: 0;
   border: none;
-  text-align: center;
+  text-align: center !important;
   border-radius: 0.28571429rem;
-  background-color: #add;
+  /*background-color: #add;*/
+  padding: 0 !important;
 }
+
+form-letter:focus, form-letter:active{
+  border-color: #85B7D9;
+}
+
 </style>
 
 <div class="ui container segment">
@@ -22,7 +29,7 @@
       <div class="column">
         <h2 class="ui center aligned header">Hola</h2>
         <div class="ui divider"></div>
-        <h3 class="ui center aligned header">привет</h3>
+        <h3 class="ui center aligned header">отлично</h3>
         <div class="ui divider"></div>
         <div id="typing" class="ui big labels">
 

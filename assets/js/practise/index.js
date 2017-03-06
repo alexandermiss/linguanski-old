@@ -6,7 +6,7 @@ $(function(){
 
   var Phrase = Backbone.Model.extend({
     defaults: {
-      phrase: 'привет'
+      phrase: 'отлично'
     }
   });
 
@@ -14,39 +14,72 @@ $(function(){
     tagName: 'div',
     className: 'ui basic label letter',
     template: Template.get('form_typing'),
+
     initialize: function (){
       this.listenTo(this.model, 'focusItem', this.focusItem);
     },
     ui: {
       input: 'input'
     },
-    triggers:{
-      'keyup @ui.input': 'typing:item'
+
+    events:{
+      'keyup @ui.input': 'onKey'
     },
+
     onKey: function (e){
-      console.log(e);
-      // console.log('InputView item selected: ', this.model.toJSON());
+      this.triggerMethod('typing:item', this);
     },
+
     focusItem: function (){
       this.ui.input.focus();
     }
+
   });
 
   var ListView = Marionette.CollectionView.extend({
     childView: InputView,
 
-    // onChildviewSelectItem: function (chilView){
-    //   var cursor = this.collection.cursor;
-    //   console.log('ListView item selected: ', chilView.model.toJSON(), cursor);
-    // },
-    onChildviewTypingItem: function (chilView){
-      console.log(arguments);
-      // if ( chilView.model.get('letter') == '' )
-      var cursor = this.collection.cursor++;
-      var m = this.collection.findWhere({i: cursor});
-      m.trigger('focusItem');
-      // console.log(m);
-      // console.log('Typing item selected: ', chilView.model.toJSON(), cursor);
+    onChildviewTypingItem: function ( chilView ){
+      var letter_typed  = chilView.ui.input.val().toLowerCase();
+      var letter_orig   = chilView.model.get('letter').toLowerCase();
+      var phrase        = this.collection.phrase;
+      var cursor        = this.collection.cursor;
+
+      console.log('letter_typed item...', letter_typed);
+      console.log('current item...', cursor);
+      console.log('phrase...', this.collection.pluck('letter'), phrase);
+
+      // if ( phrase == this.collection.pluck('letter').join('') ){
+      //   console.log('completed', phrase)
+      // }else
+      if ( letter_orig == letter_typed && cursor < this.collection.size() ){
+        if ( cursor > this.collection.size() - 1
+          || this.collection.cursor > this.collection.size() - 1 ){
+          cursor = this.collection.size() - 1;
+          this.collection.cursor = (cursor+1);
+        }
+        else {
+          this.collection.phrase += letter_typed;
+          if ( ( cursor + 1 ) != this.collection.size() ){
+
+            var m = this.collection.findWhere({i: (cursor+1)});
+            m.trigger('focusItem');
+          }
+        }
+        chilView.$el.removeClass('red').addClass('green');
+        this.collection.cursor++;
+        cursor++;
+        console.log('next item...', cursor);
+
+      }else{
+        chilView.$el.addClass('red').transition({
+          animation:'jiggle',
+          onComplete: function(){
+            chilView.$el.removeClass('red');
+          }
+        });
+        chilView.ui.input.val('');
+      }
     }
   });
 
@@ -59,15 +92,18 @@ $(function(){
       ,   col = new Letters();
 
       _.each(phr.get('phrase').split(''), function (l, i){
-        console.log(l, i);
         col.add( new Letter({letter: l, i: i}) );
       });
-      col.cursor = 1;
+      col.cursor = 0;
+      col.phrase = '';
+      app.col = col;
       self.showView( new ListView({ collection: col }) );
     }
   });
 
-  app = new App();
-  app.start();
+  if( Backbone.$('#typing').length ){
+    app = new App();
+    app.start();
+  }
 
 });
