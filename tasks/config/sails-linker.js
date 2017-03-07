@@ -153,7 +153,7 @@ module.exports = function(grunt) {
       options: {
         startTag: '<!--TEMPLATES-->',
         endTag: '<!--TEMPLATES END-->',
-        fileTmpl: '<script type="text/javascript" src="%s"></script>',
+        fileTmpl: '<script type="text/javascript" src="%s?<%= grunt.config.get("oim") %>"></script>',
         appRoot: '.tmp/public'
       },
       files: {
