@@ -45,13 +45,6 @@ $(function(){
       var phrase        = this.collection.phrase;
       var cursor        = this.collection.cursor;
 
-      console.log('letter_typed item...', letter_typed);
-      console.log('current item...', cursor);
-      console.log('phrase...', this.collection.pluck('letter'), phrase);
-
-      // if ( phrase == this.collection.pluck('letter').join('') ){
-      //   console.log('completed', phrase)
-      // }else
       if ( letter_orig == letter_typed && cursor < this.collection.size() ){
         if ( cursor > this.collection.size() - 1
           || this.collection.cursor > this.collection.size() - 1 ){
@@ -69,7 +62,6 @@ $(function(){
         chilView.$el.removeClass('red').addClass('green');
         this.collection.cursor++;
         cursor++;
-        console.log('next item...', cursor);
 
       }else{
         chilView.$el.addClass('red').transition({
@@ -87,7 +79,6 @@ $(function(){
     region: '#typing',
 
     onStart: function (){
-      var self = this;
       var phr = new Phrase()
       ,   col = new Letters();
 
@@ -97,7 +88,7 @@ $(function(){
       col.cursor = 0;
       col.phrase = '';
       app.col = col;
-      self.showView( new ListView({ collection: col }) );
+      this.showView( new ListView({ collection: col }) );
     }
   });
 
