@@ -57,7 +57,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/api/v1/phrases'           : 'PhraseController.getPhrases',
-  'POST /api/v1/add_phrase'   : 'PhraseController.addPhrase',
+  '/api/v1/phrases'               : 'PhraseController.getPhrases',
+  'POST /api/v1/add_phrase'       : 'PhraseController.addPhrase',
+  'PUT /api/v1/add_phrase/:id'    : 'PhraseController.updatePhrase',
 
 };

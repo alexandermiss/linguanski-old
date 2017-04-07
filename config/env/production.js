@@ -28,7 +28,7 @@ module.exports = {
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
 
-  port: 1338,
+  port: '/home/alexander/socks/app.sock',
 
   session: {
     adapter: 'mongo',

@@ -1,3 +1,24 @@
-  <div class="column"><div class="ui fluid basic button phrase_ru">{{ phrase_ru }}</div></div>
-  <div class="column"><div class="ui fluid basic button phrase_es">{{ phrase_es }}</div></div>
-  <div class="column"><div class="ui fluid basic button phrase_en">{{ phrase_en }}</div></div>
+  {% if(phrase_ru){ %}
+  <div class="column">
+    <i class="ru flag"></i>
+    <div data-lang="ru" class="ui fluid basic button phrase_ru">
+
+      {{ phrase_ru }}
+    </div>
+  </div>
+  {% } %}
+  {% if(phrase_es){ %}
+  <div class="column"><i class="mx flag"></i>
+    <div data-lang="es" class="ui fluid basic button phrase_es">
+      {{ phrase_es }}
+    </div>
+  </div>
+  {% } %}
+  {% if(phrase_en){ %}
+  <div class="column">
+    <i class="us flag"></i>
+    <div data-lang="en" class="ui fluid basic button phrase_en">
+      {{ phrase_en }}
+    </div>
+  </div>
+  {% } %}

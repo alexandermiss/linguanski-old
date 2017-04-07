@@ -1,6 +1,6 @@
 
+var app = {}, phrases = {};
 $(function (){
-	var app = {}, phrases = {};
 
 	var Phrase = Backbone.Model.extend({
 		urlRoot: '/api/v1/add_phrase'
@@ -33,7 +33,8 @@ $(function (){
 			'click @ui.phrase_en': 'updatePhrase',
 		},
 		updatePhrase: function (e){
-			Backbone.history.navigate('update/'+this.model.get('id'), {trigger:true});
+			var lang = $(e.target).data('lang');
+			Backbone.history.navigate('update/'+this.model.get('id')+'/lang/'+lang, {trigger:true});
 		}
 	});
 
@@ -43,7 +44,7 @@ $(function (){
 
 	var PhraseCollectionView = Marionette.CollectionView.extend({
 		tagName: 'div',
-		className: 'ui vertically divided grid container',
+		className: 'ui vertically grid container',
 		collection: new Phrases(),
 		childView: PhraseView,
 		emptyView: EmptyView
@@ -54,12 +55,32 @@ $(function (){
 			this.collection = opts.collection;
 		},
 		routes: {
-			'update/:id' : 'update',
+			'update/:id/lang/:lang' : 'update',
 			'page/:id' : 'pageNumber',
 		},
-		update: function (id){
-			console.log('updating route', id);
-			$('#modal-phrases').modal('show');
+		update: function (id, lang){
+			console.log('updating route', id, lang);
+			var self = this;
+			var col = this.collection;
+
+			$('#modal-phrases-detail').modal({
+				transition: 'scale',
+			  closable: false,
+			  onDeny    : function(){
+					Backbone.history.navigate('page/'+phrases.page, {trigger:true});
+			  },
+			  onApprove : function() {
+			    var text 	= $('#phrase_text').val();
+
+					var m = phrases.get(id)
+					var p = 'phrase_'+lang;
+					m.set(p, text);
+					m.save({lang: lang});
+					console.log(p, 'm', m.toJSON());
+
+					$('#phrase_text, #phrase_lang').val('');
+			  }
+			}).modal('show');
 		},
 		pageNumber: function (id){
 			this.collection.fetch({ reset: true, data: { page: parseInt(id)} });

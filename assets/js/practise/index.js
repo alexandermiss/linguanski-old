@@ -6,7 +6,9 @@ $(function(){
 
   var Phrase = Backbone.Model.extend({
     defaults: {
-      phrase: 'отлично'
+      // phrase: 'отлично'
+      // phrase: 'Большое спасибо'
+      phrase: 'Я хочу'
     }
   });
 

@@ -31,4 +31,18 @@ module.exports = {
 		});
 	},
 
+	updatePhrase: function (req, res, next){
+		console.log(req.params.all());
+		Language.findOne({prefix: req.param('lang')}).exec(function (err, lang){
+			Phrase.update({traduction: req.param('id'), language: lang.id}, {phrase: req.param('phrase_'+lang.prefix)}).exec(function(err, phrase){
+				if(err) {
+					console.log(err)
+					return res.negotiate(err);
+				}
+				console.log('phrase', phrase);
+				return res.json(_.omit(req.params.all(), 'lang'));
+			});
+		});
+	}
+
 };
