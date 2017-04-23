@@ -33,12 +33,15 @@ module.exports = {
   session: {
     adapter: 'mongo',
     url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom',
-  }
+  },
 
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/
 
+   grunt: {
+     _hookTimeout: 2000000
+   }
 
 
   // log: {

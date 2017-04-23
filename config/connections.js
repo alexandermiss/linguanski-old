@@ -29,14 +29,14 @@ module.exports.connections = {
   * Run: npm install sails-mongo                                             *
   *                                                                          *
   ***************************************************************************/
-  
+
   mongoDbServerDev: {
     adapter: 'sails-mongo',
     host: 'localhost',
     port: 27017,
     // user: 'username',
     // password: 'password',
-    database: 'openidiomdb'
+    database: 'translatorgreatappdb'
   },
 
   mongoDbServerProd: {

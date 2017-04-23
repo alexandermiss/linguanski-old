@@ -36,7 +36,7 @@ module.exports.routes = {
   '/'                   : 'HomeController.index',
   '/account/signin'     : 'AppController.loginform',
   '/account/logout'     : 'AppController.logout',
-  // '/account/signup':   'AuthController.registerform'},
+  '/account/signup'     : 'AppController.registerform',
   '/account/info'       : 'AppController.info',
 
   '/dashboard'          : 'DashboardController.init',
@@ -56,6 +56,8 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+  // User update
+  'POST /api/v1/user/settings'    : 'SettingController.updateUser',
 
   '/api/v1/phrases'               : 'PhraseController.getPhrases',
   'POST /api/v1/add_phrase'       : 'PhraseController.addPhrase',

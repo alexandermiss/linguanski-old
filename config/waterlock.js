@@ -84,7 +84,7 @@ module.exports.waterlock = {
     // configure whether or not to include
     // the user in the respnse - this is useful if
     // JWT is the default response for succesfull login
-    includeUserInJwtResponse: false
+    includeUserInJwtResponse: true
   },
 
   // Post Actions

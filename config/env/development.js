@@ -28,6 +28,10 @@ module.exports = {
   session: {
     adapter: 'mongo',
     url: 'mongodb://localhost:27017/sesopenidiom',
+  },
+
+  grunt: {
+    _hookTimeout: 2000000
   }
 
 };

@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <!-- Site Properties -->
-  <title>Login Example - Semantic</title>
+  <title><%= __('Sign In') %> - OpenIdiom</title>
   <link rel="stylesheet" type="text/css" href="/styles/semantic.css">
 
   <script src="/js/dependencies/jquery-3.1.1.js"></script>
@@ -30,70 +30,30 @@
       max-width: 450px;
     }
   </style>
-  <script>
-  $(document)
-    .ready(function() {
-      $('.ui.form')
-        .form({
-          fields: {
-            email: {
-              identifier  : 'email',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your e-mail'
-                },
-                {
-                  type   : 'email',
-                  prompt : 'Please enter a valid e-mail'
-                }
-              ]
-            },
-            password: {
-              identifier  : 'password',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your password'
-                },
-                {
-                  type   : 'length[4]',
-                  prompt : 'Your password must be at least 6 characters'
-                }
-              ]
-            }
-          }
-        })
-      ;
-    })
-  ;
-  </script>
+
 </head>
 <body>
 
 <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui blue image header">
-      <img src="assets/images/logo.png" class="image">
-      <div class="content">
-        Log-in to your account
-      </div>
+    <h2 class="ui centered header">
+        <%= __('Login')  %>
     </h2>
-    <form class="ui large form" method="POST" onsubmit="return false;">
+    <form class="ui large form" method="POST" autocomplete="off">
       <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="email" placeholder="E-mail address">
+            <input type="text" name="email" placeholder="<%= __('E-mail address') %>">
           </div>
         </div>
         <div class="field">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input type="password" name="password" placeholder="Password">
+            <input type="password" name="password" placeholder="<%= __('Password') %>">
           </div>
         </div>
-        <div id="send" class="ui fluid large blue submit button">Login</div>
+        <button class="ui fluid large basic blue button"><%= __('Sign In') %></button>
       </div>
 
       <div class="ui error message"></div>
@@ -101,7 +61,7 @@
     </form>
 
     <div class="ui message">
-      New to us? <a href="#">Sign Up</a>
+      <%= __('New to us?') %> <a href="/account/signup"><%= __('Sign Up') %></a>
     </div>
   </div>
 </div>
@@ -109,32 +69,56 @@
 <script type="text/javascript">
   $(function(){
 
-    function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
+    $('form')
+      .form({
+        fields: {
+          email: {
+            identifier  : 'email',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : '<%= __('Please enter your name') %>'
+              },
+              {
+                type   : 'email',
+                prompt : '<%= __('Please enter a valid e-mail') %>'
+              }
+            ]
+          },
+          password: {
+            identifier  : 'password',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : '<%= __('Please enter your password') %>'
+              },
+              {
+                type   : 'length[8]',
+                prompt : '<%= __('Your password must be at least 8 characters') %>'
+              }
+            ]
+          }
+        },
+        onSuccess(event, fields){
+          event.preventDefault();
 
-    $.ajaxSetup({
-      beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", _csrf);
-            xhr.setRequestHeader("_csrf", _csrf);
+          $.post('/auth/login', {
+              email: fields.email,
+              password: fields.password,
+              name: fields.name,
+              _csrf: _csrf
+            })
+            .done(function(data){
+              if(data && data.auth){
+                window.location.href='/dashboard';
+              }
+            }).fail(function(data){
+                console.log('fail', data);
+            });
+
         }
-      }
-    });
-
-    $('#send').on('click', function (e){
-
-      $.post('/auth/login', {
-          email: $('[name=email]').val(),
-          password: $('[name=password]').val(),
-          _csrf: _csrf
-        })
-        .done(function(data){
-          console.log(data);
-          window.location.href='/dashboard';
-        });
-    });
+      })
+    ;
 
   });
 </script>

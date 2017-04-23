@@ -11,6 +11,10 @@ module.exports = {
 		return res.view('auth/signin', {layout:false});
 	},
 
+	registerform: function ( req, res, next){
+		return res.view('auth/signup', {layout:false});
+	},
+
 	traductions: function (req, res, next){
 		Traduction.find({}).populate('phrase').exec(function (err, trads ){
 			if (err) { return res.negotiate(err); }
