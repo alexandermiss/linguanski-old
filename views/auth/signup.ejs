@@ -44,12 +44,6 @@
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
-              <i class="user icon"></i>
-              <input type="text" name="name" placeholder="Name">
-            </div>
-          </div>
-          <div class="field">
-            <div class="ui left icon input">
               <i class="at icon"></i>
               <input type="text" name="email" placeholder="<%= __('E-mail address') %>">
             </div>
@@ -60,14 +54,25 @@
               <input type="password" name="password" placeholder="<%= __('Password') %>">
             </div>
           </div>
-
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password2" placeholder="<%= __('Password') %>">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input name="conditions" tabindex="0" class="hidden" type="checkbox">
+              <label><%= __('I agree to the Terms and Conditions') %></label>
+            </div>
+          </div>
           <button id="send" class="ui fluid large basic blue button"><%= __('Sign Up')  %></button>
         </div>
         <div class="ui error message"></div>
       </form>
 
       <div class="ui message">
-        <%= __('You are previous registered?') %>' <a href="/account/signin"><%= __('Sign In')  %></a>
+        <%= __('You are previous registered?') %> <a href="/account/signin"><%= __('Sign In')  %></a>
       </div>
 
   </div>
@@ -77,31 +82,11 @@
 <script type="text/javascript">
   $(function(){
 
-    // function csrfSafeMethod(method) {
-    //   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    // }
-    //
-    // $.ajaxSetup({
-    //   beforeSend: function(xhr, settings) {
-    //     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-    //         xhr.setRequestHeader("X-CSRFToken", _csrf);
-    //         xhr.setRequestHeader("_csrf", _csrf);
-    //     }
-    //   }
-    // });
+    $('.ui .checkbox').checkbox();
 
     $('form')
       .form({
         fields: {
-          name: {
-            identifier  : 'name',
-            rules: [
-              {
-                type   : 'empty',
-                prompt : 'Please enter your name'
-              }
-            ]
-          },
           email: {
             identifier  : 'email',
             rules: [
@@ -127,6 +112,28 @@
                 prompt : '<%= __('Your password must be at least 8 characters') %>'
               }
             ]
+          },
+          password2: {
+            identifier  : 'password2',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : '<%= __('Please enter your password') %>'
+              },
+              {
+                type   : 'match[password]',
+                prompt : '<%= __('Your password does not mismatch') %>'
+              }
+            ]
+          },
+          conditions: {
+            identifier  : 'conditions',
+            rules: [
+              {
+                type   : 'checked',
+                prompt : '<%= __('Please check the terms and conditions') %>'
+              },
+            ]
           }
         },
         onSuccess(event, fields){
@@ -140,7 +147,7 @@
               })
               .done(function(data){
                 if(data && data.auth){
-                  window.location.href='/dashboard';
+                  window.location.href='/settings/first/configuration';
                 }
               }).fail(function(data){
                   console.log('fail', data);

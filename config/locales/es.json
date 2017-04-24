@@ -43,5 +43,22 @@
 	"Please enter your password": "Por favor, escriba su clave",
 	"Your password must be at least 8 characters": "Su clave debe ser mayor de 8 letras",
 	"New to us?": "Nuevo con nosotros?",
-	"You are previous registered?": "Ya estas registrado?"
+	"You are previous registered?": "Ya estas registrado?",
+	"Profile configuration": "Configuracion de perfil",
+	"I agree to the Terms and Conditions": "Acepto los terminos y condiciones",
+	"Please check the terms and conditions": "Por favor acepte los terminos y condiciones",
+	"Next": "Siguiente",
+	"Your password does not mismatch": "Las claves no coinciden",
+	"Name": "Nombre",
+	"Write your name": "Escriba su nombre",
+	"Configuring Profile": "Configurando Perfil",
+	"My native language": "Mi lengua nativa",
+	"I want to practice": "Quiero practicar",
+	"I am from": "Soy de",
+	"Send": "Enviar",
+	"Select country": "Seleccione un pais",
+	"Select language": "Seleccione un idioma",
+	"Please enter your country": "Por favor seleccione un pais",
+	"Please enter your language": "Por favor seleccione un lenguaje",
+	"Select Country": "Select Country"
 }

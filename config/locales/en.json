@@ -43,5 +43,21 @@
 	"Please enter your password": "Please enter your password",
 	"Your password must be at least 8 characters" : "Your password must be at least 8 characters",
 	"New to us?": "New to us?",
-	"You are previous registered?": "You are previous registered?"
+	"You are previous registered?": "You are previous registered?",
+	"Profile configuration": "Profile configuration",
+	"I agree to the Terms and Conditions": "I agree to the Terms and Conditions",
+	"Please check the terms and conditions": "Please check the terms and conditions",
+	"Next": "Next",
+	"Your password does not mismatch": "Your password does not mismatch",
+	"Name": "Name",
+	"Write your name": "Write your name",
+	"Configuring Profile": "Configuring Profile",
+	"My native language": "My native language",
+	"I want to practice": "I want to practice",
+	"I am from": "I am from",
+	"Send": "Send",
+	"Select country": "Select Country",
+	"Select language": "Select language",
+	"Please enter your country": "Please enter your country",
+	"Please enter your language": "Please enter your language"
 }

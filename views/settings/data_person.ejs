@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <!-- Site Properties -->
+  <title><%= __('Configuring Profile') %> - OpenIdiom</title>
+  <link rel="stylesheet" type="text/css" href="/styles/semantic.css">
+
+  <script src="/js/dependencies/jquery-3.1.1.js"></script>
+  <script src="/js/dependencies/semantic.js"></script>
+  <script type="text/javascript">
+  window._csrf = '<%= _csrf %>';
+  </script>
+  <style type="text/css">
+    /*body {
+      background-color: #DADADA;
+    }*/
+    .container{
+      margin-top: 60px !important;
+    }
+
+    body > .grid {
+      height: 100%;
+    }
+
+  </style>
+
+</head>
+<body>
+
+
+  <% if(req.session.authenticated){ %>
+  <div class="ui menu">
+
+    <div class="right menu">
+      <div class="item">
+        (<%= session.user.auth.email %>)
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+
+
+<div class="ui middle aligned container segment">
+
+  <div class="ui grid">
+
+    <div class="two column row">
+      <div class="middle aligned center aligned column">
+        <h2 class="ui icon header">
+          <i class="settings icon"></i>
+          <div class="content">
+            <%= __('Profile configuration') %>
+            <div class="sub header">Manage your language preferences.</div>
+          </div>
+        </h2>
+      </div>
+      <div class="column">
+
+        <form class="ui form" autocomplete="off">
+          <div class="ui error message"></div>
+            <div class="field">
+              <label><%= __('Name') %></label>
+              <input name="name" placeholder="<%= __('Write your name') %>" type="text">
+            </div>
+            <div class="field">
+              <label><%= __('I am from') %></label>
+              <div class="ui fluid search selection dropdown">
+                <input name="country" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text"><%= __('Select country') %></div>
+                <div class="menu">
+                  <div class="item" data-value="mx"><i class="mx flag"></i>Mexico</div>
+                  <div class="item" data-value="ru"><i class="ru flag"></i>Russia</div>
+                  <div class="item" data-value="us"><i class="us flag"></i>United States</div>
+                </div>
+               </div>
+            </div>
+            <div class="field">
+              <label><%= __('I want to practice') %></label>
+              <div class="ui fluid search selection dropdown">
+                <input name="language" type="hidden">
+                <i class="dropdown icon"></i>
+                <div class="default text"><%= __('Select language') %></div>
+                <div class="menu">
+                  <div class="item" data-value="en"><i class="us flag"></i>English</div>
+                  <div class="item" data-value="ru"><i class="ru flag"></i>Russian</div>
+                  <div class="item" data-value="es"><i class="es flag"></i>Spain</div>
+                </div>
+               </div>
+            </div>
+            <button class="ui fluid large basic blue button"><%= __('Next') %></button>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(function(){
+
+    $('.dropdown').dropdown();
+
+    $('form')
+      .form({
+        fields: {
+          name: {
+            identifier  : 'name',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : '<%= __('Please enter your name') %>'
+              }
+            ]
+          },
+          country: {
+            identifier  : 'country',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : '<%= __('Please enter your country') %>'
+              }
+            ]
+          },
+          language: {
+            identifier  : 'language',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : '<%= __('Please enter your language') %>'
+              }
+            ]
+          }
+        },
+        onSuccess(event, fields){
+          event.preventDefault();
+
+          $.post('/api/v1/user/settings', {
+              name: fields.name,
+              country: fields.country,
+              language: fields.language,
+              _csrf: _csrf
+            })
+            .done(function(data){
+              if(data && data.setting){
+                window.location.href='/dashboard';
+              }
+            }).fail(function(data){
+                console.log('fail', data);
+            });
+
+        }
+      })
+    ;
+
+  });
+</script>
+
+</body>
+
+</html>

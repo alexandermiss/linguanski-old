@@ -8,8 +8,8 @@
 module.exports = {
 
   attributes: {
-    language_system: { model: 'language' },
-    language_learning: { model: 'language' },
+    country: { model: 'country' },
+    language: { model: 'language' },
     user: { model: 'user' }
   }
 };

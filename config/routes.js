@@ -33,18 +33,20 @@ module.exports.routes = {
   ***************************************************************************/
 
 
-  '/'                   : 'HomeController.index',
-  '/account/signin'     : 'AppController.loginform',
-  '/account/logout'     : 'AppController.logout',
-  '/account/signup'     : 'AppController.registerform',
-  '/account/info'       : 'AppController.info',
+  '/'                                 : 'HomeController.index',
+  '/account/signin'                   : 'AppController.loginform',
+  '/account/logout'                   : 'AppController.logout',
+  '/account/signup'                   : 'AppController.registerform',
+  '/account/info'                     : 'AppController.info',
 
-  '/dashboard'          : 'DashboardController.init',
-  '/traductions'        : 'AppController.traductions',
-  '/phrases'            : 'AppController.phrases',
-  '/practise'           : 'AppController.practise',
+  '/settings/first/configuration'     : 'SettingController.firstConfiguration',
 
-  'GET /exercise1'      : 'Exercise.word',
+  '/dashboard'                        : 'DashboardController.init',
+  '/traductions'                      : 'AppController.traductions',
+  '/phrases'                          : 'AppController.phrases',
+  '/practise'                         : 'AppController.practise',
+
+  'GET /exercise1'                    : 'Exercise.word',
 
 
   /***************************************************************************

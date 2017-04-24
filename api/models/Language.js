@@ -10,6 +10,6 @@ module.exports = {
   attributes: {
   	name: 		{type: 'string'},
     prefix:   {type: 'string'},
-  	countries: 	{collection: 'country', via: 'language', dominant: true}
+  	countries: 	{collection: 'country', via: 'language'}
   }
 };

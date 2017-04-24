@@ -37,7 +37,7 @@ module.exports.policies = {
   },
 
   AppController: {
-    '*': 'loginNecessary',
+    '*': 'sessionAuth',
     'loginform': true,
     'registerform': true
   },
@@ -46,17 +46,16 @@ module.exports.policies = {
     index: true,
   },
 
+  SettingController: {
+    '*': 'sessionAuth'
+  },
+
   PhraseController: {
-    '*': 'loginNecessary'
+    '*': 'sessionAuth'
   },
 
   DashboardController: {
-    '*': 'loginNecessary'
+    '*': ['settingNecessary', 'sessionAuth']
   },
-
-  SettingController: {
-    'updateUser': 'loginNecessary'
-  }
-
 
 };
