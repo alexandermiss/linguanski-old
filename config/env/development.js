@@ -26,8 +26,13 @@ module.exports = {
   port: 1337,
 
   session: {
-    adapter: 'mongo',
-    url: 'mongodb://localhost:27017/sesopenidiom',
+    adapter: 'redis',
+    host: 'localhost',
+    port: 6379,
+    ttl: 84000,
+    db: 0,
+    pass: '',
+    prefix: 'sess:',
   },
 
   grunt: {

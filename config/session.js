@@ -44,7 +44,7 @@ module.exports.session = {
   *                                                                          *
   ***************************************************************************/
 
-  // adapter: 'redis',
+  adapter: 'redis',
   // adapter: 'connect-redis',
 
   /***************************************************************************
@@ -62,40 +62,6 @@ module.exports.session = {
   // db: 0,
   // pass: '',
   // prefix: 'sess:',
-
- // host: 'tarpon.redistogo.com',
- //  port: 11939,
- //  ttl: 84000,
- //  db: 'redistogo',
- //  pass: 'e41c936bb0929a8c44bc3a425117934b',
- //  prefix: 'sess:',
-
-  /***************************************************************************
-  *                                                                          *
-  * Uncomment the following lines to set up a MongoDB session store that can *
-  * be shared across multiple Sails.js servers.                              *
-  *                                                                          *
-  * Requires connect-mongo (https://www.npmjs.com/package/connect-mongo)     *
-  * Use version 0.8.2 with Node version <= 0.12                              *
-  * Use the latest version with Node >= 4.0                                  *
-  *                                                                          *
-  ***************************************************************************/
-
-  adapter: 'mongo',
-  // url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom', // user, password and port optional
-  url: 'mongodb://localhost:27017/sesopenidiom', // user, password and port optional
-
-  /***************************************************************************
-  *                                                                          *
-  * Optional Values:                                                         *
-  *                                                                          *
-  * See https://github.com/kcbanner/connect-mongo for more                   *
-  * information about connect-mongo options.                                 *
-  *                                                                          *
-  * See http://bit.ly/mongooptions for more information about options        *
-  * available in `mongoOptions`                                              *
-  *                                                                          *
-  ***************************************************************************/
 
   collection: 'sessions',
   // stringify: true,

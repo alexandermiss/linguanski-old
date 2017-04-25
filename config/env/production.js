@@ -30,9 +30,19 @@ module.exports = {
 
   port: '/home/alexander/socks/app.sock',
 
+  // session: {
+  //   adapter: 'mongo',
+  //   url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom',
+  // },
+
   session: {
-    adapter: 'mongo',
-    url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom',
+    adapter: 'redis',
+    host: 'barreleye.redistogo.com',
+    port: 11996,
+    ttl: 84000,
+    db: 'redistogo',
+    pass: 'e2faf6a8900615b5b7d5d5f1e644a4ef',
+    prefix: 'sess:'
   },
 
   /***************************************************************************

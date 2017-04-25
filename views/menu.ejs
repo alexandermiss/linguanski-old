@@ -1,30 +1,30 @@
 
-<div class="ui stackable pointing menu">
+<div style="background-color:#001C20;color:#000000;" class="ui stackable pointing menu">
 
-  <a class="active item">
+  <a style="color:#ffffff;" class="active item">
     <%= __('Start') %>
   </a>
-  <a class="item" href="/phrases">
+  <a style="color:#ffffff;" class="item" href="/phrases">
     <%= __('Phrases') %>
   </a>
-  <a class="item" href="/practise">
+  <a style="color:#ffffff;" class="item" href="/practise">
     Practica
   </a>
 
-  <div class="right menu">
-    <div id="menu" class="ui dropdown item">
+  <div style="color:#ffffff;" class="right menu">
+    <div style="color:#ffffff;" id="menu" class="ui dropdown item">
       <%= __('Language') %> <i class="dropdown icon"></i>
       <div class="menu">
-        <a class="item">Español</a>
-        <a class="item">Ruso</a>
-        <a class="item">Inglés</a>
+        <a style="color:#ffffff;" class="item">Español</a>
+        <a style="color:#ffffff;" class="item">Ruso</a>
+        <a style="color:#ffffff;" class="item">Inglés</a>
       </div>
     </div>
     <div class="item">
         <% if(req.session.authenticated){ %>
-        <a href="/account/logout" class="ui blue basic button"><%= __('Logout') %></a>
+        <a style="color:#ffffff;" href="/account/logout" class="ui white basic inverted button"><%= __('Logout') %></a>
         <% }else{ %>
-        <a class="ui blue basic button"><%= __('Sign Up') %></a>
+        <a style="color:#ffffff;" class="ui blue basic button"><%= __('Sign Up') %></a>
         <% } %>
     </div>
   </div>
