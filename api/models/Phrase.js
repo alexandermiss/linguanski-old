@@ -37,7 +37,7 @@ module.exports = {
   				_.each(trads[t], function(ph){
             var obj = {};
   					if ( ph.language.id == opts.country_language_id )
-  						    obj = { phrase_country: ph.phrase };
+  						    obj = { phrase_native: ph.phrase };
   					else
   						    obj = { phrase_language: ph.phrase };
 

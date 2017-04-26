@@ -21,11 +21,11 @@ $(function (){
 		className: 'two column row',
 		template: Template.get('list'),
 		ui: {
-			phrase_country: '.phrase_country',
+			phrase_native: '.phrase_native',
 			phrase_language: '.phrase_language'
 		},
 		events: {
-			'click @ui.phrase_country': 'updatePhrase',
+			'click @ui.phrase_native': 'updatePhrase',
 			'click @ui.phrase_language': 'updatePhrase'
 		},
 		updatePhrase: function (e){
@@ -182,16 +182,16 @@ $(function (){
 				Backbone.history.navigate('page/'+phrases.page, {trigger:true});
 		  },
 		  onApprove : function() {
-		    var phrase_country 	= $('#phrase_country').val()
+		    var phrase_native 	= $('#phrase_native').val()
 				,		phrase_language 	= $('#phrase_language').val();
 
 		    phrases.create({
-					phrase_country: phrase_country,
+					phrase_native: phrase_native,
 					phrase_language: phrase_language,
 					source: src
 				}, {wait: true});
 
-				$('#phrase_country, #phrase_language').val('');
+				$('#phrase_native, #phrase_language').val('');
 				$('#source').dropdown('clear')
 				Backbone.history.navigate('page/1', {trigger:true});
 		  },
