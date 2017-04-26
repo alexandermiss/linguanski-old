@@ -5,14 +5,17 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('lodash');
+
 module.exports = {
 
 	getPhrases: function (req, res, next){
 		if (req.isSocket) console.log('getPhrasesSocket');
 		else console.log('getPhrasesAjax');
+
 		var p = req.params.all();
 		sails.log.info(p);
-		Phrase.combineLanguages(p, function(err, phrases){
+		Phrase.combineLanguages(_.extend(p, {country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id}), function(err, phrases){
 			if(err) return res.negotiate(err);
 			res.json(phrases);
 		});

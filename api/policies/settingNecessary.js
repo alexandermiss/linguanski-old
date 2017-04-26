@@ -1,5 +1,5 @@
 /**
- * loginNecessary
+ * settingNecessary
  *
  * @module      :: Policy
  * @description :: Simple policy to allow any authenticated user
@@ -9,9 +9,13 @@
  */
 module.exports = function(req, res, next) {
 
-  if (req.session.user && !req.session.user.setting) {
-    return res.redirect('/settings/first/configuration');
-  }
+  Setting.findOne({user: req.session.user.id}).exec(function( err, setting ){
+    if ( err ) return res.serverError(err);
+    if ( !setting ) return res.redirect('/settings/first/configuration');
 
-  return next();
+    req.session['setting'] = setting;
+    return next();
+
+  });
+
 };

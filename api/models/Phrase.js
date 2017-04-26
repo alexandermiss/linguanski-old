@@ -15,36 +15,41 @@ module.exports = {
   	traduction:{model: 'traduction'}
   },
   combineLanguages: function (opts, cb){
+    var _ = require('lodash');
+
     if ( !_.has(opts, 'page') ) opts.page = 1;
     if ( !_.has(opts, 'limit') ) opts.limit = 9;
 
-    Phrase.find({},{ sort: 'createdAt DESC'}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas){
-      Phrase.find({ id: _.pluck(datas, 'id') },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, datas){
-        if (err) cb(err);
-        var trads = _.groupBy(datas, function (data){
-  				return data.traduction.id;
-  			});
+    Phrase.find({language: opts.country_language_id},{ sort: 'createdAt DESC'}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas){
+      Phrase.find({ id: _.map(datas, 'id'), language: opts.language_id },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, datas){
+        sails.log.info(opts);
+        sails.log.info(datas);
+        // if (err) cb(err);
+        // var trads = _.groupBy(datas, function (data){
+  			// 	return data.traduction.id;
+  			// });
+        //
+  			// var phrs = [];
+        //
+  			// Object.keys(trads).forEach(function(t){
+  			// 	var _ph = {};
+  			// 	_.each(trads[t], function(ph){
+        //     var obj = {};
+  			// 		if ( ph.language.prefix == 'es' )
+  			// 			    obj = { phrase_es: ph.phrase };
+  			// 		else if ( ph.language.prefix == 'ru' )
+  			// 			    obj = { phrase_ru: ph.phrase };
+  			// 		else
+  			// 			    obj = { phrase_en: ph.phrase };
+        //
+        //     _.extend(_ph, obj, { phrase_id: ph.id }); // Get Phrase Id
+  			// 	});
+        //
+        //   _.extend(_ph, { id: t }); // Get Traduction Id
+  			// 	phrs.push(_ph);
+  			// });
+        // return cb(null, _.extend({ results: phrs }, _.pick(opts, 'page', 'limit')));
 
-  			var phrs = [];
-
-  			Object.keys(trads).forEach(function(t){
-  				var _ph = {};
-  				_.each(trads[t], function(ph){
-            var obj = {};
-  					if ( ph.language.prefix == 'es' )
-  						    obj = { phrase_es: ph.phrase };
-  					else if ( ph.language.prefix == 'ru' )
-  						    obj = { phrase_ru: ph.phrase };
-  					else
-  						    obj = { phrase_en: ph.phrase };
-
-            _.extend(_ph, obj, { phrase_id: ph.id }); // Get Phrase Id
-  				});
-
-          _.extend(_ph, { id: t }); // Get Traduction Id
-  				phrs.push(_ph);
-  			});
-        return cb(null, _.extend({ results: phrs }, _.pick(opts, 'page', 'limit')));
       });
     });
   },
