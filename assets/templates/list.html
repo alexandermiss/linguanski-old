@@ -1,24 +1,17 @@
-  {% if(phrase_ru){ %}
+  {% if(phrase_country){ %}
+  <div class="column">
+    <i class="mx flag"></i>
+    <div data-lang="phrase_country" class="ui fluid basic button phrase_country">
+
+      {{ phrase_country }}
+    </div>
+  </div>
+  {% } %}
+  {% if(phrase_language){ %}
   <div class="column">
     <i class="ru flag"></i>
-    <div data-lang="ru" class="ui fluid basic button phrase_ru">
-
-      {{ phrase_ru }}
-    </div>
-  </div>
-  {% } %}
-  {% if(phrase_es){ %}
-  <div class="column"><i class="mx flag"></i>
-    <div data-lang="es" class="ui fluid basic button phrase_es">
-      {{ phrase_es }}
-    </div>
-  </div>
-  {% } %}
-  {% if(phrase_en){ %}
-  <div class="column">
-    <i class="us flag"></i>
-    <div data-lang="en" class="ui fluid basic button phrase_en">
-      {{ phrase_en }}
+    <div data-lang="es" class="ui fluid basic button phrase_language">
+      {{ phrase_language }}
     </div>
   </div>
   {% } %}

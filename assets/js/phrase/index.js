@@ -13,24 +13,20 @@ $(function (){
 		parse: function (resp){
 			_.extend( this, _.omit(resp, 'results') );
 			return _.pick(resp, 'results').results;
-		},
-
-
+		}
 	});
 
 	var PhraseView = Marionette.View.extend({
 		tagName: 'div',
-		className: 'three column row',
+		className: 'two column row',
 		template: Template.get('list'),
 		ui: {
-			phrase_ru: '.phrase_ru',
-			phrase_es: '.phrase_es',
-			phrase_en: '.phrase_en'
+			phrase_country: '.phrase_country',
+			phrase_language: '.phrase_language'
 		},
 		events: {
-			'click @ui.phrase_ru': 'updatePhrase',
-			'click @ui.phrase_es': 'updatePhrase',
-			'click @ui.phrase_en': 'updatePhrase',
+			'click @ui.phrase_country': 'updatePhrase',
+			'click @ui.phrase_language': 'updatePhrase'
 		},
 		updatePhrase: function (e){
 			var lang = $(e.target).data('lang');
@@ -186,19 +182,16 @@ $(function (){
 				Backbone.history.navigate('page/'+phrases.page, {trigger:true});
 		  },
 		  onApprove : function() {
-		    var ru 	= $('#phrase_ru').val()
-				,		en 	= $('#phrase_en').val()
-				,		es 	= $('#phrase_es').val()
-				, 	src = $('#source').dropdown('get value');
+		    var phrase_country 	= $('#phrase_country').val()
+				,		phrase_language 	= $('#phrase_language').val();
 
 		    phrases.create({
-					phrase_ru: ru,
-					phrase_en: en,
-					phrase_es: es,
+					phrase_country: phrase_country,
+					phrase_language: phrase_language,
 					source: src
 				}, {wait: true});
 
-				$('#phrase_ru, #phrase_en, #phrase_es').val('');
+				$('#phrase_country, #phrase_language').val('');
 				$('#source').dropdown('clear')
 				Backbone.history.navigate('page/1', {trigger:true});
 		  },
