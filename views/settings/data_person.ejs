@@ -89,7 +89,7 @@
                 <i class="dropdown icon"></i>
                 <div class="default text"><%= __('Select language') %></div>
                 <div class="menu">
-                  <div class="item" data-value="en"><i class="us flag"></i>English</div>
+                  <div class="item" data-value="us"><i class="us flag"></i>English</div>
                   <div class="item" data-value="ru"><i class="ru flag"></i>Russian</div>
                   <div class="item" data-value="es"><i class="es flag"></i>Spain</div>
                 </div>
@@ -151,6 +151,7 @@
               _csrf: _csrf
             })
             .done(function(data){
+              console.log('done', data);
               if(data && data.setting){
                 window.location.href='/dashboard';
               }

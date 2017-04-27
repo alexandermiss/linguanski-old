@@ -21,9 +21,9 @@ module.exports = {
     if ( !_.has(opts, 'page') ) opts.page = 1;
     if ( !_.has(opts, 'limit') ) opts.limit = 4;
 
-    Phrase.find({language: opts.country_language_id},{ sort: 'createdAt DESC'}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas){
-      Phrase.find({ traduction: _.map(datas, 'traduction'), language: opts.language_id },{ sort: 'createdAt DESC'}).exec(function(err, datas){
-        Phrase.find({ traduction: _.map(datas, 'traduction') },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, phrases){
+    Phrase.find({language: opts.country_language_id},{ sort: 'createdAt DESC'}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas1){
+      Phrase.find({ traduction: _.map(datas1, 'traduction'), language: opts.language_id },{ sort: 'createdAt DESC'}).exec(function(err, datas2){
+        Phrase.find({ traduction: _.map(datas2, 'traduction') },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, phrases){
 
         if (err) cb(err);
         var trads = _.groupBy(phrases, function (data){
@@ -37,9 +37,11 @@ module.exports = {
   				_.each(trads[t], function(ph){
             var obj = {};
   					if ( ph.language.id == opts.country_language_id )
-  						    obj = { phrase_native: ph.phrase };
-  					else
-  						    obj = { phrase_language: ph.phrase };
+  						    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.prefix };
+  					else if ( ph.language.id == opts.language_id )
+  						    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix };
+            else
+              sails.log.debug('no phrase', ph);
 
             _.extend(_ph, obj, { phrase_id: ph.id }); // Get Phrase Id
   				});
