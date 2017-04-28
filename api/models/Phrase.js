@@ -6,6 +6,7 @@
  */
 
 var _ = require('lodash');
+var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
   schema: true,
@@ -21,39 +22,64 @@ module.exports = {
     if ( !_.has(opts, 'page') ) opts.page = 1;
     if ( !_.has(opts, 'limit') ) opts.limit = 4;
 
-    Phrase.find({language: opts.country_language_id},{ sort: 'createdAt DESC'}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas1){
-      Phrase.find({ traduction: _.map(datas1, 'traduction'), language: opts.language_id },{ sort: 'createdAt DESC'}).exec(function(err, datas2){
-        Phrase.find({ traduction: _.map(datas2, 'traduction') },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, phrases){
+    sails.log.debug('opts', opts);
+    sails.log.debug('typeof opts.language_id', typeof opts.language_id);
 
-        if (err) cb(err);
-        var trads = _.groupBy(phrases, function (data){
-  				return data.traduction.id;
-  			});
 
-  			var phrs = [];
+    // Phrase.find({language: opts.country_language_id},{ sort: 'createdAt DESC'}).paginate(_.pick(opts, 'page', 'limit')).exec(function(err, datas1){
+    //   Phrase.find({ traduction: _.map(datas1, 'traduction'), language: opts.language_id },{ sort: 'createdAt DESC'}).exec(function(err, datas2){
+    //     Phrase.find({ traduction: _.map(datas2, 'traduction') },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, phrases){
 
-  			Object.keys(trads).forEach(function(t){
-  				var _ph = {};
-  				_.each(trads[t], function(ph){
-            var obj = {};
-  					if ( ph.language.id == opts.country_language_id )
-  						    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.prefix };
-  					else if ( ph.language.id == opts.language_id )
-  						    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix };
-            else
-              sails.log.debug('no phrase', ph);
+    Phrase.native(function(err, db){
+      db.aggregate([
+        // {$match: { $or: [{ language: new ObjectId(opts.country_language_id)},{ language: new ObjectId(opts.language_id) }]}},
+        {$group: {_id: "$traduction", lenguaje: {$push: "$$ROOT"}, count: {$sum: 1}} },
+        {$sort: {traduction: -1}}
+      ]).forEach(function(phrase){
 
-            _.extend(_ph, obj, { phrase_id: ph.id }); // Get Phrase Id
-  				});
+        // var phrases = _.filter(_phrases, function(_ph){
+        //   return _ph.count > 1;
+        // });
 
-          _.extend(_ph, { id: t }); // Get Traduction Id
-  				phrs.push(_ph);
-  			});
-        return cb(null, _.extend({ results: phrs }, _.pick(opts, 'page', 'limit')));
+        sails.log.debug('arguments', phrase);
 
-        });
+
       });
+
+      // var phrases = _.filter(_phrases, function(_ph){
+      //   return _ph.count > 1;
+      // });
+      // var phrases = _phrases;
+      // sails.log.debug('phrases', phrases);
+        // if (err) cb(err);
+        // phrases = _.groupBy(phrases, function (data){
+  			// 	return data.traduction.id;
+  			// });
+
+  			// var phrs = [];
+        //
+  			// Object.keys(phrases).forEach(function(t){
+  			// 	var _ph = {};
+  			// 	_.each(phrases[t], function(ph){
+        //     var obj = {};
+  			// 		if ( ph.language.id == opts.country_language_id )
+  			// 			    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.prefix };
+  			// 		else if ( ph.language.id == opts.language_id )
+  			// 			    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix };
+        //     else
+        //       sails.log.debug('no phrase', ph);
+        //
+        //     _.extend(_ph, obj, { phrase_id: ph.id }); // Get Phrase Id
+  			// 	});
+        //
+        //   _.extend(_ph, { id: t }); // Get Traduction Id
+  			// 	phrs.push(_ph);
+  			// });
+        // return cb(null, _.extend({ results: phrs }, _.pick(opts, 'page', 'limit')));
     });
+    //     });
+    //   });
+    // });
   },
   addPhrase: function (opts, cb){
     Traduction.findOrCreate({comment_text: opts.comment_text || new Date().toJSON()}).exec(function(err, trad){
