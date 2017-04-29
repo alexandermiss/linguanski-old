@@ -25,7 +25,7 @@ module.exports = {
     Phrase.native(function(err, _Phrase){
       _Phrase.aggregate([
         {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
-        {$group: {_id: "$traduction", lenguaje: {$push: "$$ROOT"}, counter: {$sum: 1}}},
+        {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
         {$match: {counter: {$gt: 1}}},
         {$sort: {_id: -1}}
       ]).skip((opts.page * opts.limit)).limit(opts.limit).toArray(function(err, __trads){

@@ -25,11 +25,24 @@ form-letter:focus, form-letter:active{
 <div class="ui container segment">
 
   <div class="ui grid">
+    <div class="two column row">
+			<div class="left floated column">
+				<h1 class="ui header"><%= __('Practice') %> </h1>
+			</div>
+			<div class="floated right aligned column">
+				<button id="add-phrase" class="ui blue basic button">
+					<i class="add icon"></i>
+					<%= __('New Phrase') %>
+				</button>
+			</div>
+		</div>
+		<div class="ui section divider"></div>
+
     <div class="one center aligned column row">
       <div class="column">
-        <h2 class="ui center aligned header">Yo quiero</h2>
+        <h2 class="ui center aligned header">Excelente</h2>
         <div class="ui divider"></div>
-        <h3 class="ui center aligned header">Я хочу</h3>
+        <h3 class="ui center aligned header">Отлично</h3>
         <div class="ui divider"></div>
         <div id="typing" class="ui big labels">
 

@@ -33,15 +33,15 @@ module.exports = {
 						}).exec(function (err, setting){
 							if(err) return res.json(err);
 
-							Setting.findOne(setting.id).populate('country').populate('language').exec(function(err, setting){
-								if(_.has(setting, 'user'))
-									req.session.user['setting'] = _.pick(setting, 'id', 'country', 'language');
-									console.log('session', req.session);
-									return res.json({setting: setting});
+							SettingLanguage.findOrCreate({setting: setting.id, language: language.id},
+								{setting: setting.id, language: language.id, active: 1}).exec(function(settingLang){
+								Setting.findOne(setting.id).populate('country').populate('language').exec(function(err, setting){
+									if(_.has(setting, 'user'))
+										req.session['setting'] = _.pick(setting, 'id', 'country', 'language');
+										return res.json({setting: setting});
+								});
 							});
-
 						});
-
 				}); // User
 			}); // Country
 		}); // Language

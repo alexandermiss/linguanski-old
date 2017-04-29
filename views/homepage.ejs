@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <!-- Site Properties -->
-  <title>Homepage - Semantic</title>
+  <title>Homepage - OpenIdiom</title>
   <link rel="stylesheet" type="text/css" href="/styles/semantic.css">
 
   <style type="text/css">
@@ -140,10 +140,10 @@
     <a class="item">Careers</a>
     <div class="right menu">
       <div class="item">
-        <a class="ui button" href="/account/signin">Log in</a>
+        <a class="ui button" href="/account/signin"><%= __('Login') %></a>
       </div>
       <div class="item">
-        <a class="ui primary button" href="/account/signup">Sign Up</a>
+        <a class="ui primary button" href="/account/signup"><%= __('Sign Up') %></a>
       </div>
     </div>
   </div>
@@ -155,8 +155,8 @@
   <a class="item">Work</a>
   <a class="item">Company</a>
   <a class="item">Careers</a>
-  <a class="item" href="/account/signin">Login</a>
-  <a class="item" href="/account/signup">Signup</a>
+  <a class="item" href="/account/signin"><%= __('Login') %></a>
+  <a class="item" href="/account/signup"><%= __('Sign Up') %></a>
 </div>
 
 
@@ -174,18 +174,30 @@
         <a class="item">Company</a>
         <a class="item">Careers</a>
         <div class="right item">
-          <a class="ui inverted button" href="/account/signin">Log in</a>
-          <a class="ui inverted button" href="/account/signup">Sign Up</a>
+          <% if(req.session.authenticated){ %>
+            <a class="ui inverted button" href="/dashboard"><%= __('Dashboard') %></a>
+          <% }else{ %>
+            <a class="ui inverted button" href="/account/signin"><%= __('Login') %></a>
+            <a class="ui inverted button" href="/account/signup"><%= __('Sign Up') %></a>
+          <% } %>
         </div>
       </div>
     </div>
 
     <div class="ui text container">
+      <% if(req.session.authenticated){ %>
+        <h1 class="ui inverted header">
+          <%= __('Welcome') %> <%= req.session.user.name %>
+        </h1>
+        <h2>Siga practicando.</h2>
+        <a href="/dashboard" class="ui huge primary button"> <%= __('Ir a dashboard') %> <i class="right arrow icon"></i></a>
+      <% }else{ %>
       <h1 class="ui inverted header">
         Openidiom
       </h1>
       <h2>Practique la escritura de un idioma.</h2>
-      <a href="/account/signin" class="ui huge primary button"> <i class="right arrow icon"></i></a>
+      <a href="/account/signin" class="ui huge primary button"> <%= __('Sign Up') %> <i class="right arrow icon"></i></a>
+      <% } %>
     </div>
 
   </div>
