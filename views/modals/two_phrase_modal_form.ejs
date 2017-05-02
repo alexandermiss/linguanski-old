@@ -3,12 +3,12 @@
   <div class="content">
     <div class="ui form">
       <div class="field">
-        <label><%= __('Frase') %> </label>
-        <input type="text" id="phrase_native" placeholder="<%= __('Write a russian phrase') %>">
+        <label><%= session.setting.country.language.name %> </label>
+        <input type="text" id="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.country.language.name) %>">
       </div>
       <div class="field">
-        <label><%= __('Aprende') %> </label>
-        <input type="text" id="phrase_language" placeholder="<%= __('Write a english phrase') %>">
+        <label><%= session.setting.language.name %> </label>
+        <input type="text" id="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>">
       </div>
       <div class="field">
         <label><%= __('Source') %> </label>

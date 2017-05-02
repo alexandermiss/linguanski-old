@@ -188,11 +188,11 @@ $(function (){
 		    phrases.create({
 					phrase_native: phrase_native,
 					phrase_language: phrase_language,
-					source: src
+					source: $('#source').dropdown('get value')
 				}, {wait: true});
 
 				$('#phrase_native, #phrase_language').val('');
-				$('#source').dropdown('clear')
+				// $('#source').dropdown('clear');
 				Backbone.history.navigate('page/1', {trigger:true});
 		  },
 		  onShow    : function(){

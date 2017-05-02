@@ -10,39 +10,31 @@ var _ = require('lodash');
 module.exports = {
 
 	getPhrases: function (req, res, next){
-		if (req.isSocket) console.log('getPhrasesSocket');
-		else console.log('getPhrasesAjax');
-
 		var p = req.params.all();
-		sails.log.info(p);
 		Phrase.combineLanguages(_.extend(p, {country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id}), function(err, phrases){
 			if(err) return res.negotiate(err);
+			sails.log.info(phrases);
 			res.json(phrases);
 		});
 	},
 
 	addPhrase: function (req, res, next){
-		if (req.isSocket) console.log('addPhraseSocket');
-		else console.log('addPhraseAjax');
-
 		var p = req.params.all();
-		sails.log.info(p);
-
-		Phrase.addPhrase(p, function(err, phrases){
+		Phrase.addPhrase(_.extend(p, {
+			country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id,
+			phrase_native_flag_prefix: req.session.setting.country.language.prefix,
+			phrase_language_flag_prefix: req.session.setting.language.prefix
+		}), function(err, phrases){
 			if(err) return res.negotiate(err);
+			sails.log.info(phrases);
 			res.json(phrases);
 		});
 	},
 
 	updatePhrase: function (req, res, next){
-		console.log(req.params.all());
 		Language.findOne({prefix: req.param('lang')}).exec(function (err, lang){
 			Phrase.update({traduction: req.param('id'), language: lang.id}, {phrase: req.param('phrase_'+lang.prefix)}).exec(function(err, phrase){
-				if(err) {
-					console.log(err)
-					return res.negotiate(err);
-				}
-				console.log('phrase', phrase);
+				if(err) return res.negotiate(err);
 				return res.json(_.omit(req.params.all(), 'lang'));
 			});
 		});

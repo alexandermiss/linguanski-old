@@ -6,7 +6,6 @@
  */
 
 var _ = require('lodash');
-var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
   schema: true,
@@ -47,13 +46,13 @@ module.exports = {
             	_.each(phrases[t], function(ph){
                 var obj = {};
             		if ( ph.language.id == opts.country_language_id )
-            			    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.prefix };
+            			    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.prefix, phrase_native_id: ph.id };
             		else if ( ph.language.id == opts.language_id )
-            			    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix };
+            			    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix, phrase_language_id: ph.id };
                 else
                   sails.log.debug('no phrase', ph);
 
-                _.extend(_ph, obj, { phrase_id: ph.id }); // Get Phrase Id
+                _.extend(_ph, obj); // Get Phrase Id
             	});
 
               _.extend(_ph, { id: t }); // Get Traduction Id
@@ -68,34 +67,37 @@ module.exports = {
 
   },
   addPhrase: function (opts, cb){
-    Traduction.findOrCreate({comment_text: opts.comment_text || new Date().toJSON()}).exec(function(err, trad){
+    Traduction.findOrCreate({comment_text: opts.comment_text}).exec(function(err, trad){
       if (err) return cb(err);
       if(_.isArray(trad)) trad = trad[0];
 
-      var prefixes = ['ru', 'en', 'es'];
+      var phrases = [
+        {
+          phrase: opts.phrase_native,
+          pronuntiation: opts.phrase_native,
+          comment_text: opts.phrase_native,
+          language: opts.country_language_id,
+          traduction: trad.id
+        },
+        {
+          phrase: opts.phrase_language,
+          pronuntiation: opts.phrase_language,
+          comment_text: opts.phrase_language,
+          language: opts.language_id,
+          traduction: trad.id
+        }
+      ];
 
-      Language.find({ prefix: prefixes }).exec(function (err, langs){
-        if (err) return cb(err);
-
-        var phrases = _.map(prefixes, function (pre){
-          var _pre = ['phrase_'+pre], _ph = opts[ _pre ];
-          return {
-            phrase: _ph,
-            pronuntiation: _ph,
-            comment_text: _ph,
-            language: _.find(langs, { prefix: pre }),
-            traduction: trad.id
-          }
+      Phrase.create(phrases).exec(function(err, phs){
+        if (err){
+          return cb(err);
+        }
+        _.extend(opts, {
+          id: trad.id,
+          phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
+          phrase_language_flag_prefix: opts.phrase_language_flag_prefix
         });
-
-        Phrase.create(phrases).exec(function(err, phs){
-          if (err){
-            return cb(err);
-          }
-          _.extend(opts, {id: trad.id});
-          return cb(null, _.omit(opts, 'comment_text'));
-        });
-
+        return cb(null, _.omit(opts, 'comment_text'));
       });
 
     });
