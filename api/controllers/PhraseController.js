@@ -10,10 +10,14 @@ var _ = require('lodash');
 module.exports = {
 
 	getPhrases: function (req, res, next){
+
+		if (!req.isSocket){ return res.badRequest();}
+
+		sails.sockets.join(req, 'phrase');
+
 		var p = req.params.all();
 		Phrase.combineLanguages(_.extend(p, {country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id}), function(err, phrases){
 			if(err) return res.negotiate(err);
-			sails.log.info(phrases);
 			res.json(phrases);
 		});
 	},
@@ -26,8 +30,10 @@ module.exports = {
 			phrase_language_flag_prefix: req.session.setting.language.prefix
 		}), function(err, phrases){
 			if(err) return res.negotiate(err);
-			sails.log.info(phrases);
-			res.json(phrases);
+			sails.log.debug(phrases);
+			var sent = {method: 'created', data: phrases};
+			sails.sockets.broadcast('phrase', 'phrase', sent);
+			return res.ok();
 		});
 	},
 

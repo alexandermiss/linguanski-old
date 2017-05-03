@@ -5,10 +5,12 @@
       <div class="field">
         <label><%= session.setting.country.language.name %> </label>
         <input type="text" id="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.country.language.name) %>">
+        <input type="hidden" id="phrase_native_flag_prefix" name="phrase_native_flag_prefix" value="<%= session.setting.country.language.prefix %>">
       </div>
       <div class="field">
         <label><%= session.setting.language.name %> </label>
         <input type="text" id="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>">
+        <input type="hidden" id="phrase_language_flag_prefix" name="phrase_language_flag_prefix" value="<%= session.setting.language.prefix %>">
       </div>
       <div class="field">
         <label><%= __('Source') %> </label>

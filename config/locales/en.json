@@ -41,7 +41,7 @@
 	"Please enter your name": "Please enter your name",
 	"Please enter a valid e-mail": "Please enter a valid e-mail",
 	"Please enter your password": "Please enter your password",
-	"Your password must be at least 8 characters" : "Your password must be at least 8 characters",
+	"Your password must be at least 8 characters": "Your password must be at least 8 characters",
 	"New to us?": "New to us?",
 	"You are previous registered?": "You are previous registered?",
 	"Profile configuration": "Profile configuration",
@@ -59,5 +59,6 @@
 	"Select country": "Select Country",
 	"Select language": "Select language",
 	"Please enter your country": "Please enter your country",
-	"Please enter your language": "Please enter your language"
+	"Please enter your language": "Please enter your language",
+	"Write a %s phrase": "Write a %s phrase"
 }

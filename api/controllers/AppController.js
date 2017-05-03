@@ -23,7 +23,6 @@ module.exports = {
 	},
 
 	phrases: function (req, res, next){
-		sails.log.info(req.session);
 		Language.find({}).exec(function (err, langs ){
 			if (err) { return res.negotiate(err); }
 			Source.find().exec(function(err, sources){

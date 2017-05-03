@@ -32,7 +32,7 @@ module.exports = {
           sails.log.error(err);
           return cb(err);
         }
-          Phrase.find({ traduction: _.map(__trads, '_id') },{ sort: 'createdAt DESC'}).populateAll().exec(function(err, phrases){
+          Phrase.find({ traduction: _.map(__trads, '_id') }/*,{ sort: 'createdAt DESC'}*/).populateAll().exec(function(err, phrases){
             if (err) cb(err);
 
             phrases = _.groupBy(phrases, function (data){
@@ -77,27 +77,32 @@ module.exports = {
           pronuntiation: opts.phrase_native,
           comment_text: opts.phrase_native,
           language: opts.country_language_id,
-          traduction: trad.id
+          traduction: trad.id,
+          native: true
         },
         {
           phrase: opts.phrase_language,
           pronuntiation: opts.phrase_language,
           comment_text: opts.phrase_language,
           language: opts.language_id,
-          traduction: trad.id
+          traduction: trad.id,
+          native: false
         }
       ];
 
-      Phrase.create(phrases).exec(function(err, phs){
+      Phrase.create(_.map(phrases, function(phra){return _.omit(phra, 'native');})).exec(function(err, phs){
         if (err){
           return cb(err);
         }
         _.extend(opts, {
           id: trad.id,
+          phrase_native_id: _.find(phs, {phrase: opts.phrase_native}).id,
+          phrase_language_id: _.find(phs, {phrase: opts.phrase_language}).id,
           phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
           phrase_language_flag_prefix: opts.phrase_language_flag_prefix
         });
-        return cb(null, _.omit(opts, 'comment_text'));
+        sails.log.debug('opts', opts);
+        return cb(null, _.omit(opts, 'comment_text', 'country_language_id', 'language_id', 'source'));
       });
 
     });

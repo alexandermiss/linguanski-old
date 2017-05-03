@@ -4,6 +4,9 @@ $(function (){
 
 	var Phrase = Backbone.Model.extend({
 		urlRoot: '/api/v1/add_phrase'
+		// sync: function (method, model, options){
+		// 	return Backbone.sails.request()
+		// }
 	});
 
 	var Phrases = Backbone.Collection.extend({
@@ -11,6 +14,7 @@ $(function (){
 		url: '/api/v1/phrases',
 
 		parse: function (resp){
+			console.log(resp);
 			_.extend( this, _.omit(resp, 'results') );
 			return _.pick(resp, 'results').results;
 		}
@@ -185,15 +189,18 @@ $(function (){
 		    var phrase_native 	= $('#phrase_native').val()
 				,		phrase_language 	= $('#phrase_language').val();
 
-		    phrases.create({
+		    var ph = new Phrase({
 					phrase_native: phrase_native,
 					phrase_language: phrase_language,
+					// phrase_native_flag_prefix: $('#phrase_native_flag_prefix').val(),
+					// phrase_language_flag_prefix: $('#phrase_language_flag_prefix').val(),
 					source: $('#source').dropdown('get value')
-				}, {wait: true});
+				});
+				ph.save();
 
 				$('#phrase_native, #phrase_language').val('');
 				// $('#source').dropdown('clear');
-				Backbone.history.navigate('page/1', {trigger:true});
+				Backbone.history.navigate('page/1');
 		  },
 		  onShow    : function(){
 				Backbone.history.navigate('new', {trigger:true});
