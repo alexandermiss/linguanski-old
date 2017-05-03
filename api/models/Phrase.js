@@ -32,12 +32,15 @@ module.exports = {
           sails.log.error(err);
           return cb(err);
         }
+        sails.log.debug('__trads\n', __trads);
           Phrase.find({ traduction: _.map(__trads, '_id') }/*,{ sort: 'createdAt DESC'}*/).populateAll().exec(function(err, phrases){
             if (err) cb(err);
 
             phrases = _.groupBy(phrases, function (data){
             	return data.traduction.id;
             });
+
+            // sails.log.debug('groupBy', phrases);
 
             var phrs = [];
 
