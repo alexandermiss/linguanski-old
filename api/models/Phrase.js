@@ -18,7 +18,7 @@ module.exports = {
   },
   combineLanguages: function (opts, cb){
 
-    if ( !_.has(opts, 'page') || !_.isNaN(opts.page) ) opts.page = 1;
+    if ( !_.has(opts, 'page') || isNaN(opts.page) ) opts.page = 1;
     if ( !_.has(opts, 'limit') ) opts.limit = 5;
 
     var skip;
