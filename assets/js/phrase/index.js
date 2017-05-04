@@ -83,6 +83,8 @@ $(function (){
 			}).modal('show');
 		},
 		pageNumber: function (id){
+			if ( !_.isNumber(id) )
+				Backbone.history.navigate('page/1', {triger: true});
 			this.collection.fetch({ reset: true, data: { page: parseInt(id)} });
 		},
 	});

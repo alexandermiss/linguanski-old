@@ -18,29 +18,36 @@ module.exports = {
   },
   combineLanguages: function (opts, cb){
 
-    if ( !_.has(opts, 'page') ) opts.page = 1;
+    if ( !_.has(opts, 'page') || !_.isNaN(opts.page) ) opts.page = 1;
     if ( !_.has(opts, 'limit') ) opts.limit = 5;
+
+    var skip;
+
+    if (opts.page < 0 ) skip = 0;
+    else skip = ((opts.page - 1) * opts.limit);
+
+    sails.log.info('opts', opts);
+    sails.log.info('pag', skip);
 
     Phrase.native(function(err, _Phrase){
       _Phrase.aggregate([
         {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
         {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
         {$match: {counter: {$gt: 1}}},
-        {$sort: {_id: -1}}
-      ]).skip((opts.page * opts.limit)).limit(opts.limit).toArray(function(err, __trads){
+        {$sort: {_id: -1}},
+        {$skip: skip},
+        {$limit: opts.limit}
+      ]).toArray(function(err, __trads){
         if(err){
           sails.log.error(err);
           return cb(err);
         }
-        sails.log.debug('__trads\n', __trads);
-          Phrase.find({ traduction: _.map(__trads, '_id') }/*,{ sort: 'createdAt DESC'}*/).populateAll().exec(function(err, phrases){
+          Phrase.find({ traduction: _.map(__trads, '_id') },{ sort: 'id DESC'}).populateAll().exec(function(err, phrases){
             if (err) cb(err);
 
             phrases = _.groupBy(phrases, function (data){
             	return data.traduction.id;
             });
-
-            // sails.log.debug('groupBy', phrases);
 
             var phrs = [];
 
@@ -53,7 +60,7 @@ module.exports = {
             		else if ( ph.language.id == opts.language_id )
             			    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix, phrase_language_id: ph.id };
                 else
-                  sails.log.debug('no phrase', ph);
+                  sails.log.debug('no phrase', ph.phrase, ph.language.prefix);
 
                 _.extend(_ph, obj); // Get Phrase Id
             	});
