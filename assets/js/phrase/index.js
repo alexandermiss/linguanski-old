@@ -2,11 +2,55 @@
 var app = {}, phrases = {};
 $(function (){
 
+	$('#formPhraseAdd')
+    .form({
+      fields: {
+        phrase_native: {
+          identifier  : 'phrase_native',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'Please enter a text'
+            }
+          ]
+        },
+				phrase_language: {
+          identifier  : 'phrase_language',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'Please enter a text'
+            }
+          ]
+        }
+      },
+			onSuccess: function (event, fields){
+				// event.preventDefault();
+
+				var phrase_native 	= fields.phrase_native
+				,		phrase_language 	= fields.phrase_language;
+
+				console.log(fields);
+
+		    // var ph = new Phrase({
+				// 	phrase_native: phrase_native,
+				// 	phrase_language: phrase_language,
+				// 	source: $('#source').dropdown('get value')
+				// });
+				// ph.save();
+				//
+				// $('#phrase_native, #phrase_language').val('');
+				// // $('#source').dropdown('clear');
+				// Backbone.history.navigate('page/1');
+
+				$('#modal-phrases').modal('hide');
+			}
+    })
+  ;
+
+
 	var Phrase = Backbone.Model.extend({
 		urlRoot: '/api/v1/add_phrase'
-		// sync: function (method, model, options){
-		// 	return Backbone.sails.request()
-		// }
 	});
 
 	var Phrases = Backbone.Collection.extend({
@@ -90,7 +134,7 @@ $(function (){
 			}catch(err){
 				Backbone.history.navigate('page/1', {triger: true});
 			}
-			
+
 		},
 	});
 
@@ -193,21 +237,8 @@ $(function (){
 				Backbone.history.navigate('page/'+phrases.page, {trigger:true});
 		  },
 		  onApprove : function() {
-		    var phrase_native 	= $('#phrase_native').val()
-				,		phrase_language 	= $('#phrase_language').val();
-
-		    var ph = new Phrase({
-					phrase_native: phrase_native,
-					phrase_language: phrase_language,
-					// phrase_native_flag_prefix: $('#phrase_native_flag_prefix').val(),
-					// phrase_language_flag_prefix: $('#phrase_language_flag_prefix').val(),
-					source: $('#source').dropdown('get value')
-				});
-				ph.save();
-
-				$('#phrase_native, #phrase_language').val('');
-				// $('#source').dropdown('clear');
-				Backbone.history.navigate('page/1');
+				$('#formPhraseAdd').form('validate form');
+				return false;
 		  },
 		  onShow    : function(){
 				Backbone.history.navigate('new', {trigger:true});

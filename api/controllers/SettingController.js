@@ -5,6 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('lodash');
+
 module.exports = {
 
 	updateUser: function ( req, res, next ){

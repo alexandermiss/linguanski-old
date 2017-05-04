@@ -23,7 +23,9 @@ module.exports = {
 	},
 
 	addPhrase: function (req, res, next){
+		if (!req.isSocket){ return res.badRequest();}
 		var p = req.params.all();
+
 		Phrase.addPhrase(_.extend(p, {
 			country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id,
 			phrase_native_flag_prefix: req.session.setting.country.language.prefix,

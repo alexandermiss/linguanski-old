@@ -9,7 +9,8 @@
 module.exports = {
 
   attributes: require('waterlock').models.user.attributes({
-    name: { type: 'string' }
+    name: { type: 'string' },
+    role: {type: 'string', enum: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'}
   }),
 
   beforeCreate: require('waterlock').models.user.beforeCreate,

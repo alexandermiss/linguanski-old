@@ -1,17 +1,21 @@
 <div id="modal-phrases" class="ui small modal">
   <div class="header"><%= __('Add Phrase') %> </div>
   <div class="content">
-    <div class="ui form">
-      <div class="field">
-        <label><%= session.setting.country.language.name %> </label>
-        <input type="text" id="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.country.language.name) %>">
-        <input type="hidden" id="phrase_native_flag_prefix" name="phrase_native_flag_prefix" value="<%= session.setting.country.language.prefix %>">
+    <form id="formPhraseAdd" class="ui form">
+      <div class="ui error message"></div>
+      <div class="two fields">
+        <div class="field">
+          <label><%= session.setting.country.language.name %> </label>
+          <textarea type="text" id="phrase_native" name="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.country.language.name) %>" rows="3"></textarea>
+          <input type="hidden" id="phrase_native_flag_prefix" name="phrase_native_flag_prefix" value="<%= session.setting.country.language.prefix %>">
+        </div>
+        <div class="field">
+          <label><%= session.setting.language.name %> </label>
+          <textarea type="text" id="phrase_language" name="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>" rows="3"></textarea>
+          <input type="hidden" id="phrase_language_flag_prefix" name="phrase_language_flag_prefix" value="<%= session.setting.language.prefix %>">
+        </div>
       </div>
-      <div class="field">
-        <label><%= session.setting.language.name %> </label>
-        <input type="text" id="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>">
-        <input type="hidden" id="phrase_language_flag_prefix" name="phrase_language_flag_prefix" value="<%= session.setting.language.prefix %>">
-      </div>
+      <% if ( _.includes(['superadmin', 'admin'], session.user.role)) { %>
       <div class="field">
         <label><%= __('Source') %> </label>
         <div id="source" class="ui selection dropdown">
@@ -25,7 +29,8 @@
           </div>
         </div>
       </div>
-    </div>
+      <% } %>
+    </form>
   </div>
   <div class="actions">
     <div class="ui approve green button"><%= __('Approve') %> </div>
