@@ -77,7 +77,7 @@ module.exports = {
 
   },
   addPhrase: function (opts, cb){
-    Traduction.findOrCreate({comment_text: opts.comment_text}).exec(function(err, trad){
+    Traduction.create({comment_text: new Date().toJSON()}).exec(function(err, trad){
       if (err) return cb(err);
       if(_.isArray(trad)) trad = trad[0];
 

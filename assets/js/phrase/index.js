@@ -25,23 +25,19 @@ $(function (){
         }
       },
 			onSuccess: function (event, fields){
-				// event.preventDefault();
 
 				var phrase_native 	= fields.phrase_native
 				,		phrase_language 	= fields.phrase_language;
 
-				console.log(fields);
+		    var ph = new Phrase({
+					phrase_native: phrase_native,
+					phrase_language: phrase_language,
+					source: $('#source').dropdown('get value')
+				});
+				ph.save();
 
-		    // var ph = new Phrase({
-				// 	phrase_native: phrase_native,
-				// 	phrase_language: phrase_language,
-				// 	source: $('#source').dropdown('get value')
-				// });
-				// ph.save();
-				//
-				// $('#phrase_native, #phrase_language').val('');
-				// // $('#source').dropdown('clear');
-				// Backbone.history.navigate('page/1');
+				$('#phrase_native, #phrase_language').val('');
+				Backbone.history.navigate('page/1');
 
 				$('#modal-phrases').modal('hide');
 			}
