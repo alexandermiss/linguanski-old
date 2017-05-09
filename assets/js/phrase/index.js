@@ -123,14 +123,12 @@ $(function (){
 			}).modal('show');
 		},
 		pageNumber: function (id){
-
 			try{
 				id = parseInt(id);
 				this.collection.fetch({ reset: true, data: { page: id} });
 			}catch(err){
 				Backbone.history.navigate('page/1', {triger: true});
 			}
-
 		},
 	});
 

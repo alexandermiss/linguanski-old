@@ -51,11 +51,11 @@ module.exports.policies = {
   },
 
   PhraseController: {
-    '*': ['settingNecessary', 'sessionAuth']
+    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
   },
 
   DashboardController: {
-    '*': ['settingNecessary', 'sessionAuth']
+    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
   },
 
 };

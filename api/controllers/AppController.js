@@ -15,6 +15,10 @@ module.exports = {
 		return res.view('auth/signup', {layout:false});
 	},
 
+	authorizations: function (req, res, next){
+		return res.view('auth/authorizations_view');
+	},
+
 	traductions: function (req, res, next){
 		Traduction.find({}).populate('phrase').exec(function (err, trads ){
 			if (err) { return res.negotiate(err); }

@@ -38,6 +38,7 @@ module.exports.routes = {
   '/account/logout'                   : 'AppController.logout',
   '/account/signup'                   : 'AppController.registerform',
   '/account/info'                     : 'AppController.info',
+  '/accounts/authorizations'          : 'AppController.authorizations',
 
   '/settings/first/configuration'     : 'SettingController.firstConfiguration',
 
