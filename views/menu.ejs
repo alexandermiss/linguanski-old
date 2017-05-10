@@ -1,35 +1,38 @@
 
-<div style="background-color:#001C20;color:#000000;" class="ui stackable pointing menu">
+<div style="background-color:#001C20;color:#000000;" class="ui attached stackable menu">
+  <!-- <div class="ui container"> -->
 
-  <a style="color:#ffffff;" class="active item">
-    <%= __('Start') %> (<%= session.user.name %>)
-  </a>
-  <a style="color:#ffffff;" class="item" href="/phrases">
-    <%= __('Phrases') %>
-  </a>
-  <a style="color:#ffffff;" class="item" href="/practise">
-    Practica
-  </a>
-  <% if (_.includes(['superadmin'], session.user.role)){ %>
-    <a style="color:#ffffff;" class="item" href="/accounts/authorizations">
-      <%= __('Accounts') %>
+    <a style="color:#ffffff;" class="active item">
+      <%= __('LINGUANSKI') %>
     </a>
-  <% } %>
-  <div style="color:#ffffff;" class="right menu">
-    <div style="color:#ffffff;" id="menu" class="ui dropdown item">
-      <%= __('Language') %> <i class="dropdown icon"></i>
-      <div class="menu">
-        <a style="color:#ffffff;" class="item">Español</a>
-        <a style="color:#ffffff;" class="item">Ruso</a>
-        <a style="color:#ffffff;" class="item">Inglés</a>
+    <a style="color:#ffffff;" class="item" href="/phrases">
+      <%= __('Phrases') %>
+    </a>
+    <a style="color:#ffffff;" class="item" href="/practise">
+      Practica
+    </a>
+    <% if (_.includes(['superadmin'], session.user.role)){ %>
+      <a style="color:#ffffff;" class="item" href="/accounts/authorizations">
+        <%= __('Accounts') %>
+      </a>
+    <% } %>
+    <div style="color:#ffffff;" class="right menu">
+      <div style="color:#ffffff;" id="menu" class="ui dropdown item">
+        <%= __('Language') %> <i class="dropdown icon"></i>
+        <div class="menu">
+          <a style="color:#ffffff;" class="item">Español</a>
+          <a style="color:#ffffff;" class="item">Ruso</a>
+          <a style="color:#ffffff;" class="item">Inglés</a>
+        </div>
+      </div>
+      <div class="item">
+          <% if(req.session.authenticated){ %>
+          <a style="color:#ffffff;" href="/account/logout" class="ui white basic inverted button"><%= __('Logout') %></a>
+          <% }else{ %>
+          <a style="color:#ffffff;" class="ui blue basic button"><%= __('Sign Up') %></a>
+          <% } %>
       </div>
     </div>
-    <div class="item">
-        <% if(req.session.authenticated){ %>
-        <a style="color:#ffffff;" href="/account/logout" class="ui white basic inverted button"><%= __('Logout') %></a>
-        <% }else{ %>
-        <a style="color:#ffffff;" class="ui blue basic button"><%= __('Sign Up') %></a>
-        <% } %>
-    </div>
-  </div>
+
+  <!-- </div> -->
 </div>

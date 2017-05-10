@@ -58,4 +58,8 @@ module.exports.policies = {
     '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
   },
 
+  ApiController: {
+    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+  }
+
 };
