@@ -1,16 +1,17 @@
+var app = {};
+
 $(function(){
 
   var Account = Backbone.Model.extend();
 
   var Accounts = Backbone.Collection.extend({
     model: Account,
-    url: '/api/v1/accounts'
+    url: '/api/v1/accounts',
+    parse: function (resp){
+      _.extend(this, _.omit(resp, 'results') );
+      return _.pick(resp, 'results').results;
+    }
   });
-
-  parse: function (resp){
-    _.extend(this, _.omit(resp, 'results') );
-    return _.pick(resp, 'results').results;
-  }
 
   var AccountView = Marionette.View.extend({
     tagName: 'div',
@@ -47,6 +48,16 @@ $(function(){
     }
   });
 
+  var MyApp = Marionette.Application.extend({
+    region: '#user-content',
+    onStart: function (){
+      this.showView(new AccountCollectionView());
+    }
+  });
 
+  if( Backbone.$('#user-content').length ){
+    app = new MyApp();
+    app.start();
+  }
 
 });

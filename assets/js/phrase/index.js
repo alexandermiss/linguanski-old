@@ -1,6 +1,6 @@
 
-var app = {}, phrases = {};
 $(function (){
+	var app = {}, phrases = {};
 
 	$('#formPhraseAdd')
     .form({
