@@ -59,7 +59,8 @@ module.exports.policies = {
   },
 
   ApiController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+    // '*': ['settingNecessary', 'sessionAuth', 'activatedUser'],
+    'getUser': 'hasJsonWebToken'
   }
 
 };

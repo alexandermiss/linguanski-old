@@ -16,7 +16,10 @@ $(function(){
   var AccountView = Marionette.View.extend({
     tagName: 'div',
     className: 'item',
-    template: Template.get('account_template')
+    template: Template.get('account_template'),
+    ui: {
+      actionBtn : '.button'
+    }
   });
 
   var AccountEmptyView = Marionette.View.extend({
@@ -40,11 +43,9 @@ $(function(){
     },
     pageNumber: function (id){
       try{
-        console.log('ja');
 				id = parseInt(id);
 				this.collection.fetch({ reset: true, data: { page: id} });
 			}catch(err){
-        console.log('ja2');
 				// Backbone.history.navigate('page/1', {trigger: true});
 			}
     }
