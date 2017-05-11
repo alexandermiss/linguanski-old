@@ -1,14 +1,15 @@
-var app = {};
 
 $(function(){
+  var app = {};
 
-  var Account = Backbone.Model.extend();
+  var Account = Backbone.Model.extend({
+    urlRoot: '/api/v1/account'
+  });
 
   var Accounts = Backbone.Collection.extend({
     model: Account,
     url: '/api/v1/accounts',
     parse: function (resp){
-      // _.extend(this, _.omit(resp, 'results') );
       return resp.results;
     }
   });
@@ -18,7 +19,21 @@ $(function(){
     className: 'item',
     template: Template.get('account_template'),
     ui: {
-      actionBtn : '.button'
+      actionBtn : '.button',
+      select: 'select.dropdown'
+    },
+    events: {
+      'click @ui.actionBtn': 'deleteAction'
+    },
+    modelEvents: {
+      'change:activated': 'rendered'
+    },
+    deleteAction: function(e){
+      this.model.set({activated: !this.model.get('activated')}).save();
+    },
+    rendered: function (){
+      console.log(this.model.get('activated'));
+      this.render();
     }
   });
 
@@ -44,7 +59,7 @@ $(function(){
     pageNumber: function (id){
       try{
 				id = parseInt(id);
-				this.collection.fetch({ reset: true, data: { page: id} });
+				this.collection.fetch({ reset: true });
 			}catch(err){
 				// Backbone.history.navigate('page/1', {trigger: true});
 			}
@@ -63,7 +78,6 @@ $(function(){
   });
 
   if( Backbone.$('#user-content').length ){
-    console.log('starting');
     app = new MyApp();
     app.start();
   }

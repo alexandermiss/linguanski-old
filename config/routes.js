@@ -62,6 +62,7 @@ module.exports.routes = {
   // User update
   'POST /api/v1/user/settings'    : 'SettingController.updateUser',
   'GET /api/v1/accounts'          : 'ApiController.getUser',
+  'PUT /api/v1/account/:id'       : 'ApiController.updateActivation',
 
   '/api/v1/phrases'               : 'PhraseController.getPhrases',
   'POST /api/v1/add_phrase'       : 'PhraseController.addPhrase',
