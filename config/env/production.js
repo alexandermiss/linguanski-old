@@ -40,7 +40,7 @@ module.exports = {
     host: 'barreleye.redistogo.com',
     port: 11996,
     ttl: 84000,
-    db: 'redistogo',
+    db: 0,
     pass: 'e2faf6a8900615b5b7d5d5f1e644a4ef',
     prefix: 'sess:'
   },
