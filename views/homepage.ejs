@@ -18,7 +18,7 @@
     }
 
     .masthead.segment {
-      min-height: 500px;
+      min-height: 600px;
       padding: 1em 0em;
     }
     .masthead .logo.item img {
@@ -99,6 +99,8 @@
     }
     .ui.inverted.segment, .ui.primary.inverted.segment {
       background-image: url(/images/paisajes-naturales-descargar-wallpapers-wallpaper.jpg);
+      /*background-image: url(/images/2693.jpg);*/
+      /*background-image: url(https://image.freepik.com/foto-gratis/habitacion-difuminada-con-ventanas_1048-2669.jpg);*/
       background-repeat: no-repeat;
       background-size: cover;
       -webkit-background-size: cover;
@@ -141,7 +143,7 @@
 <!-- Following Menu -->
 <div class="ui large top fixed hidden menu">
   <div class="ui container">
-    <a class="active item">Home</a>
+    <a class="active item">LINGUANSKI</a>
     <div class="right menu">
       <div class="item">
         <a class="ui button" href="/account/signin"><%= __('Login') %></a>
@@ -155,7 +157,7 @@
 
 <!-- Sidebar Menu -->
 <div class="ui vertical inverted sidebar menu">
-  <a class="active item">Home</a>
+  <a class="active item">LINGUANSKI</a>
   <a class="item" href="/account/signin"><%= __('Login') %></a>
   <a class="item" href="/account/signup"><%= __('Sign Up') %></a>
 </div>
@@ -170,10 +172,7 @@
         <a class="toc item">
           <i class="sidebar icon"></i>
         </a>
-        <a class="active item">Home</a>
-        <a class="item">Work</a>
-        <a class="item">Company</a>
-        <a class="item">Careers</a>
+        <a class="active item">LINGUANSKI</a>
         <div class="right item">
           <% if(req.session.authenticated){ %>
             <a class="ui inverted button" href="/dashboard"><%= __('Dashboard') %></a>
@@ -196,7 +195,7 @@
       <h1 class="ui inverted header">
         Linguanski
       </h1>
-      <h2>Practique la escritura de un idioma.</h2>
+      <h2><%= __('Practise a language with phrases.') %></h2>
       <a href="/account/signin" class="ui huge primary button"> <%= __('Sign Up') %> <i class="right arrow icon"></i></a>
       <% } %>
     </div>
@@ -207,18 +206,20 @@
     <div class="ui middle aligned stackable grid container">
       <div class="row">
         <div class="eight wide column">
-          <h3 class="ui header">Entienda un lenguaje</h3>
+          <h3 class="ui header"><%= __('Understand a language') %></h3>
           <p>Impulsamos su conocimiento en la escritura con dinamicas que le ayudaran en el aprendizaje de su idioma favorito.</p>
           <h3 class="ui header">Aprenda a su propio ritmo</h3>
-          <p>Solo necesita registrarse y un asistente le ayudara a elegir los temas personalizados.</p>
+          <p>Solo necesita registrarse y un asistente le ayudara a elegir las frases personalizadas.</p>
         </div>
         <div class="six wide right floated column">
-          <img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">
+          <!-- <img src="/images/characters-interface-sign.png" class="ui large bordered rounded image"> -->
+          <img src="https://thumb9.shutterstock.com/display_pic_with_logo/11994/614722418/stock-vector-hello-hand-drawn-word-cloud-in-different-languages-of-the-world-background-concept-614722418.jpg" class="ui large bordered rounded image">
+          <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
         </div>
       </div>
       <div class="row">
         <div class="center aligned column">
-          <a class="ui huge button">Iniciar</a>
+          <a class="ui huge button" href="/account/signin"><%= __('Login') %></a>
         </div>
       </div>
     </div>
@@ -230,12 +231,12 @@
       <div class="center aligned row">
         <div class="column">
           <h3>"Aprender con ellos es verdaderamente sencillo."</h3>
-          <p>@Usuario1</p>
+          <p>@usuariofan1</p>
         </div>
         <div class="column">
-          <h3>"Su aplicacion esta disenada para todas las edades."</h3>
+          <h3>"Me preocupe por la escritura del idioma ruso y ahí surgió la idea."</h3>
           <p>
-            <img src="assets/images/avatar/nan.jpg" class="ui avatar image"> <b>@usuario2</b> CEO de la empresa
+            <img src="https://blog.alexandermiss.com/content/images/2017/01/zbFAdw_G_400x400.jpg" class="ui avatar image"> <b>@AlexanderMiss</b> CEO de Linguanski
           </p>
         </div>
       </div>
@@ -244,15 +245,15 @@
 
   <div class="ui vertical stripe segment">
     <div class="ui text container">
-      <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
-      <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
-      <a class="ui large button">Read More</a>
+      <h3 class="ui header">Nos preocupamos por el aprendizaje</h3>
+      <p>Cada dinámica está construída por nuestros expertos que te ayudarán a entiender de la mejor manera posible.</p>
+      <a class="ui large button"><%= __('Read More') %></a>
       <h4 class="ui horizontal header divider">
-        <a href="#">Case Studies</a>
+        <a href="/account/signup"><%= __('Case Studies') %></a>
       </h4>
-      <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
-      <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
-      <a class="ui large button">I'm Still Quite Interested</a>
+      <h3 class="ui header">Seguimos trabajando en mejoras</h3>
+      <p>Para construir un mejor aprendizaje renovamos nuestras dinámicas para hacerte sentir a gusto.</p>
+      <a class="ui large button" href="/account/signup">Sí, quiero registrarme</a>
     </div>
   </div>
 
@@ -274,8 +275,8 @@
           </div>
         </div>
         <div class="seven wide column">
-          <h4 class="ui inverted header">Footer Header</h4>
-          <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+          <h4 class="ui inverted header">Diviértete</h4>
+          <p>Juega con las frases en otros idiomas y te divertirás aprendiendo.</p>
         </div>
       </div>
     </div>

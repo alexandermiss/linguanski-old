@@ -51,7 +51,8 @@ module.exports.policies = {
   },
 
   PhraseController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+    // '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+    getOnePhrase: true
   },
 
   DashboardController: {
@@ -59,7 +60,7 @@ module.exports.policies = {
   },
 
   ApiController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+    // '*': ['settingNecessary', 'sessionAuth', 'activatedUser'],
   }
 
 };

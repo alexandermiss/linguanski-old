@@ -33,21 +33,21 @@ module.exports.routes = {
   ***************************************************************************/
 
 
-  '/'                                 : 'HomeController.index',
-  '/account/signin'                   : 'AppController.loginform',
-  '/account/logout'                   : 'AppController.logout',
-  '/account/signup'                   : 'AppController.registerform',
-  '/account/info'                     : 'AppController.info',
-  '/accounts/authorizations'          : 'AppController.authorizations',
+  'GET /'                                 : 'HomeController.index',
+  'GET /account/signin'                   : 'AppController.loginform',
+  'GET /account/logout'                   : 'AppController.logout',
+  'GET /account/signup'                   : 'AppController.registerform',
+  'GET /account/info'                     : 'AppController.info',
+  'GET /accounts/authorizations'          : 'AppController.authorizations',
 
-  '/settings/first/configuration'     : 'SettingController.firstConfiguration',
+  'GET /settings/first/configuration'     : 'SettingController.firstConfiguration',
 
-  '/dashboard'                        : 'DashboardController.init',
-  '/traductions'                      : 'AppController.traductions',
-  '/phrases'                          : 'AppController.phrases',
-  '/practise'                         : 'AppController.practise',
+  'GET /dashboard'                        : 'DashboardController.init',
+  'GET /traductions'                      : 'AppController.traductions',
+  'GET /phrases'                          : 'AppController.phrases',
+  'GET /practise'                         : 'AppController.practise',
 
-  'GET /exercise1'                    : 'Exercise.word',
+  'GET /exercise1'                        : 'Exercise.word',
 
 
   /***************************************************************************
@@ -64,7 +64,8 @@ module.exports.routes = {
   'GET /api/v1/accounts'          : 'ApiController.getUser',
   'PUT /api/v1/account/:id'       : 'ApiController.updateActivation',
 
-  '/api/v1/phrases'               : 'PhraseController.getPhrases',
+  'GET /api/v1/phrases'           : 'PhraseController.getPhrases',
+  'GET /api/v1/getOnePhrase'      : 'PhraseController.getOnePhrase',
   'POST /api/v1/add_phrase'       : 'PhraseController.addPhrase',
   'PUT /api/v1/add_phrase/:id'    : 'PhraseController.updatePhrase',
 

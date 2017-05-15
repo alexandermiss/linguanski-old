@@ -116,5 +116,33 @@ module.exports = {
       });
 
     });
+  },
+  getOnePhrase: function (opts, cb){
+
+    Traduction.find({}).exec(function(err, phrases){
+      if(err) return cb(err);
+
+      var r = _.sample(phrases);
+
+      Phrase.find({ traduction: r.id }).populateAll().exec(function(err, phrases){
+        if (err) cb(err);
+
+        _.extend(opts, {
+          id: r.id,
+          phrase_native_id: phrases[0].id,
+          phrase_native: phrases[0].phrase,
+          phrase_language_id: phrases[1].id,
+          phrase_language: phrases[1].phrase,
+          phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
+          phrase_language_flag_prefix: opts.phrase_language_flag_prefix
+        });
+
+        sails.log.debug('opts', opts);
+        cb(null, _.omit(opts, 'comment_text', 'country_language_id', 'language_id', 'source'));
+
+      });
+
+    });
+
   }
 };

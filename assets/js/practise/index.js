@@ -5,11 +5,7 @@ $(function(){
   var Letters = Backbone.Collection.extend({model: Letter});
 
   var Phrase = Backbone.Model.extend({
-    defaults: {
-      phrase: 'отлично'
-      // phrase: 'Большое спасибо'
-      // phrase: 'Я хочу'
-    }
+    urlRoot: '/api/v1/getOnePhrase'
   });
 
   var InputView = Marionette.View.extend({
@@ -23,19 +19,15 @@ $(function(){
     ui: {
       input: 'input'
     },
-
     events:{
       'keyup @ui.input': 'onKey'
     },
-
     onKey: function (e){
       this.triggerMethod('typing:item', this);
     },
-
     focusItem: function (){
       this.ui.input.focus();
     }
-
   });
 
   var ListView = Marionette.CollectionView.extend({
@@ -47,7 +39,11 @@ $(function(){
       var phrase        = this.collection.phrase;
       var cursor        = this.collection.cursor;
 
-      if ( letter_orig == letter_typed && cursor < this.collection.size() ){
+      if(cursor == this.collection.size() -1){
+        console.log('Listo');
+        app.start();
+      }else if ( letter_orig == letter_typed && cursor < this.collection.size() ){
+        console.log('cursor', cursor);
         if ( cursor > this.collection.size() - 1
           || this.collection.cursor > this.collection.size() - 1 ){
           cursor = this.collection.size() - 1;
@@ -81,16 +77,27 @@ $(function(){
     region: '#typing',
 
     onStart: function (){
-      var phr = new Phrase()
-      ,   col = new Letters();
+      var self = this;
+      var col = new Letters()
+      ,   phr = new Phrase({collection: col});
 
-      _.each(phr.get('phrase').split(''), function (l, i){
-        col.add( new Letter({letter: l, i: i}) );
+      phr.fetch({data: {}});
+
+      phr.on('sync', function (){
+        var phrase = phr.get('phrase_native');
+        $('h2').text(phr.get('phrase_language'));
+        $('h3').text(phrase);
+
+        _.each(phrase.split(''), function (l, i){
+          col.add( new Letter({letter: l, i: i}) );
+        });
+
+        col.cursor = 0;
+        col.phrase = '';
+        self.showView( new ListView({ collection: col }) );
       });
-      col.cursor = 0;
-      col.phrase = '';
-      app.col = col;
-      this.showView( new ListView({ collection: col }) );
+
+
     }
   });
 

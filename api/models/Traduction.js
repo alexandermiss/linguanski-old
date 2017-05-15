@@ -7,11 +7,11 @@
 
 module.exports = {
   schema: true,
-  autosuscribe: true,
   attributes: {
   	phrases: {collection: 'phrase', via: 'traduction'},
   	conversation: {model: 'conversationdetail'},
     source: {model: 'source'},
-  	comment_text: {type: 'string'}
+  	comment_text: {type: 'string'},
+    category: {model: 'category'}
   }
 };
