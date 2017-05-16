@@ -15,6 +15,7 @@ $(function(){
 
     initialize: function (){
       this.listenTo(this.model, 'focusItem', this.focusItem);
+      this.listenTo(this.model, 'beginTyping', this.beginTyping);
     },
     ui: {
       input: 'input'
@@ -25,8 +26,19 @@ $(function(){
     onKey: function (e){
       this.triggerMethod('typing:item', this);
     },
-    focusItem: function (){
+    readyTyping: function(){
+      this.ui.input.get(0).removeAttribute('disabled');
+      this.ui.input.removeClass('disabled');
       this.ui.input.focus();
+    },
+    focusItem: function (){
+      this.readyTyping();
+    },
+    onRender: function (){
+      this.ui.input.attr('disabled', 'disabled').addClass('disabled');
+    },
+    beginTyping: function (){
+      this.readyTyping();
     }
   });
 
@@ -70,6 +82,10 @@ $(function(){
         });
         chilView.ui.input.val('');
       }
+    },
+    onRenderChildren: function(){
+      this.collection.first().trigger('beginTyping');
+      console.log('The collectionview children have been rendered');
     }
   });
 
