@@ -28,12 +28,8 @@ module.exports = {
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
 
-  port: '/home/alexander/socks/app.sock',
-
-  // session: {
-  //   adapter: 'mongo',
-  //   url: 'mongodb://sesopenidiomuser:sesopenidiompass@ds147799.mlab.com:47799/sesopenidiom',
-  // },
+  // port: '/home/alexander/socks/app.sock',
+  port: 1338,
 
   session: {
     adapter: 'redis',
@@ -52,7 +48,6 @@ module.exports = {
    grunt: {
      _hookTimeout: 2000000
    }
-
 
   // log: {
   //   level: "silent"
