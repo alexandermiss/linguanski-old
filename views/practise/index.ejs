@@ -8,16 +8,35 @@
 .form-letter{
   width: 36px;
   height: 36px;
-  margin: 0;
+  margin: 0 !important;
   border: none;
   text-align: center !important;
-  border-radius: 0.28571429rem;
-  /*background-color: #add;*/
+  /*border-radius: 0.28571429rem;*/
+  border-radius: 0;
+  background-color: inherit;
   padding: 0 !important;
 }
 
-form-letter:focus, form-letter:active{
-  border-color: #85B7D9;
+.ui.label.letter, .ui.label{
+  background-color: inherit;
+  margin: 0;
+  border: none;
+}
+
+.ui.basic.label{
+  background-color: none;
+  margin: 0;
+  border: none;
+}
+
+.ui.basic.label, ui.label{
+	background-color: none;
+  margin: 0;
+  border: none;
+}
+
+.form-letter:focus, .form-letter:active{
+  border: 1px solid #85B7D9;
 }
 
 </style>

@@ -69,6 +69,7 @@ $(function(){
             m.trigger('focusItem');
           }
         }
+        chilView.$el.find('input').attr('disabled', 'disabled');
         chilView.$el.removeClass('red').addClass('green');
         this.collection.cursor++;
         cursor++;
