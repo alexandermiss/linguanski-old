@@ -55,6 +55,10 @@ module.exports.policies = {
     getOnePhrase: true
   },
 
+  FriendController: {
+    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+  },
+
   DashboardController: {
     '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
   },

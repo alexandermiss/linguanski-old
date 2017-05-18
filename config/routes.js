@@ -39,6 +39,8 @@ module.exports.routes = {
   'GET /account/signup'                   : 'AppController.registerform',
   'GET /account/info'                     : 'AppController.info',
   'GET /accounts/authorizations'          : 'AppController.authorizations',
+  
+  'GET /friends/list'                     : 'FriendController.list',
 
   'GET /settings/first/configuration'     : 'SettingController.firstConfiguration',
 

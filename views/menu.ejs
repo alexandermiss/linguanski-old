@@ -11,6 +11,9 @@
     <a style="color:#ffffff;" class="item" href="/practise">
       <%= __('Practica') %>
     </a>
+    <a style="color:#ffffff;" class="item" href="/friends/list">
+      <%= __('Friends') %>
+    </a>
     <% if (_.includes(['superadmin'], session.user.role)){ %>
       <a style="color:#ffffff;" class="item" href="/accounts/authorizations">
         <%= __('Accounts') %>
