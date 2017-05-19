@@ -17,5 +17,12 @@ L.Event = {};
 L.Function = {};
 L.Behavior = {};
 
-L.Model.Friend 				= Backbone.Model;
-L.Collection.Friend 	= Backbone.Collection;
+L.Model.Friend 													= Backbone.Model;
+L.Collection.Friend 										= Backbone.Collection;
+
+L.View.EmptyBasicView 									= Marionette.View.extend({template: '<div>No items</div>'});
+
+L.View.FriendView 											= Marionette.View;
+L.CollectionView.FriendCollectionView 	= Marionette.CollectionView;
+
+app.instances 													= {};
