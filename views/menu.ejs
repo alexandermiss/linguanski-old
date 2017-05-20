@@ -20,21 +20,28 @@
       </a>
     <% } %>
     <div style="color:#ffffff;" class="right menu">
-      <div style="color:#ffffff;" id="menu" class="ui dropdown item">
+
+      <!-- <div style="color:#ffffff;" id="menu" class="ui dropdown item">
         <%= __('Language') %> <i class="dropdown icon"></i>
         <div class="menu">
           <a style="color:#ffffff;" class="item">Español</a>
           <a style="color:#ffffff;" class="item">Ruso</a>
           <a style="color:#ffffff;" class="item">Inglés</a>
         </div>
-      </div>
-      <div class="item">
+      </div> -->
+
+      <div class="ui pointing dropdown link item">
+        <span style="color:#ffffff;" class="text"><%= req.session.user.name %></span>
+        <i style="color:#ffffff;" class="dropdown icon"></i>
+        <div class="menu">
           <% if(req.session.authenticated){ %>
-          <a style="color:#ffffff;" href="/account/logout" class="ui white basic inverted button"><%= __('Logout') %></a>
+          <a href="/account/logout" class="item"><%= __('Logout') %></a>
           <% }else{ %>
-          <a style="color:#ffffff;" class="ui blue basic button"><%= __('Sign Up') %></a>
+          <a href="/account/signin" class="item"><%= __('Sign Up') %></a>
           <% } %>
+        </div>
       </div>
+
     </div>
 
   <!-- </div> -->

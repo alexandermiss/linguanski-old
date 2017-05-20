@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= req.session.setting.country.language.prefix %>">
   <head>
     <title><%=typeof title == 'undefined' ? 'Linguanski' : 'Linguanski - ' + title%></title>
 
@@ -61,7 +61,7 @@
     -->
 
     <!--TEMPLATES-->
-    <script type="text/javascript" src="/jst.js?20170516064224"></script>
+    <script type="text/javascript" src="/jst.js?20170519111914"></script>
     <!--TEMPLATES END-->
 
 
@@ -96,10 +96,11 @@
     <script src="/js/dependencies/sails.io.backbone.js"></script>
     <script src="/js/dependencies/backbone.radio.js"></script>
     <script src="/js/dependencies/backbone.marionette.js"></script>
-    <script src="/js/dependencies/H.js"></script>
+    <script src="/js/dependencies/L.js"></script>
     <script src="/js/dependencies/semantic.js"></script>
     <script src="/js/accounts/authorization.js"></script>
     <script src="/js/dashboard/init.js"></script>
+    <script src="/js/friend/list.js"></script>
     <script src="/js/phrase/index.js"></script>
     <script src="/js/practise/index.js"></script>
     <!--SCRIPTS END-->

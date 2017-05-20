@@ -45,6 +45,7 @@ module.exports = {
 	},
 
 	logout: function (req, res){
+		delete req.session['setting'];
 		waterlock.cycle.logout(req, res);
 	}
 

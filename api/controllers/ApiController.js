@@ -10,7 +10,7 @@ module.exports = {
 
 	getUser: function (req, res, next){
 		var p = req.params.all() || {};
-		User.find(p).exec(function(err, users){
+		User.find(p).populate('auth').exec(function(err, users){
 			res.json({results: users})
 		});
 	},
