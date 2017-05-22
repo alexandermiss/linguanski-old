@@ -1,11 +1,27 @@
 var L 				= L || {}
 ,		Template 	= {}
+,		Lang 			= {}
 , 	app 			= app || {};
+
+Lang = {
+	get: function(){
+		return 'en';
+	}
+}
 
 Template = {
 	get: function(name){
-		return JST['assets/templates/'+name+'.html'];
+		var tpl = Lang.get()+'/'+name;
+		var t = 'assets/templates/'+tpl+'.html';
+		if( !JST[t] ) console.log('template:no found:', t);
+		console.log('template:', t);
+		return JST[t];
 	}
+};
+
+var __n = function (el){
+	if (!Backbone.$(el).length) return true;
+	return false;
 };
 
 L.Region = {};
@@ -17,12 +33,33 @@ L.Event = {};
 L.Function = {};
 L.Behavior = {};
 
-L.Model.Friend 													= Backbone.Model;
-L.Collection.Friend 										= Backbone.Collection;
 
-L.View.EmptyBasicView 									= Marionette.View.extend({template: '<div>No items</div>'});
+L.View.EmptyBasicView 									= Marionette.View.extend({
+																						template: '<div>No items</div>'});
+
+L.View.DefaultBasicView 								= Marionette.View.extend({
+																						initialize: function (opts){
+																							this.model = opts.model;
+																						}
+																					});
+
+L.Model.Default 												= Backbone.Model;
+
+L.Model.Friend 													= L.Model.Default;
+
+L.Collection.Default 										= Backbone.Collection.extend({
+	parse: function (resp){
+		return resp.results;
+	}
+});
+
+L.Collection.Friend 										= L.Collection.Default;
 
 L.View.FriendView 											= Marionette.View;
 L.CollectionView.FriendCollectionView 	= Marionette.CollectionView;
 
 app.instances 													= {};
+
+$(function(){
+	$('.ui.pointing.dropdown.link.item').dropdown({ action: 'combo'});
+});

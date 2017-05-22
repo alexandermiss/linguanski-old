@@ -1,9 +1,8 @@
 
 $(function (){
+	if( __n('#phrase-content') ) return;
 
-	if ( !Backbone.$('#phrase-content').length ) return;
-
-	var app = {}, phrases = {};
+	var phrases = {};
 
 	$('#formPhraseAdd')
     .form({
@@ -242,5 +241,4 @@ $(function (){
 		}).modal('show');
 	});
 
-	$('#menu').dropdown({ action: 'combo'});
 });

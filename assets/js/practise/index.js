@@ -1,5 +1,6 @@
-var app = {};
 $(function(){
+
+  if( __n('#typing') ) return;
 
   var Letter = Backbone.Model.extend({});
   var Letters = Backbone.Collection.extend({model: Letter});
@@ -118,9 +119,7 @@ $(function(){
     }
   });
 
-  if( Backbone.$('#typing').length ){
-    app = new App();
-    app.start();
-  }
+  app = new App();
+  app.start();
 
 });

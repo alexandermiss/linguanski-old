@@ -40,6 +40,7 @@ module.exports = {
 								Setting.findOne(setting.id).populate('country').populate('language').exec(function(err, setting){
 									if(_.has(setting, 'user'))
 										req.session['setting'] = _.pick(setting, 'id', 'country', 'language');
+										req.session.user.name = name;
 										return res.json({setting: setting});
 								});
 							});

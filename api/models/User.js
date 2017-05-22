@@ -15,16 +15,13 @@ module.exports = {
     activated: {type: 'boolean', defaultsTo: 0}
   }),
 
-  // beforeCreate: require('waterlock').models.user.beforeCreate,
-  // beforeUpdate: require('waterlock').models.user.beforeUpdate
+  beforeCreate: require('waterlock').models.user.beforeCreate,
+  beforeUpdate: require('waterlock').models.user.beforeUpdate,
 
-  beforeCreate: function (values, cb){
-    sails.log.debug('values', values);
+  afterCreate: function (values, cb){
     Profile.create({ user: values.id }).exec(function (err, profile){
-      if(err) console.log(err);
-
-      sails.log.info('profile', profile);
-      cb();
+      if(err) return cb(err);
+      return cb();
     });
   }
 

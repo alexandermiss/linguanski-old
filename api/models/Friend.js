@@ -8,7 +8,8 @@
 module.exports = {
 
   attributes: {
-
+    friend_one: {model: 'user'},
+    friend_two: {model: 'user'},
+    status: {enum: ['pending', 'friend', 'me'], defaultsTo: 'pending'}
   }
 };
-

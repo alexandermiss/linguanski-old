@@ -39,7 +39,7 @@ module.exports.routes = {
   'GET /account/signup'                   : 'AppController.registerform',
   'GET /account/info'                     : 'AppController.info',
   'GET /accounts/authorizations'          : 'AppController.authorizations',
-  
+
   'GET /friends/list'                     : 'FriendController.list',
 
   'GET /settings/first/configuration'     : 'SettingController.firstConfiguration',
@@ -49,7 +49,7 @@ module.exports.routes = {
   'GET /phrases'                          : 'AppController.phrases',
   'GET /practise'                         : 'AppController.practise',
 
-  'GET /exercise1'                        : 'Exercise.word',
+  'GET /profile'                          : 'ProfileController.getProfile',
 
 
   /***************************************************************************
@@ -61,14 +61,21 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-  // User update
-  'POST /api/v1/user/settings'    : 'SettingController.updateUser',
-  'GET /api/v1/accounts'          : 'ApiController.getUser',
-  'PUT /api/v1/account/:id'       : 'ApiController.updateActivation',
+  // Profile
+  'GET /api/v1/profile/getBasicData'  : 'ProfileController.getBasicData',
+  // 'POST /api/v1/profile/getInfoData'  : 'ProfileController.getInfoData',
 
-  'GET /api/v1/phrases'           : 'PhraseController.getPhrases',
-  'GET /api/v1/getOnePhrase'      : 'PhraseController.getOnePhrase',
-  'POST /api/v1/add_phrase'       : 'PhraseController.addPhrase',
-  'PUT /api/v1/add_phrase/:id'    : 'PhraseController.updatePhrase',
+  // User update
+  'POST /api/v1/user/settings'        : 'SettingController.updateUser',
+  'GET /api/v1/accounts'              : 'ApiController.getUser',
+  'PUT /api/v1/account/:id'           : 'ApiController.updateActivation',
+
+  'GET /api/v1/friends'               : 'ApiController.getFriends',
+  'POST /api/v1/friend'               : 'ApiController.createFriend',
+
+  'GET /api/v1/phrases'               : 'PhraseController.getPhrases',
+  'GET /api/v1/getOnePhrase'          : 'PhraseController.getOnePhrase',
+  'POST /api/v1/add_phrase'           : 'PhraseController.addPhrase',
+  'PUT /api/v1/add_phrase/:id'        : 'PhraseController.updatePhrase',
 
 };

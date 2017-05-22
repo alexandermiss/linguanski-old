@@ -1,6 +1,6 @@
 
 $(function(){
-  var app = {};
+  if( __n('#user-content') ) return;
 
   var Account = Backbone.Model.extend({
     urlRoot: '/api/v1/account'
@@ -77,9 +77,7 @@ $(function(){
     }
   });
 
-  if( Backbone.$('#user-content').length ){
-    app = new MyApp();
-    app.start();
-  }
+  app = new MyApp();
+  app.start();
 
 });

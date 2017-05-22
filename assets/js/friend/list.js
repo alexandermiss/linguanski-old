@@ -1,6 +1,6 @@
 $(function (){
 
-  if(!Backbone.$('#friendListController').length) return;
+  if( __n('#friendListController') ) return;
 
   var FriendModel = L.Model.Friend.extend({
     urlRoot: '/api/v1/friend'
