@@ -8,8 +8,8 @@
 module.exports = {
 
   attributes: {
-    country: { model: 'country' },
-    language: { model: 'language' },
+    country: { model: 'country' },    // Native
+    language: { model: 'language' },  // Learning
     user: { model: 'user' },
     learning: { collection: 'settinglanguage', via: 'setting'}
   }

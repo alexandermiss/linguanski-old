@@ -7,10 +7,20 @@
 
 <div class="ui divider"></div>
 <div class="ui grid">
-  <div class="six wide column">
-    <p>Pais</p>
+  <div class="column row">
+    <div class="six wide column">
+      <p>Pais</p>
+    </div>
+    <div class="six wide column">
+      <p><i class="{{ setting.country.prefix }} flag"></i> {{ setting.country.name }}</p>
+    </div>
   </div>
-  <div class="six wide column">
-    <p> {{ user.name }}</p>
+  <div class="column row">
+    <div class="six wide column">
+      <p>Aprendiendo</p>
+    </div>
+    <div class="six wide column">
+      <p><i class="{{ setting.language.prefix }} flag"></i> {{ setting.language.name }}</p>
+    </div>
   </div>
 </div>

@@ -9,6 +9,6 @@ module.exports = {
 
   attributes: {
     user: {model: 'user'},
-    info: { type: 'string' }
+    info: { type: 'string', defaultsTo: 'No info'}
   }
 };

@@ -10,7 +10,7 @@ module.exports = {
 
   attributes: require('waterlock').models.user.attributes({
     name: { type: 'string' },
-    photo: { type: 'string' },
+    photo: { type: 'string', defaultsTo: '/images/me.jpg' },
     role: {type: 'string', enum: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'},
     activated: {type: 'boolean', defaultsTo: 0}
   }),
