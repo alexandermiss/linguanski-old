@@ -7,7 +7,6 @@
 
 module.exports = {
 	init: function (req, res, next){
-
 		Profile.findOne({user: req.session.user.id}).exec(function(err, profile){
 			if(err) return res.negotiate(err);
 

@@ -51,24 +51,24 @@ module.exports.policies = {
   },
 
   PhraseController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser'],
+    '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
     getOnePhrase: true
   },
 
   FriendController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+    '*': ['sessionAuth', 'settingNecessary', 'activatedUser']
   },
 
   DashboardController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser']
+    '*': ['sessionAuth', 'settingNecessary', 'activatedUser']
   },
 
   ApiController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser'],
+    '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
   },
 
   ProfileController: {
-    '*': ['settingNecessary', 'sessionAuth', 'activatedUser'],
+    '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
   }
 
 };

@@ -13,14 +13,7 @@
     <a style="color:#ffffff;" class="item" href="/friends/list">
       <%= __('Friends') %>
     </a>
-    <a style="color:#ffffff;" class="item" href="/profile?id=<%= req.session.profile.id %>">
-      <%= __('Profile') %>
-    </a>
-    <% if (_.includes(['superadmin'], session.user.role)){ %>
-      <a style="color:#ffffff;" class="item" href="/accounts/authorizations">
-        <%= __('Accounts') %>
-      </a>
-    <% } %>
+
     <div style="color:#ffffff;" class="right menu">
 
       <!-- <div style="color:#ffffff;" id="menu" class="ui dropdown item">
@@ -31,15 +24,24 @@
           <a style="color:#ffffff;" class="item">Inglés</a>
         </div>
       </div> -->
+      
+      <a style="color:#ffffff;" class="item" href="/profile?id=<%= req.session.profile.id %>">
+        <%= __('Profile') %>
+      </a>
 
       <div class="ui pointing dropdown link item">
         <span style="color:#ffffff;" class="text"><%= req.session.user.name %></span>
         <i style="color:#ffffff;" class="dropdown icon"></i>
         <div class="menu">
           <% if(req.session.authenticated){ %>
-          <a href="/account/logout" class="item"><%= __('Logout') %></a>
+            <% if (_.includes(['superadmin'], session.user.role)){ %>
+              <a style="color:#ffffff;" class="item" href="/accounts/authorizations">
+                <%= __('Accounts') %>
+              </a>
+            <% } %>
+            <a href="/account/logout" class="item"><%= __('Logout') %></a>
           <% }else{ %>
-          <a href="/account/signin" class="item"><%= __('Sign Up') %></a>
+            <a href="/account/signin" class="item"><%= __('Sign Up') %></a>
           <% } %>
         </div>
       </div>
