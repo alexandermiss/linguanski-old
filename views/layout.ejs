@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= req.session.setting.country.language.prefix %>">
+<html lang="<%= req.session.setting ? req.session.setting.country.language.prefix: 'en' %>">
   <head>
     <title><%=typeof title == 'undefined' ? 'Linguanski' : 'Linguanski - ' + title%></title>
 
@@ -61,7 +61,7 @@
     -->
 
     <!--TEMPLATES-->
-    <script type="text/javascript" src="/jst.js?20170522035754"></script>
+    <script type="text/javascript" src="/jst.js?20170523020844"></script>
     <!--TEMPLATES END-->
 
 

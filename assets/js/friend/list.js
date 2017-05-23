@@ -15,13 +15,13 @@ $(function (){
 
   var FriendView = L.View.FriendView.extend({
     tagName: 'div',
-    className: 'card',
+    className: 'item',
     template: Template.get('friend_item')
   });
 
   var FriendCollectionView = L.CollectionView.FriendCollectionView.extend({
     tagName: 'div',
-    className: 'ui three stackable cards',
+    className: 'ui divided items',
     childView: FriendView,
     emptyView: L.View.EmptyBasicView,
     collection: new FriendCollection()
@@ -35,7 +35,7 @@ $(function (){
     }
   });
 
-  app.main = new AppMain()
-  app.main.start();
+  // app.main = new AppMain()
+  // app.main.start();
 
 });
