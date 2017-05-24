@@ -16,35 +16,29 @@ module.exports = {
 	},
 
 	getFriends: function( req, res, next){
-		Friend.find({friend_one: req.session.user.id})
-			.populate('friend_one')
-			.populate('friend_two').exec(function(err, friends){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id}, req.query);
+		Friend.getFriends(p,
+			function(err, friends){
 				if(err) return res.json(err);
 
-				Profile.find({user: _.find(friends, 'friend_two')})
-					.populate('user').exec(function(err, profile){
-						if(err) return res.json(err);
-
-						return res.json({results: friends});
-				});
-
+				sails.log.info('profiles\n', friends);
+				return res.json(friends);
 		});
 	},
 
 	createFriend: function ( req, res, next ){
 		var p = req.params.all();
 
-		Friend.create({friend_one: req.session.user.id, friend_two: p.friend_two})
-			.exec(function(err, friend){
+		Friend.addFriend({friend_one: req.session.user.id, friend_two: p.friend_two},
+			function(err, friend){
 				if(err) return res.json(err);
-				if(_.isArray(friend)) friend = friend[0];
-
-				Profile.findOne({user: friend.friend_two})
-					.populate('user')
-					.exec(function(err, profile){
-						if(err) return res.json(err);
-						return res.json({results: profile});
-				});
+				if(!friend) {
+					sails.log.error('friend', friend);
+					return res.json({error: 'no friend created'});
+				}
+				sails.log.debug('friend\n',friend);
+				return res.json(friend);
 			});
 	},
 

@@ -10,5 +10,16 @@ module.exports = {
   attributes: {
     user: {model: 'user'},
     info: { type: 'string', defaultsTo: 'No info'}
+  },
+
+  getFullProfile: function (opts, cb){
+
+    Profile.findOne({user: opts.friend_two})
+      .populate('user')
+      .exec(function(err, profile){
+        if(err) return cb(err);
+        return cb(null, {results: profile});
+    });
+
   }
 };

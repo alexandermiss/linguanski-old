@@ -1,9 +1,9 @@
 <!-- <div class="item"> -->
-  <div class="ui tiny bordered image">
-    <img src="{{ photo }}">
-  </div>
+  <a href="/profile?id={{ id }}" class="ui tiny bordered image">
+    <img src="{{ user.photo }}">
+  </a>
   <div class="content">
-    <a class="header">{{ name }</a>
+    <a href="/profile?id={{ id }}" class="header">{{ user.name }}</a>
     <div class="meta">
       <span class="cinema">{{ info }}</span>
     </div>
@@ -16,7 +16,7 @@
         <i class="right chevron icon"></i>
       </div>
       <!-- <div class="ui label">IMAX</div> -->
-      <div class="ui label"><i class="globe icon"></i> PREMIUM</div>
+      <div class="ui label"><i class="globe icon"></i> {{ user.role }}</div>
     </div>
   </div>
 <!-- </div> -->
