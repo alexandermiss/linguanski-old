@@ -72,7 +72,7 @@ $(function(){
       this.showView(new AccountCollectionView());
       var col = this.getView().collection;
       var appRoute = new AppRoute({collection: col});
-      Backbone.history.start({root: 'accounts/authorizations'});
+      Backbone.history.start({root: 'admin/authorizations'});
       Backbone.history.navigate('!/page/1', {trigger: true});
     }
   });

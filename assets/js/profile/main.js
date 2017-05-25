@@ -11,17 +11,19 @@ $(function(){
     template: Template.get('profile/card/profile_card'),
     ui:{
       form: '#fileinfo',
-      btn: 'button',
+      btn: '#btn',
       file: '#file'
     },
     events:{
-      'click @ui.btn': 'sendFile'
+      'click @ui.btn': {
+        event: 'sendFile',
+        preventDefault: true
+      }
     },
-    sendFile: function(){
-      this.model.set('file', this.ui.file.get(0).files[0]);
-      console.log(this.model.toJSON());
-      this.model.save();
-    }
+    sendFile: function(e){
+      profileUpload(this.model);
+    },
+
   });
 
   var ProfilePresentationView = L.View.DefaultBasicView.extend({
@@ -67,5 +69,40 @@ $(function(){
 
   app.main = new AppView({profile: profile});
   app.main.start();
+
+
+  var profileUpload = function (model){
+    var formElement = document.getElementById('fileinfo');
+    var xhr = new XMLHttpRequest();
+    var form = new FormData(formElement);
+
+    xhr.open('PUT', '/api/v1/profile/getFullProfile/'+model.get('id'));
+
+    xhr.upload.addEventListener('progress', function (d){
+      console.log('progress', d);
+      if( d.total === d.loaded ){
+        console.log('total', d.total);
+      }
+    });
+
+    xhr.onreadystatechange = function (){
+      if( xhr.readyState == 4 ){
+        if( xhr.status == 200 ){
+          console.log(xhr.responseText);
+          var json = JSON.parse(xhr.responseText);
+          var obj = model.get('user');
+          obj.photo = json.secure_url;
+          model.set('user', obj);
+          console.log(model.toJSON());
+          var img = document.getElementById('imageProfile')
+          img.src = model.get('user').photo;
+          console.log('image changed!');
+        }
+      }
+    };
+
+    xhr.send( form );
+
+  }
 
 });
