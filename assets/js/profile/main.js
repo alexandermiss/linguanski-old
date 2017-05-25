@@ -2,13 +2,26 @@ $(function(){
   if( __n('#profileController') ) return;
 
   var Profile  = L.Model.Default.extend({
-    urlRoot: '/api/v1/profile/getBasicData'
+    urlRoot: '/api/v1/profile/getFullProfile'
   });
 
   var ProfileCardView = L.View.DefaultBasicView.extend({
     tagName: 'div',
     className: 'ui segment segment400',
     template: Template.get('profile/card/profile_card'),
+    ui:{
+      form: '#fileinfo',
+      btn: 'button',
+      file: '#file'
+    },
+    events:{
+      'click @ui.btn': 'sendFile'
+    },
+    sendFile: function(){
+      this.model.set('file', this.ui.file.get(0).files[0]);
+      console.log(this.model.toJSON());
+      this.model.save();
+    }
   });
 
   var ProfilePresentationView = L.View.DefaultBasicView.extend({

@@ -1,5 +1,5 @@
 <div style="background-color:#001C20;color:#000000;" class="ui attached stackable menu">
-  <!-- <div class="ui container"> -->
+  <div class="ui container">
 
     <a style="color:#ffffff;" class="active item">
       <%= __('LINGUANSKI') %>
@@ -24,7 +24,7 @@
           <a style="color:#ffffff;" class="item">Inglés</a>
         </div>
       </div> -->
-      
+
       <a style="color:#ffffff;" class="item" href="/profile?id=<%= req.session.profile.id %>">
         <%= __('Profile') %>
       </a>
@@ -35,7 +35,7 @@
         <div class="menu">
           <% if(req.session.authenticated){ %>
             <% if (_.includes(['superadmin'], session.user.role)){ %>
-              <a style="color:#ffffff;" class="item" href="/accounts/authorizations">
+              <a style="color:#ffffff;" class="item" href="/admin/authorizations">
                 <%= __('Accounts') %>
               </a>
             <% } %>
@@ -48,5 +48,5 @@
 
     </div>
 
-  <!-- </div> -->
+  </div>
 </div>

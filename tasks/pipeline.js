@@ -33,15 +33,22 @@ var jsFilesToInject = [
   'js/dependencies/jquery-3.1.1.js',
   'js/dependencies/lodash.js',
   'js/dependencies/backbone.js',
-  'js/dependencies/sails.io.backbone.js',
+  'js/dependencies/backbone-model-file-upload.js',
+  // 'js/dependencies/sails.io.backbone.js',
   'js/dependencies/backbone.radio.js',
   'js/dependencies/backbone.marionette.js',
-  'js/dependencies/H.js',
-  'js/dependencies/**/*.js',
+  'js/dependencies/L.js',
+
+  'js/accounts/*.js',
+  'js/friend/*.js',
+  'js/phrase/*.js',
+  'js/practise/*.js',
+  'js/profile/*.js',
+  // 'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js'
+  // 'js/**/*.js'
 ];
 
 

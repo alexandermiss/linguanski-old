@@ -5,6 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var cloudinary = require('cloudinary');
 var _ = require('lodash');
 
 module.exports = {
@@ -18,21 +19,65 @@ module.exports = {
 
 	},
 
-	getBasicData: function (req, res, next){
-		var id = req.param('id');
-		sails.log.info(id);
-		Profile.findOne(id).populateAll().exec(function(err, profile){
+	getFullProfile: function (req, res, next){
+		var id = _.get(_.extend(req.params.all(), req.query), 'id');
+		Profile.getFullProfile({id: id},function(err, profile){
 			if(err) return res.json(err);
-			Setting.findOne({user: profile.user.id}).populateAll().exec(function(err, setting){
-				if(err) return res.json(err);
-				Language.findOne(setting.country.language).exec(function(err, lang){
-					if(err) return res.json(err);
-					profile['setting'] = setting;
-					profile.setting.country.language = lang;
-					return res.json(profile);
-				});
-			});
+			return res.json(profile);
 		});
+
+	},
+
+	updatePhoto: function (req, res, next){
+
+		// cloudinary.config({
+		//   cloud_name: 'dugrtplgz',
+		//   api_key: '882717145424918',
+		//   api_secret: '-WwDb-q4CDx4ZhPSm_oIssibKb0'
+		// });
+
+		// {
+		// 	public_id: 'sample_id',
+		// 	crop: 'limit',
+		// 	width: 2000,
+		// 	height: 2000,
+		// 	eager: [
+		// 		{ width: 200, height: 200, crop: 'thumb', gravity: 'face',
+		// 			radius: 20, effect: 'sepia' },
+		// 		{ width: 100, height: 150, crop: 'fit', format: 'png' }
+		// 	],
+		// 	tags: ['special', 'for_homepage']
+		// }
+
+		if(req.isSocket){
+			sails.log.info('socket');
+		}else{
+			sails.log.info('NO socket');
+		}
+
+		sails.log.debug('loading file');
+		// return res.json({});
+
+		req.file('file').upload({
+			dirname: sails.config.rootPath + '/assets/images'
+		},function(err, uploaded){
+			if(err){
+				sails.log.debug(err);
+				return res.json({});
+			}
+			sails.log.info(uploaded);
+			return res.json({});
+		});
+
+		// cloudinary.uploader.upload(
+		//   req.files.,
+		//   function(result) {
+		// 		console.log(result);
+		//
+		// 	}
+		//
+		// );
+
 	}
 
 };

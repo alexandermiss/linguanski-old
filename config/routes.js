@@ -34,23 +34,22 @@ module.exports.routes = {
 
 
   'GET /'                                 : 'HomeController.index',
+  'GET /settings/first/configuration'     : 'SettingController.firstConfiguration',
+
   'GET /account/signin'                   : 'AppController.loginform',
   'GET /account/logout'                   : 'AppController.logout',
   'GET /account/signup'                   : 'AppController.registerform',
   'GET /account/info'                     : 'AppController.info',
-  'GET /accounts/authorizations'          : 'AppController.authorizations',
-
-  'GET /friends/list'                     : 'FriendController.list',
-
-  'GET /settings/first/configuration'     : 'SettingController.firstConfiguration',
 
   'GET /dashboard'                        : 'DashboardController.init',
   'GET /traductions'                      : 'AppController.traductions',
   'GET /phrases'                          : 'AppController.phrases',
   'GET /practise'                         : 'AppController.practise',
-
   'GET /profile'                          : 'ProfileController.getProfile',
+  'GET /friends/list'                     : 'FriendController.list',
 
+  // Admin
+  'GET /admin/authorizations'             : 'AppController.authorizations',
 
   /***************************************************************************
   *                                                                          *
@@ -62,7 +61,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   // Profile
-  'GET /api/v1/profile/getBasicData'  : 'ProfileController.getBasicData',
+  'GET /api/v1/profile/getFullProfile'  : 'ProfileController.getFullProfile',
+  'PUT /api/v1/profile/getFullProfile/:id'  : 'ProfileController.updatePhoto',
   // 'POST /api/v1/profile/getInfoData'  : 'ProfileController.getInfoData',
 
   // User update

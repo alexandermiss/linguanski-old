@@ -14,12 +14,18 @@ module.exports = {
 
   getFullProfile: function (opts, cb){
 
-    Profile.findOne({user: opts.friend_two})
-      .populate('user')
-      .exec(function(err, profile){
-        if(err) return cb(err);
-        return cb(null, {results: profile});
-    });
+    Profile.findOne(opts).populateAll().exec(function(err, profile){
+			if(err) return cb(err);
+			Setting.findOne({user: profile.user.id}).populateAll().exec(function(err, setting){
+				if(err) return cb(err);
+				Language.findOne(setting.country.language).exec(function(err, lang){
+					if(err) return cb(err);
+					profile['setting'] = setting;
+					profile.setting.country.language = lang;
+					return cb(null, profile);
+				});
+			});
+		});
 
   }
 };
