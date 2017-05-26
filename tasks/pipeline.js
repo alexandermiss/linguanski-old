@@ -38,6 +38,7 @@ var jsFilesToInject = [
   'js/dependencies/backbone.radio.js',
   'js/dependencies/backbone.marionette.js',
   'js/dependencies/L.js',
+  'js/dependencies/FileUpload.js',
 
   'js/dependencies/**/*.js',
 

@@ -1,29 +1,20 @@
 <div class="ui fluid card">
-  <div class="image">
+  <div class="blurring dimmable image">
+    <div class="ui dimmer">
+      <div class="content">
+        <div class="center">
+          <button class="ui inverted button change-image">Change</button>
+        </div>
+      </div>
+    </div>
     <img id="imageProfile" src="{{ user.photo }}">
   </div>
 
   <div class="content">
-    <form enctype="multipart/form-data" method="post" name="fileinfo" id="fileinfo">
-          <label for="file" class="ui fluid teal basic mini button">
-              <i class="file icon"></i>
-              Seleccionar imagen
-          </label>
-      <input type="file" id="file" name="file" style="display:none">
-    </form>
-
-
-
+    
   </div>
+
   <div class="extra">
 
-    <!-- <div class="ui progress success">
-      <div class="bar">
-        <div class="progress"></div>
-      </div>
-      <div class="label">Perfil</div>
-    </div> -->
-
-    <button id="btn" type="button" name="button" class="ui fluid teal basic mini button">Upload</button>
   </div>
 </div>

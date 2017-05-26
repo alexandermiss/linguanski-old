@@ -1,0 +1,31 @@
+<div class="ui small modal">
+  <i class="close icon"></i>
+  <div class="header">
+    <%= __('Profile Picture') %>
+  </div>
+  <div class="image content">
+    <div image-content class="ui medium image">
+      <img id="preview" src="">
+    </div>
+    <div description class="description">
+      <div class="ui header" description-header>Select your photo.</div>
+      <p description-p>Is it okay to use this photo?</p>
+    </div>
+    <form style="width:100%;" enctype="multipart/form-data" accept="image/*" method="post" name="fileinfo" id="fileinfo">
+          <label for="file" class="ui fluid teal basic button">
+              <i class="file icon"></i>
+              Seleccionar imagen
+          </label>
+      <input type="file" id="file" name="file" style="display:none">
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      <%= __('Nope') %>
+    </div>
+    <div class="ui positive right labeled icon button">
+      <%= __('Yep, that\'s me') %>
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>

@@ -12,18 +12,34 @@ $(function(){
     ui:{
       form: '#fileinfo',
       btn: '#btn',
-      file: '#file'
+      file: '#file',
+      image: '.dimmable.image',
+      change_img: '.change-image'
     },
     events:{
-      'click @ui.btn': {
-        event: 'sendFile',
-        preventDefault: true
-      }
+      'click @ui.change_img': 'showModal'
     },
-    sendFile: function(e){
-      profileUpload(this.model);
+    onRender: function (){
+      this.ui.image.dimmer({on: 'hover'});
     },
-
+    showModal: function (){
+      console.log('modal');
+      $('.ui.small.modal').modal({
+  		  transition: 'scale',
+  		  closable: false,
+  		  onDeny    : function(){
+          $('#file').empty();
+  		  },
+  		  onApprove : function() {
+          profileUpload(profile);
+  		  },
+  		  onShow    : function(){
+          // $('#fileinfo').show();
+          $('[description], [image-content]').hide();
+          $('#fileinfo').show();
+  		  },
+  		}).modal('show');
+    }
   });
 
   var ProfilePresentationView = L.View.DefaultBasicView.extend({
@@ -59,7 +75,6 @@ $(function(){
       this.profile.fetch({data:{id: $('#__i').val()}});
     },
     printProfile: function(){
-      console.log(this.profile.toJSON());
       var view = new ParentView({model: this.profile});
       this.showView( view );
     }
@@ -73,13 +88,19 @@ $(function(){
 
   var profileUpload = function (model){
     var formElement = document.getElementById('fileinfo');
+
+
     var xhr = new XMLHttpRequest();
     var form = new FormData(formElement);
+
+    // FileUpload.showPreview(img, input_file);
+
+    $('[description], [image-content]').hide();
 
     xhr.open('PUT', '/api/v1/profile/getFullProfile/'+model.get('id'));
 
     xhr.upload.addEventListener('progress', function (d){
-      console.log('progress', d);
+      console.log('progress', d.loaded);
       if( d.total === d.loaded ){
         console.log('total', d.total);
       }
@@ -88,21 +109,29 @@ $(function(){
     xhr.onreadystatechange = function (){
       if( xhr.readyState == 4 ){
         if( xhr.status == 200 ){
-          console.log(xhr.responseText);
-          var json = JSON.parse(xhr.responseText);
+          var json = (xhr.responseText ? JSON.parse(xhr.responseText) : {});
+          _debug('JSON', json);
           var obj = model.get('user');
           obj.photo = json.secure_url;
           model.set('user', obj);
           console.log(model.toJSON());
           var img = document.getElementById('imageProfile')
           img.src = model.get('user').photo;
-          console.log('image changed!');
         }
       }
     };
 
     xhr.send( form );
 
-  }
+  };
+
+  $('#file').on('change', function (){
+    var input_file = document.getElementById('file');
+    var img = document.getElementById('preview');
+    FileUpload.showPreview(img, input_file);
+    $('[description], [image-content]').show();
+    $('#fileinfo').hide();
+    $('.ui.small.modal').modal('refresh');
+  });
 
 });

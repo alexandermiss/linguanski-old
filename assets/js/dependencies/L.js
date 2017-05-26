@@ -1,6 +1,7 @@
 var L 				= L || {}
 ,		Template 	= {}
 ,		Lang 			= {}
+,		debug 		= true
 , 	app 			= app || {};
 
 Lang = {
@@ -23,6 +24,10 @@ var __n = function (el){
 	if (!Backbone.$(el).length) return true;
 	return false;
 };
+
+var _debug = function (){
+	if (debug) console.log(arguments);
+}
 
 L.Region = {};
 L.Model = {};

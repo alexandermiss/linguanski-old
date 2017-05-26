@@ -30,7 +30,7 @@ module.exports = {
 
 	updatePhoto: function (req, res, next){
 		cloudinary.config({
-		  cloud_name: 'dugrtplgz',
+		  cloud_name: 'linguanski',
 		  api_key: '882717145424918',
 		  api_secret: '-WwDb-q4CDx4ZhPSm_oIssibKb0'
 		});
@@ -47,6 +47,7 @@ module.exports = {
 
 			cloudinary.uploader.upload(file)
 				.then(function(result){
+					sails.log.info('_result', _result);
 					_result = result;
 					return _result;
 				}).then(function(data){
@@ -55,7 +56,17 @@ module.exports = {
 					User.update({id: req.session.user.id}, {photo: _result.secure_url})
 						.exec(function(err, user){
 							if(err) return res.json({err: err});
-							return res.json(_result);
+							var c = {};
+							_.extend(c, {user: req.session.user.id},
+								_.pick(_result,
+									'public_id', 'url', 'secure_url', 'original_filename',
+									'resource_type', 'signature', 'type', 'format', 'bytes'));
+								sails.log.info('c', c);
+							Fichero.create(c).exec(function(err, file){
+								if(err) return res.json({err: 'Fichero create error'});
+								return res.json(_result);
+							});
+
 						});
 				});
 		});
