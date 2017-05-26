@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= req.session.setting ? req.session.setting.country.language.prefix: 'en' %>">
   <head>
-    <title><%=typeof title == 'undefined' ? 'Linguanski2' : 'Linguanski2 - ' + title%></title>
+    <title> <%=typeof title == 'undefined' ? 'Linguanski' : 'Linguanski - ' + title%></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -32,9 +32,34 @@
     <link rel="stylesheet" href="/styles/semantic.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
+    <script>
+    var _csrf = "<%= _csrf %>";
+    </script>
   </head>
 
   <body>
+
+    <style type="text/css">
+      body {
+        /*background-color: #DADADA;*/
+        background-image: url(/images/dreamstime-min.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+      }
+      body > .grid {
+        height: 100%;
+      }
+      .image {
+        margin-top: -100px;
+      }
+      .column {
+        max-width: 450px;
+      }
+    </style>
+
     <%- body %>
 
 
@@ -61,7 +86,7 @@
     -->
 
     <!--TEMPLATES-->
-    <script type="text/javascript" src="/jst.js?20170526113711"></script>
+    <script type="text/javascript" src="/jst.js?20170526123942"></script>
     <!--TEMPLATES END-->
 
 
@@ -101,6 +126,10 @@
     <script src="/js/dependencies/FileUpload.js"></script>
     <script src="/js/accounts/authorization.js"></script>
     <script src="/js/friend/list.js"></script>
+    <script src="/js/home_page.js"></script>
+    <script src="/js/login/main_login.js"></script>
+    <script src="/js/login/main_signin.js"></script>
+    <script src="/js/login/main_signup.js"></script>
     <script src="/js/phrase/index.js"></script>
     <script src="/js/practise/index.js"></script>
     <script src="/js/profile/main.js"></script>

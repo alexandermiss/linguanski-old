@@ -7,7 +7,6 @@
 
 module.exports = {
 	index: function (req, res, next){
-		return res.view('homepage');
+		return res.view('homepage', {layout: 'landing_layout'});
 	}
 };
-

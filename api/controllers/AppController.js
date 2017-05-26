@@ -8,11 +8,11 @@
 module.exports = {
 
 	loginform: function ( req, res, next){
-		return res.view('auth/signin', {layout:false});
+		return res.view('auth/signin', {layout:'login_layout', title: 'Sign In'});
 	},
 
 	registerform: function ( req, res, next){
-		return res.view('auth/signup', {layout:false});
+		return res.view('auth/signup', {layout:'login_layout', title: 'Sign Up'});
 	},
 
 	authorizations: function (req, res, next){
