@@ -1,7 +1,7 @@
 var FileUpload = {
 
   showPreview: function showPreview(img, file){
-
+    if( file && !file.files[0] ) return;
     var reader = new FileReader();
 
     reader.onload = function (e){

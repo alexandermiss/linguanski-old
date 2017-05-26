@@ -1,5 +1,5 @@
 {
-  "name": "openidiom",
+  "name": "linguanski",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
@@ -41,7 +41,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/alexander/openidiom.git"
+    "url": "git@gitlab.com:alexandermiss/linguanski.git"
   },
   "author": "alexander",
   "license": "",

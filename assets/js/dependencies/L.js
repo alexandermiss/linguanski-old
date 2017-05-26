@@ -1,7 +1,7 @@
 var L 				= L || {}
 ,		Template 	= {}
 ,		Lang 			= {}
-,		debug 		= true
+,		debug 		= false
 , 	app 			= app || {};
 
 Lang = {
@@ -10,12 +10,16 @@ Lang = {
 	}
 }
 
+var _debug = function (){
+	if (debug) console.log(arguments);
+}
+
 Template = {
 	get: function(name){
 		var tpl = Lang.get()+'/'+name;
 		var t = 'assets/templates/'+tpl+'.html';
 		if( !JST[t] ) console.log('template:no found:', t);
-		console.log('template:', t);
+		_debug('template:', t);
 		return JST[t];
 	}
 };
@@ -25,9 +29,6 @@ var __n = function (el){
 	return false;
 };
 
-var _debug = function (){
-	if (debug) console.log(arguments);
-}
 
 L.Region = {};
 L.Model = {};

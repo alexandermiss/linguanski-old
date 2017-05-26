@@ -8,7 +8,11 @@ $(function(){
   var ProfileCardView = L.View.DefaultBasicView.extend({
     tagName: 'div',
     className: 'ui segment segment400',
-    template: Template.get('profile/card/profile_card'),
+    template: function(data){
+      if( eval($('#__s').val()) )
+        return Template.get('profile/card/profile_card')(data);
+      return Template.get('profile/card/profile_card_nologin')(data);
+    },
     ui:{
       form: '#fileinfo',
       btn: '#btn',
@@ -20,21 +24,19 @@ $(function(){
       'click @ui.change_img': 'showModal'
     },
     onRender: function (){
-      this.ui.image.dimmer({on: 'hover'});
+      if( eval($('#__s').val()) ) this.ui.image.dimmer({on: 'hover'});
     },
     showModal: function (){
-      console.log('modal');
       $('.ui.small.modal').modal({
   		  transition: 'scale',
   		  closable: false,
   		  onDeny    : function(){
-          $('#file').empty();
+          $('#file').val('').empty();
   		  },
   		  onApprove : function() {
           profileUpload(profile);
   		  },
   		  onShow    : function(){
-          // $('#fileinfo').show();
           $('[description], [image-content]').hide();
           $('#fileinfo').show();
   		  },
@@ -89,20 +91,17 @@ $(function(){
   var profileUpload = function (model){
     var formElement = document.getElementById('fileinfo');
 
-
     var xhr = new XMLHttpRequest();
     var form = new FormData(formElement);
-
-    // FileUpload.showPreview(img, input_file);
 
     $('[description], [image-content]').hide();
 
     xhr.open('PUT', '/api/v1/profile/getFullProfile/'+model.get('id'));
 
     xhr.upload.addEventListener('progress', function (d){
-      console.log('progress', d.loaded);
+      _debug('progress', d.loaded);
       if( d.total === d.loaded ){
-        console.log('total', d.total);
+        _debug('total', d.total);
       }
     });
 
@@ -114,7 +113,6 @@ $(function(){
           var obj = model.get('user');
           obj.photo = json.secure_url;
           model.set('user', obj);
-          console.log(model.toJSON());
           var img = document.getElementById('imageProfile')
           img.src = model.get('user').photo;
         }
@@ -122,7 +120,6 @@ $(function(){
     };
 
     xhr.send( form );
-
   };
 
   $('#file').on('change', function (){
