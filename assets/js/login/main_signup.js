@@ -8,62 +8,61 @@ $(function(){
     .form({
       fields: {
         email: {
-          identifier  : 'email',
+          identifier  : "email",
           rules: [
             {
-              type   : 'empty',
-              prompt : 'Please enter your name'
+              type   : "empty",
+              prompt : "Please enter your name"
             },
             {
-              type   : 'email',
-              prompt : 'Please enter a valid e-mail'
+              type   : "email",
+              prompt : "Please enter a valid e-mail"
             }
           ]
         },
         password: {
-          identifier  : 'password',
+          identifier  : "password",
           rules: [
             {
-              type   : 'empty',
-              prompt : 'Please enter your password'
+              type   : "empty",
+              prompt : "Please enter your password"
             },
             {
-              type   : 'length[8]',
-              prompt : 'Your password must be at least 8 characters'
+              type   : "length[8]",
+              prompt : "Your password must be at least 8 characters"
             }
           ]
         },
         password2: {
-          identifier  : 'password2',
+          identifier  : "password2",
           rules: [
             {
-              type   : 'empty',
-              prompt : 'Please enter your password'
+              type   : "empty",
+              prompt : "Please enter your password"
             },
             {
-              type   : 'match[password]',
-              prompt : 'Your password does not mismatch'
+              type   : "match[password]",
+              prompt : "Your password does not mismatch"
             }
           ]
         },
         conditions: {
-          identifier  : 'conditions',
+          identifier  : "conditions",
           rules: [
             {
-              type   : 'checked',
-              prompt : 'Please check the terms and conditions'
+              type   : "checked",
+              prompt : "Please check the terms and conditions"
             },
           ]
         }
       },
-      onSuccess(event, fields){
+      onSuccess: function (event, fields){
         event.preventDefault();
 
           $.post('/auth/register', {
               email: fields.email,
               password: fields.password,
-              name: fields.name,
-              _csrf: _csrf
+              name: fields.name
             })
             .done(function(data){
               if(data && data.auth){
@@ -74,8 +73,5 @@ $(function(){
             });
 
       }
-    })
-  ;
-
-
+    });
 });

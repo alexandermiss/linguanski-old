@@ -1,6 +1,8 @@
-var FileUpload = {
+var FileUpload = {};
 
-  showPreview: function showPreview(img, file){
+FileUpload = {
+
+  showPreview: function (img, file){
     if( file && !file.files[0] ) return;
     var reader = new FileReader();
 
@@ -14,4 +16,4 @@ var FileUpload = {
     reader.readAsDataURL(file.files[0]);
   }
 
-}
+};
