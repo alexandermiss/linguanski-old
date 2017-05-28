@@ -53,10 +53,10 @@ $(function(){
       var cursor        = this.collection.cursor;
 
       if(cursor == this.collection.size() -1){
-        console.log('Listo');
+        _debug('Listo');
         app.start();
       }else if ( letter_orig == letter_typed && cursor < this.collection.size() ){
-        console.log('cursor', cursor);
+        _debug('cursor', cursor);
         if ( cursor > this.collection.size() - 1
           || this.collection.cursor > this.collection.size() - 1 ){
           cursor = this.collection.size() - 1;
@@ -87,7 +87,7 @@ $(function(){
     },
     onRenderChildren: function(){
       this.collection.first().trigger('beginTyping');
-      console.log('The collectionview children have been rendered');
+      _debug('The collectionview children have been rendered');
     }
   });
 
@@ -121,5 +121,9 @@ $(function(){
 
   app = new App();
   app.start();
+
+  $('#add-phrase').on('click', function(){
+    app.start();
+  });
 
 });

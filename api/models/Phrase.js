@@ -119,30 +119,38 @@ module.exports = {
   },
   getOnePhrase: function (opts, cb){
 
-    Traduction.find({}).exec(function(err, phrases){
-      if(err) return cb(err);
+    Phrase.native(function(err, _Phrase){
+      _Phrase.aggregate([
+        {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
+        {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
+        {$match: {counter: {$gt: 1}}}
+      ]).toArray(function(err, __trads){
+        sails.log.debug('__trads', __trads);
 
-      var r = _.sample(phrases);
+        var id = _.sample( _.map(__trads, '_id') );
+        sails.log.info('sample', id);
 
-      Phrase.find({ traduction: r.id }).populateAll().exec(function(err, phrases){
-        if (err) cb(err);
+        _Phrase.find({ traduction: Traduction.mongo.objectId(id) }).toArray(function(err, phrases){
+          if (err) cb(err);
 
-        _.extend(opts, {
-          id: r.id,
-          phrase_native_id: phrases[0].id,
-          phrase_native: phrases[0].phrase,
-          phrase_language_id: phrases[1].id,
-          phrase_language: phrases[1].phrase,
-          phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
-          phrase_language_flag_prefix: opts.phrase_language_flag_prefix
-        });
+          sails.log.debug('phrases', phrases.length);
 
-        sails.log.debug('opts', opts);
-        cb(null, _.omit(opts, 'comment_text', 'country_language_id', 'language_id', 'source'));
+          _.extend(opts, {
+            id: id,
+            phrase_native_id: phrases[0].id,
+            phrase_native: phrases[0].phrase,
+            phrase_language_id: phrases[1].id,
+            phrase_language: phrases[1].phrase,
+            phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
+            phrase_language_flag_prefix: opts.phrase_language_flag_prefix
+          });
 
-      });
+          // sails.log.debug('opts', opts);
+          cb(null, _.omit(opts, 'comment_text', 'country_language_id', 'language_id', 'source'));
 
-    });
+        }); // Phrase
+      }); // aggregate
+    }); // native
 
   }
 };
