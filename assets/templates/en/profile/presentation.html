@@ -1,5 +1,10 @@
 <h2 class="ui header">
   {{ user.name }}
+  {% if(user.suscription == 'premium'){ %}
+    <div class="ui mini teal label">
+     PREMIUM
+    </div>
+  {% } %}
   <div class="sub header">
     {{ info || 'Ninguna informacion' }}
   </div>

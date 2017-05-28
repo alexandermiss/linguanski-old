@@ -46,7 +46,19 @@ module.exports = {
 					.populate('user').exec(function(err, profiles){
 						if(err) return cb(err);
 
-						return cb(null, {results: profiles});
+            var ids = _.map(profiles, 'user.id');
+            sails.log.info('ids', ids);
+
+            Setting.find({user: ids}).populate('country').exec(function(err, settings){
+              if(err) return cb(err);
+
+              profiles = _.map(profiles, function (profile){
+                return _.extend(profile, {setting: _.find(settings, {user: profile.user.id})});
+              });
+
+              return cb(null, {results: profiles});
+            });
+
 				});
 
 		});

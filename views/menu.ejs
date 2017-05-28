@@ -1,7 +1,7 @@
-<div style="background-color:#001C20;color:#000000;" class="ui attached stackable menu">
+<div style="background-color:#001C20;color:#000000;border:none;" class="ui attached menu">
   <div class="ui container">
 
-    <a style="color:#ffffff;" class="active item">
+    <a style="color:#ffffff;" class="active item" href="/dashboard">
       <%= __('LINGUANSKI') %>
     </a>
     <a style="color:#ffffff;" class="item" href="/phrases">
@@ -10,27 +10,18 @@
     <a style="color:#ffffff;" class="item" href="/practise">
       <%= __('Practica') %>
     </a>
-    <a style="color:#ffffff;" class="item" href="/friends/list">
+    <a style="color:#ffffff;" class="item" href="/friends">
       <%= __('Friends') %>
     </a>
 
     <div style="color:#ffffff;" class="right menu">
 
-      <!-- <div style="color:#ffffff;" id="menu" class="ui dropdown item">
-        <%= __('Language') %> <i class="dropdown icon"></i>
-        <div class="menu">
-          <a style="color:#ffffff;" class="item">Español</a>
-          <a style="color:#ffffff;" class="item">Ruso</a>
-          <a style="color:#ffffff;" class="item">Inglés</a>
-        </div>
-      </div> -->
-
       <a style="color:#ffffff;" class="item" href="/profile?id=<%= req.session.profile.id %>">
-        <%= __('Profile') %>
+        <img class="ui avatar image" src="<%= req.session.user.photo %>"> <%= req.session.user.name %>
       </a>
 
       <div class="ui pointing dropdown link item">
-        <span style="color:#ffffff;" class="text"><%= req.session.user.name %></span>
+        <span style="color:#ffffff;" class="text">Opciones</span>
         <i style="color:#ffffff;" class="dropdown icon"></i>
         <div class="menu">
           <% if(req.session.authenticated){ %>

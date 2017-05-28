@@ -3,7 +3,20 @@
     <img src="{{ user.photo }}">
   </a>
   <div class="content">
-    <a href="/profile?id={{ id }}" class="header">{{ user.name }}</a>
+    <a href="/profile?id={{ id }}" class="header">
+      {{ user.name }}
+
+        {% if(user.suscription == 'premium'){ %}
+          <div class="ui mini teal label">
+           PREMIUM
+          </div>
+        {% } %}
+        <!-- {% if(_.includes(['superadmin', 'admin'], user.role)){ %}
+          <div class="ui mini teal right corner label">
+           <i class="star icon"></i>
+          </div>
+        {% } %} -->
+    </a>
     <div class="meta">
       <span class="cinema">{{ info }}</span>
     </div>
@@ -12,11 +25,10 @@
     </div>
     <div class="extra">
       <div class="ui right floated teal basic tiny button">
-        Add Friend
-        <i class="right chevron icon"></i>
+        <i class="add user icon"></i> Add Friend
       </div>
-      <!-- <div class="ui label">IMAX</div> -->
-      <div class="ui label"><i class="globe icon"></i> {{ user.role }}</div>
+        <i class="{{ setting.country.prefix }} flag"></i>
+        {{ setting.country.name }}
     </div>
   </div>
 <!-- </div> -->

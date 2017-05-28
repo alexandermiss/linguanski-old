@@ -13,7 +13,10 @@ $(function (){
   var FriendView = L.View.FriendView.extend({
     tagName: 'div',
     className: 'item',
-    template: Template.get('friend_item')
+    template: Template.get('friend_item'),
+    onRender: function (){
+      this.$el.css('position', 'relative');
+    }
   });
 
   var FriendCollectionView = L.CollectionView.FriendCollectionView.extend({
