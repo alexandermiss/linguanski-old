@@ -102,8 +102,8 @@ $(function(){
       phr.fetch({data: {}});
 
       phr.on('sync', function (){
-        var phrase = phr.get('phrase_native');
-        $('h2').text(phr.get('phrase_language'));
+        var phrase =phr.get('phrase_language');
+        $('h2').text(phr.get('phrase_native'));
         $('h3').text(phrase);
 
         _.each(phrase.split(''), function (l, i){

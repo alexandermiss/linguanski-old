@@ -12,7 +12,7 @@ module.exports = {
     name: { type: 'string' },
     photo: { type: 'string', defaultsTo: '/images/me.jpg' },
     role: {type: 'string', enum: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'},
-    suscription: {type: 'string', enum: ['premium', 'free'], defaultsTo: 'basic'},
+    suscription: {type: 'string', enum: ['premium', 'free'], defaultsTo: 'free'},
     activated: {type: 'boolean', defaultsTo: 0}
   }),
 

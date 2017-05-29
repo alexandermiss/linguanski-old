@@ -56,12 +56,12 @@ module.exports.waterlock = {
   jsonWebTokens:{
 
     // CHANGE THIS SECRET
-    secret: 'this is my secret1',
+    secret: 'LvMNyowY8jlMLWuulCzSdrwgpc8UFSyLLZjnfoze/hA=',
     expiry:{
       unit: 'days',
       length: '7'
     },
-    audience: 'app name',
+    audience: 'linguanski',
     subject: 'subject',
 
     // tracks jwt usage if set to true
@@ -125,7 +125,7 @@ module.exports.waterlock = {
       // obj - {controller: 'blog', action: 'post'}
       // string - 'custom json response string'
       // default - 'default'
-      success: '/account/logout',
+      success: '/account/signin',
 
       // This can be any one of the following
       //

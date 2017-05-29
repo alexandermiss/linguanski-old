@@ -125,7 +125,6 @@ module.exports = {
         {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
         {$match: {counter: {$gt: 1}}}
       ]).toArray(function(err, __trads){
-        sails.log.debug('__trads', __trads);
 
         var id = _.sample( _.map(__trads, '_id') );
         sails.log.info('sample', id);
@@ -133,14 +132,15 @@ module.exports = {
         _Phrase.find({ traduction: Traduction.mongo.objectId(id) }).toArray(function(err, phrases){
           if (err) cb(err);
 
-          sails.log.debug('phrases', phrases.length);
+          sails.log.debug('phrases', phrases);
+          sails.log.debug('opts', opts);
 
           _.extend(opts, {
             id: id,
-            phrase_native_id: phrases[0].id,
-            phrase_native: phrases[0].phrase,
-            phrase_language_id: phrases[1].id,
-            phrase_language: phrases[1].phrase,
+            phrase_native_id: _.find(phrases, {language: Language.mongo.objectId(opts.country_language_id)})._id,
+            phrase_native: _.find(phrases, {language: Language.mongo.objectId(opts.country_language_id)}).phrase,
+            phrase_language_id: _.find(phrases, {language: Language.mongo.objectId(opts.language_id)})._id,
+            phrase_language: _.find(phrases, {language: Language.mongo.objectId(opts.language_id)}).phrase,
             phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
             phrase_language_flag_prefix: opts.phrase_language_flag_prefix
           });

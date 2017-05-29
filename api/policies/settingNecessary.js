@@ -11,16 +11,16 @@ module.exports = function(req, res, next) {
 
   Setting.findOne({user: req.session.user.id})
     .populate('country').populate('language').exec(function( err, setting ){
-    if ( err ) return res.serverError(err);
+    if ( err ) return res.negotiate(err);
     if ( !setting ) return res.redirect('/settings/first/configuration');
 
     Country.findOne({id: setting.country.id})
       .populate('language').exec(function (err, country){
-        if ( err || !country ) return res.serverError(err);
+        if ( err || !country ) return res.negotiate(err);
         setting.country = country;
         req.session['setting'] = setting;
         return next();
-        
+
       })
     ;
 
