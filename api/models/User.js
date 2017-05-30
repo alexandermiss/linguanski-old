@@ -22,7 +22,11 @@ module.exports = {
   afterCreate: function (values, cb){
     Profile.create({ user: values.id }).exec(function (err, profile){
       if(err) return cb(err);
-      return cb();
+
+      Friend.create({ friend_one: values.id, friend_two: values.id, status: 'me' }).exec(function(err, friend){
+        if(err) return cb(err);
+        return cb(null, values);
+      });
     });
   }
 
