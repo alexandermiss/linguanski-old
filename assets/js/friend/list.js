@@ -31,7 +31,7 @@ $(function (){
     region: '#friendList',
     onStart: function(){
       this.showView( new FriendCollectionView() );
-      this.getView().collection.fetch({reset: true,data: {exclude: 1}});
+      this.getView().collection.fetch({reset: true,data: {friends: 1}});
     }
   });
 

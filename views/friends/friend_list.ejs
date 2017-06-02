@@ -1,8 +1,43 @@
 <%- include ../menu %>
 
+<style media="screen">
+	.ui.vertical.menu .item > i.icon{
+		float: left;
+		margin: 0em 1em 0em 0.5em;
+	}
+</style>
+
 <div id="friendListController" style="margin-top:20px;min-height:600px;" class="ui grid container">
 
-		<div class="eleven wide column">
+		<div class="three wide column">
+			<div class="ui secondary vertical menu">
+			  <a class="active item">
+					<i class="home icon"></i> Profile
+			  </a>
+			  <a class="item" href="/friends">
+					<i class="users icon"></i>
+			    <%= __('Friends') %>
+			  </a>
+			  <a class="item" href="/phrases">
+					<i class="write icon"></i>
+			    <%= __('Phrases') %>
+			  </a>
+			  <a class="item" href="/practise">
+					<i class="ellipsis horizontal icon"></i>
+			    <%= __('Practica') %>
+			  </a>
+			  <a class="item">
+					<i class="star icon"></i>
+			    Scores
+			  </a>
+			  <a class="item">
+					<i class="bookmark icon"></i>
+			    Bookmark
+			  </a>
+			</div>
+		</div>
+
+		<div class="nine wide column">
       <div style="min-height:550px;" class="ui segment">
         <h1 class="ui header"><%= __('Friends') %> </h1>
         <div class="ui divider"></div>
@@ -12,7 +47,8 @@
 				</div>
       </div>
     </div>
-		<div class="five wide column">
+
+		<div class="four wide column">
       <div style="min-height:550px;" class="ui segment">
 
 				<h3 class="ui header">Personas que quizas conozcas</h3>

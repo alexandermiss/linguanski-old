@@ -30,21 +30,50 @@ module.exports = {
   },
 
   getFriends: function (opts, cb){
+    var user_id = opts.friend_one;
 
-    Friend.find(_.pick(opts, 'friend_one'))
-			.exec(function(err, friends){
-				if(err) return cb(err);
-        sails.log.debug(opts);
-        var c = {};
+    Friend.native(function(err, _Friend){
+
+      var friends = _Friend.aggregate([
+        {
+          $match: {status: { $ne: 'me'}}
+        },
+        {
+          $project:
+          {
+            _id: 1,
+            estatus: "$status",
+            relationship:
+              {
+                $switch:
+              {
+              branches: [
+                {
+                  case: { $eq: ["$friend_one", User.mongo.objectId(user_id)] },
+                  then: "$friend_two"
+                },
+                {
+                  case: { $eq: ["$friend_two", User.mongo.objectId(user_id)]},
+                  then: "$friend_one"
+                }
+              ],
+              default: "Jaja"
+              }
+            }
+          }
+        }
+      ]).toArray(function (err, __friends){
+
+        var c = _.map(__friends, 'relationship');
 
         if(opts.friends)
-          c = {user: _.map(friends, 'friend_two')};
+          c = {user: c};
         else
-          c = {user: { '!': _.map(friends, 'friend_two')}};
+          c = {user: { '!': c}};
 
-				Profile.find(c)
-					.populate('user').exec(function(err, profiles){
-						if(err) return cb(err);
+    		Profile.find(c)
+    			.populate('user').exec(function(err, profiles){
+    				if(err) return cb(err);
 
             var ids = _.map(profiles, 'user.id');
             sails.log.info('ids', ids);
@@ -59,10 +88,11 @@ module.exports = {
               return cb(null, {results: profiles});
             });
 
-				});
+    		});
 
-		});
+      });
 
+    });
   }
 
 };
