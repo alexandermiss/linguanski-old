@@ -14,7 +14,7 @@ module.exports = {
 		Profile.findOne(__i).exec(function(err, profile){
 			if(err) return res.negotiate(err);
 			var __s = (req.query.id === req.session.profile.id) ? true : false;
-			return res.view('profile/main', {__s: __s, __i: __i});
+			return res.view('profile/main', {__s: __s, __i: __i, menu: 'profile'});
 		});
 
 	},

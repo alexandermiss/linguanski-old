@@ -1,0 +1,25 @@
+<div class="ui secondary vertical menu">
+  <a class="<% if(menu === 'profile'){ %>active <% } %>item" href="/profile?id=<%= session.profile.id %>">
+    <i class="home icon"></i> Profile
+  </a>
+  <a class="<% if(menu === 'friends'){ %>active <% } %>item" href="/friends">
+    <i class="users icon"></i>
+    <%= __('Friends') %>
+  </a>
+  <a class="<% if(menu === 'phrases'){ %>active <% } %>item" href="/phrases">
+    <i class="write icon"></i>
+    <%= __('Phrases') %>
+  </a>
+  <a class="<% if(menu === 'practica'){ %>active <% } %>item" href="/practise">
+    <i class="ellipsis horizontal icon"></i>
+    <%= __('Practica') %>
+  </a>
+  <a class="item">
+    <i class="star icon"></i>
+    Scores
+  </a>
+  <a class="item">
+    <i class="bookmark icon"></i>
+    Bookmark
+  </a>
+</div>

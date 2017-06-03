@@ -3,26 +3,42 @@
 <%- include ../modals/two_phrase_modal_form %>
 <%- include ../modals/detail_phrase_modal_form %>
 
-<div class="ui container segment">
+<div style="margin-top:20px;min-height:600px;" class="ui grid container">
 
-	<div class="ui grid">
+		<div class="three wide column">
+			<%- include ../secondarymenu %>
+		</div>
 
-		<div class="two column row">
-			<div class="left floated column">
-				<h1 class="ui header"><%= __('Phrases') %> </h1>
-			</div>
-			<div class="floated right aligned column">
-				<button id="add-phrase" class="ui blue basic button">
-					<i class="add icon"></i>
-					<%= __('Add Phrase') %>
-				</button>
+		<div class="ten wide column">
+			<div class="ui segment">
+
+				<div class="ui grid">
+
+					<div class="two column row">
+						<div class="left floated column">
+							<h1 class="ui header"><%= __('Phrases') %> </h1>
+						</div>
+						<div class="floated right aligned column">
+							<button id="add-phrase" class="ui blue basic button">
+								<i class="add icon"></i>
+								<%= __('Add Phrase') %>
+							</button>
+						</div>
+					</div>
+					<div class="ui section divider"></div>
+
+					<div id="phrase-content" class="one column row"></div>
+
+					<div id="pagination" class="two column row"></div>
+
+				</div>
 			</div>
 		</div>
-		<div class="ui section divider"></div>
 
-		<div id="phrase-content" class="one column row"></div>
+		<div class="three wide column">
+			<div class="ui segment">
+				<h3 class="ui header">Ads</h3>
+			</div>
+		</div>
 
-		<div id="pagination" class="two column row"></div>
-
-	</div>
 </div>

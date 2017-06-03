@@ -8,7 +8,7 @@
 module.exports = {
 
 	list: function (req, res, next){
-		return res.view('friends/friend_list');
+		return res.view('friends/friend_list', {menu: 'friends'});
 	}
 
 };

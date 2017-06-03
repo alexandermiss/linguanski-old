@@ -50,24 +50,24 @@ $(function(){
     template: Template.get('profile/presentation'),
   });
 
-  var ParentView = Marionette.View.extend({
-    tagName: 'div',
-    className: 'ui grid container first-margin-segment',
-    template: Template.get('profile/section_profile'),
-    regions: {
-      profile: {el: '#segmentCard', replaceElement: true},
-      presentation: {el: '#segmentPresentation', replaceElement: true}
-    },
-    initialize: function(opts){
-      var card = new ProfileCardView(opts);
-      var presentation = new ProfilePresentationView(opts);
-      this.showChildView('profile', card );
-      this.showChildView('presentation', presentation );
-    }
-  });
+  // var ParentView = Marionette.View.extend({
+  //   tagName: 'div',
+  //   className: 'thirteen wide column',
+  //   template: Template.get('profile/section_profile'),
+  //   regions: {
+  //     profile: {el: '#segmentCard', replaceElement: true},
+  //     presentation: {el: '#segmentPresentation', replaceElement: true}
+  //   },
+  //   initialize: function(opts){
+  //     var card = new ProfileCardView(opts);
+  //     var presentation = new ProfilePresentationView(opts);
+  //     this.showChildView('profile', card );
+  //     this.showChildView('presentation', presentation );
+  //   }
+  // });
 
   var AppView = Marionette.Application.extend({
-    region: { el:'#profileController',replaceElement:true},
+    region: { el:'#profileController'},
     initialize: function(opts){
       this.profile = opts.profile;
 
@@ -77,8 +77,14 @@ $(function(){
       this.profile.fetch({data:{id: $('#__i').val()}});
     },
     printProfile: function(){
-      var view = new ParentView({model: this.profile});
-      this.showView( view );
+      // var view = new ParentView({model: this.profile});
+      // this.showView( view );
+
+      var card = new ProfileCardView({model: this.profile});
+      var presentation = new ProfilePresentationView({model: this.profile});
+      $('#segmentCard').html(card.render().el );
+      $('#segmentPresentation').html(presentation.render().el );
+
     }
   });
 

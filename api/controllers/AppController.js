@@ -31,13 +31,13 @@ module.exports = {
 			if (err) { return res.negotiate(err); }
 			Source.find().exec(function(err, sources){
 				if (err) { return res.negotiate(err); }
-				return res.view('phrases/init', { langs: langs, sources: sources });
+				return res.view('phrases/init', { langs: langs, sources: sources, menu: 'phrases' });
 			});
 		});
 	},
 
 	practise: function (req, res, next){
-		return res.view('practise/index');
+		return res.view('practise/index', {menu: 'practica'});
 	},
 
 	info: function (req, res, next){
