@@ -1,15 +1,15 @@
 <%- include ../menu %>
 
-<div class="ui container">
+<div style="margin-top:20px;min-height:600px;" class="ui grid container">
 
-	<div class="ui grid">
-		<div class="row">
-			<div class="column">
-					<h1><%= __('Dashboard') %> </h1>	
-			</div>
-		</div>
-
+	<div class="three wide column">
+		<%- include ../secondarymenu %>
 	</div>
 
+	<div class="thirteen wide column">
+		<div class="ui segment">
+			<h1><%= __('Dashboard') %> </h1>
+		</div>
+	</div>
 
 </div>

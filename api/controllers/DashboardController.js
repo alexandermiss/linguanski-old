@@ -14,7 +14,7 @@ module.exports = {
 
 			Traduction.find({}).populateAll().exec(function (err, trads ){
 				if (err) { return res.negotiate(err); }
-				return res.view('dashboard/init', { trads: trads });
+				return res.view('dashboard/init', { trads: trads, menu: 'dashboard' });
 			});
 		});
 	}
