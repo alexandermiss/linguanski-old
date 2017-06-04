@@ -54,9 +54,7 @@ $(function (){
 	var Phrases = Backbone.Collection.extend({
 		model: Phrase,
 		url: '/api/v1/phrases',
-
 		parse: function (resp){
-			console.log(resp);
 			_.extend( this, _.omit(resp, 'results') );
 			return _.pick(resp, 'results').results;
 		}
@@ -202,16 +200,15 @@ $(function (){
 			var col = this.getView().collection;
 			var appRoute = new AppRoute({collection: col});
 			var pagination = new Pagination({collection: col});
-			phrases = app.getView().collection;
+			phrases = app.main.getView().collection;
 			pagination.render();
 			Backbone.history.start({ root: 'phrases' });
 			Backbone.history.navigate('!/page/1', {trigger:true});
 		}
 	});
 
-
-		app = new MyApp();
-		app.start();
+		app.main = new MyApp();
+		app.main.start();
 
 	io.socket.on('phrase', function (msg){
 		console.log('msg', msg);
@@ -240,5 +237,13 @@ $(function (){
 		  },
 		}).modal('show');
 	});
+
+	$('.prompt').on('change', _.debounce(function(e){
+		var val = $(this).val() || '';
+		if (val !== '')
+			app.main.getView().collection.fetch({reset: true, data: {q: val}});
+		else
+			app.main.getView().collection.fetch({reset: true});
+	}, 500));
 
 });

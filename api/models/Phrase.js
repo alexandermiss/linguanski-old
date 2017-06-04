@@ -26,18 +26,37 @@ module.exports = {
     if (opts.page < 0 ) skip = 0;
     else skip = ((opts.page - 1) * opts.limit);
 
-    sails.log.info('opts', opts);
-    sails.log.info('pag', skip);
+    sails.log.verbose('opts', opts);
+    sails.log.verbose('pag', skip);
 
     Phrase.native(function(err, _Phrase){
-      _Phrase.aggregate([
-        {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
-        {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
-        {$match: {counter: {$gt: 1}}},
-        {$sort: {_id: -1}},
-        {$skip: skip},
-        {$limit: opts.limit}
-      ]).toArray(function(err, __trads){
+
+      var q = _.has(opts, 'q') ? opts.q : '';
+      var query = null;
+
+      if(q){
+        var r = '/'+q+'/i';
+        query = [
+          {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
+          {$group: {_id: "$traduction", phrase: {$push: "$phrase"}, lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
+          {$match: {counter: {$gt: 1}, phrase: eval(r)}},
+          {$sort: {_id: -1}},
+          {$skip: skip},
+          {$limit: opts.limit}
+        ];
+      }else{
+
+        query = [
+          {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
+          {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
+          {$match: {counter: {$gt: 1}}},
+          {$sort: {_id: -1}},
+          {$skip: skip},
+          {$limit: opts.limit}
+        ];
+      }
+
+      _Phrase.aggregate(query).toArray(function(err, __trads){
         if(err){
           sails.log.error(err);
           return cb(err);

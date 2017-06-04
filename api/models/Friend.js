@@ -57,7 +57,7 @@ module.exports = {
                   then: "$friend_one"
                 }
               ],
-              default: "Jaja"
+              default: "Not found"
               }
             }
           }
@@ -65,7 +65,7 @@ module.exports = {
       ]).toArray(function (err, __friends){
 
         var c = _.map(__friends, 'relationship');
-        sails.log.debug(opts);
+        sails.log.verbose(opts);
         if(opts.friends)
           c = {user: c};
         else
@@ -76,7 +76,7 @@ module.exports = {
     				if(err) return cb(err);
 
             var ids = _.map(profiles, 'user.id');
-            sails.log.debug('ids', ids);
+            sails.log.verbose('ids', ids);
 
             Setting.find({user: ids}).populate('country').exec(function(err, settings){
               if(err) return cb(err);
