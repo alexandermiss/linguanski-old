@@ -85,9 +85,8 @@ $(function(){
         chilView.ui.input.val('');
       }
     },
-    onRenderChildren: function(){
+    onAttach: function (){
       this.collection.first().trigger('beginTyping');
-      _debug('The collectionview children have been rendered');
     }
   });
 
