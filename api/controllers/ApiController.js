@@ -22,7 +22,7 @@ module.exports = {
 			function(err, friends){
 				if(err) return res.json(err);
 
-				sails.log.info('profiles\n', friends);
+				// sails.log.info('profiles\n', friends);
 				return res.json(friends);
 		});
 	},

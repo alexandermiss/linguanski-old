@@ -41,38 +41,51 @@
 
 </style>
 
-<div class="ui container segment">
+<div style="margin-top:20px;min-height:600px;" class="ui grid container">
 
-  <div class="ui grid">
-    <div class="two column row">
-			<div class="left floated column">
-				<h1 class="ui header"><%= __('Practice') %> </h1>
-			</div>
-			<div class="floated right aligned column">
-				<button id="add-phrase" class="ui blue basic button">
-					<i class="repeat icon"></i>
-					<%= __('Get phrase') %>
-				</button>
-			</div>
-		</div>
-		<div class="ui section divider"></div>
+  <div class="three wide column">
+	  <%- include ../secondarymenu %>
+	</div>
 
-    <div class="one center aligned column row">
-      <div class="column">
-        <h2 class="ui center aligned header"></h2>
-        <div class="ui divider"></div>
-        <h3 class="ui center aligned header"></h3>
-        <div class="ui divider"></div>
-        <div id="typing" class="ui big labels">
+  <div class="thirteen wide column">
+    <div class="ui segment">
 
+      <div class="ui grid">
+        <div class="two column row">
+    			<div class="left floated column">
+    				<h1 class="ui header"><%= __('Practice') %> </h1>
+    			</div>
+    			<div class="floated right aligned column">
+    				<button id="add-phrase" class="ui blue basic button">
+    					<i class="repeat icon"></i>
+    					<%= __('Get phrase') %>
+    				</button>
+    			</div>
+    		</div>
+    		<div class="ui section divider"></div>
+
+        <div class="one center aligned column row">
+          <div class="column">
+            <h2 class="ui center aligned header"></h2>
+            <div class="ui divider"></div>
+            <h3 class="ui center aligned header"></h3>
+            <div class="ui divider"></div>
+            <div id="typing" class="ui big labels">
+
+            </div>
+
+            <div class="ui divider"></div>
+            <form id="form-typing" class="ui big form">
+
+            </form>
+          </div>
         </div>
-
-        <div class="ui divider"></div>
-        <form id="form-typing" class="ui big form">
-
-        </form>
       </div>
+
     </div>
+
   </div>
+
+
 
 </div>
