@@ -63,10 +63,10 @@ module.exports = {
           }
         }
       ]).toArray(function (err, __friends){
+        sails.log.debug('opts\n',opts);
 
         var c = _.map(__friends, 'relationship');
-        sails.log.verbose(opts);
-        if(opts.friends)
+        if(_.has(opts, 'friends'))
           c = {user: c};
         else
           c = {user: { '!': c}};
@@ -74,16 +74,24 @@ module.exports = {
     		Profile.find(c)
     			.populate('user').exec(function(err, profiles){
     				if(err) return cb(err);
-
             var ids = _.map(profiles, 'user.id');
-            sails.log.verbose('ids', ids);
 
             Setting.find({user: ids}).populate('country').exec(function(err, settings){
               if(err) return cb(err);
 
               profiles = _.map(profiles, function (profile){
-                return _.extend(profile, {setting: _.find(settings, {user: profile.user.id})});
+                profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
+                return profile;
               });
+
+              if(_.has(opts, 'friends')){
+                profiles = _.map(profiles, function (profile){
+                  var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
+                  if( _.has(obj, 'estatus') )
+                    profile['relationship'] = obj.estatus;
+                  return profile;
+                });
+              }
 
               return cb(null, {results: profiles});
             });

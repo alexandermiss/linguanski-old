@@ -24,9 +24,15 @@
       <p></p>
     </div>
     <div class="extra">
-      <div class="ui right floated teal basic tiny button">
-        <i class="add user icon"></i> Add Friend
-      </div>
+      {% if(relationship == 'pending'){ %}
+        <div class="ui right floated teal basic tiny button friend-btn">
+          <i class="add user icon"></i> Confirm
+        </div>
+      {% }else{ %}
+        <div class="ui right floated teal basic tiny button friend-btn">
+          <i class="add user icon"></i> Remove friendship
+        </div>
+      {% } %}
         <i class="{{ setting.country.prefix }} flag"></i>
         {{ setting.country.name }}
     </div>

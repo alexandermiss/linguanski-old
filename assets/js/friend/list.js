@@ -14,8 +14,14 @@ $(function (){
     tagName: 'div',
     className: 'item',
     template: Template.get('friend_item'),
-    onRender: function (){
-      this.$el.css('position', 'relative');
+    ui: {
+      friend: '.friend-btn'
+    },
+    events: {
+      'click @ui.friend': 'friendBtn'
+    },
+    friendBtn: function (e){
+      alert('sorry, no working yet');
     }
   });
 
@@ -23,21 +29,43 @@ $(function (){
     tagName: 'div',
     className: 'ui divided items',
     childView: FriendView,
-    emptyView: L.View.EmptyBasicView,
+    emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
   });
 
   var MaybeView = Marionette.View.extend({
     tagName: 'div',
     className: 'item',
     template: Template.get('maybe_item'),
+    ui: {
+      maybe: '.maybe-btn'
+    },
+    events: {
+      'click @ui.maybe': 'maybeBtn'
+    },
+    maybeBtn: function (e){
+      alert('sorry, no working yet');
+    }
   });
 
   var MaybeCollectionView = Marionette.CollectionView.extend({
     tagName: 'div',
     className: 'ui middle aligned divided list',
     childView: MaybeView,
-    emptyView: L.View.EmptyBasicView,
+    emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
   });
+
+  // var ConfirmView = Marionette.View.extend({
+  //   tagName: 'div',
+  //   className: 'item',
+  //   template: Template.get('maybe_item'),
+  // });
+  //
+  // var ConfirmCollectionView = Marionette.CollectionView.extend({
+  //   tagName: 'div',
+  //   className: 'ui middle aligned divided list',
+  //   childView: MaybeView,
+  //   emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
+  // });
 
   var AppMain = Marionette.Application.extend({
     // region: '#friendList',
