@@ -41,11 +41,11 @@ module.exports.connections = {
 
   mongoDbServerProd: {
     adapter: 'sails-mongo',
-    host: 'ds117348.mlab.com',
-    port: 17348,
-    user: 'translatorgreatappuser',
-    password: 'translatorgreatpass',
-    database: 'translatorgreatappdb'
+    host: '127.0.0.1',
+    port: 27017,
+    user: 'linguanski',
+    password: '93247bc6677bd0663ab4485da30f5a70',
+    database: 'linguanski'
   },
 
 };
