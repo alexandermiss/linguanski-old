@@ -5,17 +5,11 @@
   <div class="content">
     <a href="/profile?id={{ id }}" class="header">
       {{ user.name }}
-
         {% if(user.suscription == 'premium'){ %}
           <div class="ui mini teal label">
            PREMIUM
           </div>
         {% } %}
-        <!-- {% if(_.includes(['superadmin', 'admin'], user.role)){ %}
-          <div class="ui mini teal right corner label">
-           <i class="star icon"></i>
-          </div>
-        {% } %} -->
     </a>
     <div class="meta">
       <span class="cinema">{{ info }}</span>
@@ -24,14 +18,26 @@
       <p></p>
     </div>
     <div class="extra">
-      {% if(relationship == 'pending'){ %}
+      {% if( friendship == 1 ){ %}
+        {% if( relationship == 'pending' ){ %}
         <div class="ui right floated teal basic tiny button friend-btn">
-          <i class="add user icon"></i> Confirm
+          <i class="add user icon"></i> Cancel request
         </div>
+        {% }else{ %}
+        <div class="ui right floated red basic tiny button friend-btn">
+          <i class="add user icon"></i> Remove friend
+        </div>
+        {% } %}
       {% }else{ %}
+        {% if( relationship == 'pending' ){ %}
         <div class="ui right floated teal basic tiny button friend-btn">
-          <i class="add user icon"></i> Remove friendship
+          <i class="add user icon"></i> Confirm friend
         </div>
+        {% }else{ %}
+        <div class="ui right floated red basic tiny button friend-btn">
+          <i class="add user icon"></i> Remove
+        </div>
+        {% } %}
       {% } %}
         <i class="{{ setting.country.prefix }} flag"></i>
         {{ setting.country.name }}

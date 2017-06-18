@@ -29,8 +29,9 @@ module.exports = {
 
 	createFriend: function ( req, res, next ){
 		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
-		Friend.addFriend({friend_one: req.session.user.id, friend_two: p.friend_two},
+		Friend.addFriend(p,
 			function(err, friend){
 				if(err) return res.json(err);
 				if(!friend) {
@@ -40,6 +41,36 @@ module.exports = {
 				sails.log.debug('friend\n',friend);
 				return res.json(friend);
 			});
+	},
+
+	updateFriend: function ( req, res, next ){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+
+		if( p.relationship == 'maybe' ){
+			Friend.addFriend(p,
+				function(err, friend){
+					if(err) return res.json(err);
+					if(!friend) {
+						sails.log.error('friend', friend);
+						return res.json({error: 'no friend created'});
+					}
+					sails.log.debug('friend\n',friend);
+					return res.json(friend);
+				});
+		}else{
+			Friend.acceptFriend(p,
+				function(err, friend){
+					if(err) return res.json(err);
+					if(!friend) {
+						sails.log.error('friend', friend);
+						return res.json({error: 'no friend created'});
+					}
+					sails.log.debug('friend\n',friend);
+					return res.json(friend);
+				});
+		}
+
 	},
 
 	updateActivation: function (req, res, next){

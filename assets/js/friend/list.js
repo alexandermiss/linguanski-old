@@ -7,7 +7,7 @@ $(function (){
   });
 
   var FriendCollection = L.Collection.Default.extend({
-    url: '/api/v1/friends'
+    url: '/api/v1/friend'
   });
 
   var FriendView = L.View.FriendView.extend({
@@ -21,7 +21,8 @@ $(function (){
       'click @ui.friend': 'friendBtn'
     },
     friendBtn: function (e){
-      alert('sorry, no working yet');
+      this.model.set('relationship', 'friend');
+      this.model.save();
     }
   });
 
@@ -43,7 +44,8 @@ $(function (){
       'click @ui.maybe': 'maybeBtn'
     },
     maybeBtn: function (e){
-      alert('sorry, no working yet');
+      this.model.get('relationship', 'maybe');
+      this.model.save();
     }
   });
 
