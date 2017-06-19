@@ -2,15 +2,19 @@
   <a href="/profile?id={{ id }}" class="ui tiny bordered image">
     <img src="{{ user.photo }}">
   </a>
-  <div class="content">
+  <div style="position:relative;" class="content">
     <a href="/profile?id={{ id }}" class="header">
       {{ user.name }}
-        {% if(user.suscription == 'premium'){ %}
+        <!-- {% if(user.suscription == 'premium'){ %}
           <div class="ui mini teal label">
            PREMIUM
           </div>
-        {% } %}
+        {% } %} -->
+
     </a>
+    {% if(user.verified){ %}
+      <i style="position:absolute;top:-5px;" class="asterisk small icon blue"></i>
+    {% } %}
     <div class="meta">
       <span class="cinema">{{ info }}</span>
     </div>

@@ -52,7 +52,6 @@ module.exports = {
 				function(err, friend){
 					if(err) return res.json(err);
 					if(!friend) {
-						sails.log.error('friend', friend);
 						return res.json({error: 'no friend created'});
 					}
 					sails.log.debug('friend\n',friend);
@@ -63,7 +62,6 @@ module.exports = {
 				function(err, friend){
 					if(err) return res.json(err);
 					if(!friend) {
-						sails.log.error('friend', friend);
 						return res.json({error: 'no friend created'});
 					}
 					sails.log.debug('friend\n',friend);

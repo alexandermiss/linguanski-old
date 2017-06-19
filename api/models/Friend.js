@@ -37,6 +37,7 @@ module.exports = {
 
         });
 			});
+
   },
 
   acceptFriend: function (opts, cb){
@@ -126,7 +127,6 @@ module.exports = {
                 profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
                 if(_.has(opts, 'maybe')) profile['relationship'] = 'maybe';
                 if( _.has(opts, 'friends') ){
-                  sails.log.debug(_.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}));
                   profile['friendship'] = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}).friendship;
                 }
                 return profile;

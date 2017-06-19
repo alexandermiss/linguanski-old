@@ -13,7 +13,8 @@ module.exports = {
     photo: { type: 'string', defaultsTo: '/images/me.jpg' },
     role: {type: 'string', enum: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'},
     suscription: {type: 'string', enum: ['premium', 'free'], defaultsTo: 'free'},
-    activated: {type: 'boolean', defaultsTo: 0}
+    activated: {type: 'boolean', defaultsTo: 0},
+    verified: {type: 'boolean', defaultsTo: 0}
   }),
 
   beforeCreate: require('waterlock').models.user.beforeCreate,
