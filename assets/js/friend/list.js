@@ -30,7 +30,9 @@ $(function (){
     tagName: 'div',
     className: 'ui divided items',
     childView: FriendView,
-    emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
+    emptyView: Marionette.View.extend({
+      template: _.template('<div> You have no friends</div>')
+    }),
   });
 
   var MaybeView = Marionette.View.extend({
@@ -55,19 +57,6 @@ $(function (){
     childView: MaybeView,
     emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
   });
-
-  // var ConfirmView = Marionette.View.extend({
-  //   tagName: 'div',
-  //   className: 'item',
-  //   template: Template.get('maybe_item'),
-  // });
-  //
-  // var ConfirmCollectionView = Marionette.CollectionView.extend({
-  //   tagName: 'div',
-  //   className: 'ui middle aligned divided list',
-  //   childView: MaybeView,
-  //   emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
-  // });
 
   var AppMain = Marionette.Application.extend({
     // region: '#friendList',

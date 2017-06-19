@@ -20,8 +20,8 @@
     <div class="extra">
       {% if( friendship == 1 ){ %}
         {% if( relationship == 'pending' ){ %}
-        <div class="ui right floated teal basic tiny button friend-btn">
-          <i class="add user icon"></i> Cancel request
+        <div class="ui right floated red basic tiny button friend-btn">
+          <i class="remove user icon"></i> Cancel request
         </div>
         {% }else{ %}
         <div class="ui right floated red basic tiny button friend-btn">
@@ -35,7 +35,7 @@
         </div>
         {% }else{ %}
         <div class="ui right floated red basic tiny button friend-btn">
-          <i class="add user icon"></i> Remove
+          <i class="remove user icon"></i> Remove friend
         </div>
         {% } %}
       {% } %}
