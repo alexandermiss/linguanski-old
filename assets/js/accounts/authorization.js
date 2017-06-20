@@ -19,11 +19,12 @@ $(function(){
     className: 'item',
     template: Template.get('account_template'),
     ui: {
-      actionBtn : '.button',
-      select: 'select.dropdown'
+      btnActionDeactivate : '.deactivate',
+      btnActionActivate : '.activate',
     },
     events: {
-      'click @ui.actionBtn': 'deleteAction'
+      'click @ui.btnActionDeactivate' : 'deleteAction',
+      'click @ui.btnActionActivate'   : 'deleteAction'
     },
     modelEvents: {
       'change:activated': 'rendered'

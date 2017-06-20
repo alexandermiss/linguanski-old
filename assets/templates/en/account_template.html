@@ -1,26 +1,22 @@
   <div class="right floated content">
-    {% if(activated){ %}
-    <div class="ui red button">Deactivate</div>
-    {% }else{ %}
-    <div class="ui teal button">Activate</div>
-    {% } %}
+    <a href="/profile?id={{ id }}" class="ui basic blue small button">
+      <i class="user icon"></i>
+      Profile</a>
 
+    {% if(user.activated){ %}
+    <div class="ui basic red small button deactivate">
+      <i class="minus circle icon"></i>
+      Deactivate</div>
+    {% }else{ %}
+    <div class="ui basic teal small button activate">
+      <i class="check circle icon"></i>
+      Activate</div>
+    {% } %}
   </div>
-  <form class="right floated content ui form">
-    <div class="field">
-      <div class="ui left fluid icon input">
-        <i class="lock icon"></i>
-        <select class="ui fluid search dropdown" name="role">
-          <option value="">Seleccione</option>
-          <option value="basic">Basic</option>
-          <option value="admin">Admin</option>
-          <option value="superadmin">SuperAdmin</option>
-        </select>
-      </div>
-    </div>
-  </form>
-  <img class="ui avatar image" src="https://semantic-ui.com/images/avatar2/small/molly.png">
+
+  <img class="ui avatar image" src="{{ user.photo }}">
+
   <div class="content">
-    <div class="header">{{ name }}</div>
-    {{ role }}
+    <div class="header">{{ user.name }}</div>
+    {{ user.role }}
   </div>
