@@ -46,7 +46,6 @@ $(function (){
       'click @ui.maybe': 'maybeBtn'
     },
     maybeBtn: function (e){
-      this.model.get('relationship', 'maybe');
       this.model.save();
     }
   });

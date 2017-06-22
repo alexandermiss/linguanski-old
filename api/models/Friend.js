@@ -17,27 +17,27 @@ module.exports = {
 
   addFriend: function (opts, cb){
     sails.log.verbose('opts\n', opts);
+    var c = _.pick(opts, 'friend_one', 'friend_two');
 
-    Friend.create(opts)
-			.exec(function(err, friend){
-				if(err) return cb(err);
-				if(_.isArray(friend) && _.first(friend)) friend = friend[0];
+      Friend.create( c )
+  			.exec(function(err, friend){
+  				if(err) return cb(err);
+  				if(_.isArray(friend) && _.first(friend)) friend = friend[0];
 
-        Profile.findOne({user: opts.user.id})
-          .populate('user').exec(function(err, profile){
-            if(err) return cb(err);
-
-            Setting.findOne({user: profile.user.id}).populate('country').exec(function(err, settings){
+          Profile.findOne({user: opts.user.id})
+            .populate('user').exec(function(err, profile){
               if(err) return cb(err);
 
-              profile['setting'] = settings || {};
-              profile['relationship'] = 'friend';
-              return cb(null, profile);
-            });
+              Setting.findOne({user: profile.user.id}).populate('country').exec(function(err, settings){
+                if(err) return cb(err);
 
-        });
-			});
+                profile['setting'] = settings || {};
+                profile['relationship'] = 'friend';
+                return cb(null, profile);
+              });
 
+          });
+  			});
   },
 
   acceptFriend: function (opts, cb){
@@ -92,12 +92,11 @@ module.exports = {
                     then: "$friend_one"
                   }
                 ],
-                default: "Not found"
+                default: null
               }
             }
           }
         },
-        // { $match: {relationship: { $ne: "$friend_one"}} }
       ]).toArray(function (err, __friends){
         if(_.has(opts, 'friends'))
           sails.log.verbose('__friends\n',__friends);

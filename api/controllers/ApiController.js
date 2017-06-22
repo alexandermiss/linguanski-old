@@ -53,21 +53,37 @@ module.exports = {
 				function(err, friend){
 					if(err) return res.json(err);
 					if(!friend) {
+						sails.log.debug('no friend\n');
 						return res.json({error: 'no friend created'});
 					}
 					sails.log.debug('friend\n',friend);
 					return res.json(friend);
 				});
 		}else{
-			Friend.acceptFriend(p,
-				function(err, friend){
-					if(err) return res.json(err);
-					if(!friend) {
-						return res.json({error: 'no friend created'});
-					}
-					sails.log.debug('friend\n',friend);
-					return res.json(friend);
-				});
+
+			if( _.has(p, 'friendship') ){
+				Friend.acceptFriend(p,
+					function(err, friend){
+						if(err) return res.json(err);
+						if(!friend) {
+							return res.json({error: 'no friend created'});
+						}
+						sails.log.debug('friend\n',friend);
+						return res.json(friend);
+					});
+			}else{
+				var c = _.pick(p, 'friend_one', 'friend_two');
+
+				Friend.destroy( c ).exec(function(err){
+	        if(err) return res.json(err);
+
+	        var obj = _.omit(p, 'friend_one', 'friend_two');
+	        obj['relationship'] = 'maybe';
+	        sails.log.info('obj\n', obj);
+	        return res.json(obj);
+	      });
+			}
+
 		}
 
 	},
