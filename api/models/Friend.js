@@ -98,21 +98,14 @@ module.exports = {
           }
         },
       ]).toArray(function (err, __friends){
-        if(_.has(opts, 'friends'))
-          sails.log.verbose('__friends\n',__friends);
 
         sails.log.verbose('opts\n',opts);
+        __friends = _.compact(__friends);
 
         var c = _.map(__friends, 'relationship');
         sails.log.verbose('map\n',c);
 
-        if(_.has(opts, 'friends'))
-          c = {user: c};
-        else{
-          // Self user for exclude from list
-          c.push(opts.friend_one)
-          c = {user: { '!': c }};
-        }
+        c = {user: c};
 
     		Profile.find(c)
     			.populate('user').exec(function(err, profiles){
@@ -124,21 +117,16 @@ module.exports = {
 
               profiles = _.map(profiles, function (profile){
                 profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                if(_.has(opts, 'maybe')) profile['relationship'] = 'maybe';
-                if( _.has(opts, 'friends') ){
-                  profile['friendship'] = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}).friendship;
-                }
+                profile['friendship'] = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}).friendship;
                 return profile;
               });
 
-              if(_.has(opts, 'friends')){
-                profiles = _.map(profiles, function (profile){
-                  var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
-                  if( _.has(obj, 'estatus') )
-                    profile['relationship'] = obj.estatus;
-                  return profile;
-                });
-              }
+              profiles = _.map(profiles, function (profile){
+                var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
+                // if( _.has(obj, 'estatus') )
+                profile['relationship'] = obj.estatus;
+                return profile;
+              });
 
               return cb(null, {results: profiles});
             });
@@ -148,6 +136,60 @@ module.exports = {
       });
 
     });
+  },
+
+  // Get maybes
+  getMaybes: function (opts, cb){
+    var user_id = User.mongo.objectId(opts.friend_one);
+    Friend.native(function(err, _Friend){
+      var friends = _Friend.aggregate([
+        { $match: {status: { $ne: 'me'}} },
+        {
+          $project: {
+            _id: 1,
+            estatus: "$status",
+            relationship: {
+              $switch: {
+                branches: [
+                  {
+                    case: { $eq: ["$friend_one", user_id] },
+                    then: "$friend_two"
+                  },
+                  {
+                    case: { $eq: ["$friend_two", user_id] },
+                    then: "$friend_one"
+                  }
+                ],
+                default: null
+              }
+            }
+          }
+        },
+      ]).toArray(function (err, __friends){
+        var c = _.compact(__friends);
+        c = _.map(c, 'relationship');
+
+        c.push(opts.friend_one)
+        c = {user: { '!': c }};
+
+        Profile.find(c)
+    			.populate('user').exec(function(err, profiles){
+    				if(err) return cb(err);
+            profiles = _.map(profiles, function (profile){
+              var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
+              sails.log.info(obj.estatus);
+              if(typeof obj.estatus !== 'undefined')
+                profile['relationship'] = obj.estatus;
+              return profile;
+            });
+            // sails.log.info('profiles\n', profiles);
+            return cb(null, {results: profiles});
+    		});
+
+      });
+    });
+
   }
+
 
 };

@@ -70,9 +70,13 @@ module.exports.routes = {
   'GET /api/v1/accounts'              : 'ApiController.getUser',
   'PUT /api/v1/account/:id'           : 'ApiController.updateActivation',
 
-  'GET /api/v1/friend'               : 'ApiController.getFriends',
+  'GET /api/v1/friend'                : 'ApiController.getFriends',
   'POST /api/v1/friend'               : 'ApiController.createFriend',
   'PUT /api/v1/friend/:id'            : 'ApiController.updateFriend',
+
+  'GET /api/v1/maybe'                 : 'ApiController.getMaybe',
+  // 'POST /api/v1/maybe'                : 'ApiController.createFriend',
+  // 'PUT /api/v1/maybe/:id'             : 'ApiController.updateFriend',
 
   'GET /api/v1/phrases'               : 'PhraseController.getPhrases',
   'GET /api/v1/getOnePhrase'          : 'PhraseController.getOnePhrase',

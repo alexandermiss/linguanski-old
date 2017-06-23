@@ -22,8 +22,6 @@ module.exports = {
 		Friend.getFriends(p,
 			function(err, friends){
 				if(err) return res.json(err);
-
-				// sails.log.info('profiles\n', friends);
 				return res.json(friends);
 		});
 	},
@@ -86,6 +84,16 @@ module.exports = {
 
 		}
 
+	},
+
+	getMaybe: function (req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id}, req.query);
+		Friend.getMaybes(p,
+			function(err, maybes){
+				if(err) return res.json(err);
+				return res.json(maybes);
+		});
 	},
 
 	updateActivation: function (req, res, next){

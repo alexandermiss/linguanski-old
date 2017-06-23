@@ -10,6 +10,14 @@ $(function (){
     url: '/api/v1/friend'
   });
 
+  var MaybeModel = L.Model.Friend.extend({
+    urlRoot: '/api/v1/friend'
+  });
+
+  var MaybeCollection = L.Collection.Default.extend({
+    url: '/api/v1/maybe'
+  });
+
   var FriendView = L.View.FriendView.extend({
     tagName: 'div',
     className: 'item',
@@ -79,13 +87,13 @@ $(function (){
       $('#maybeList').html(v.render().el);
     },
     onStart: function(){
-      this.friends.fetch({reset: true, data: {friends: 1}});
-      this.maybe.fetch({reset: true, data: {maybe: 1}});
+      this.friends.fetch({reset: true, data: {page: 1}});
+      this.maybe.fetch({reset: true, data: {page: 1}});
     }
   });
 
   var friends = new FriendCollection();
-  var maybe = new FriendCollection();
+  var maybe = new MaybeCollection();
 
   app.main = new AppMain({friends: friends, maybe: maybe});
   app.main.start();
