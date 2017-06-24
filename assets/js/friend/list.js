@@ -11,7 +11,7 @@ $(function (){
   });
 
   var MaybeModel = L.Model.Friend.extend({
-    urlRoot: '/api/v1/friend'
+    urlRoot: '/api/v1/maybe'
   });
 
   var MaybeCollection = L.Collection.Default.extend({
@@ -72,17 +72,15 @@ $(function (){
       this.friends = options.friends;
       this.maybe = options.maybe;
 
-      // this.mergeOptions(options);
-
       this.listenTo(this.friends, 'sync', this.friendsList);
       this.listenTo(this.maybe, 'sync', this.maybeList);
-
     },
     friendsList: function (){
       var v = new FriendCollectionView({collection: this.friends});
       $('#friendList').html(v.render().el);
     },
     maybeList: function (){
+      console.log(this.maybe.toJSON());
       var v = new MaybeCollectionView({collection: this.maybe});
       $('#maybeList').html(v.render().el);
     },

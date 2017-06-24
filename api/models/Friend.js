@@ -32,7 +32,7 @@ module.exports = {
                 if(err) return cb(err);
 
                 profile['setting'] = settings || {};
-                profile['relationship'] = 'friend';
+                profile['friendship'] = 'friend';
                 return cb(null, profile);
               });
 
@@ -97,13 +97,12 @@ module.exports = {
             }
           }
         },
+        { $match: {relationship: { $ne: null }} }
       ]).toArray(function (err, __friends){
 
-        sails.log.verbose('opts\n',opts);
-        __friends = _.compact(__friends);
-
-        var c = _.map(__friends, 'relationship');
-        sails.log.verbose('map\n',c);
+        var c = _.compact(__friends);
+        c = _.map(c, 'relationship');
+        c = _.map(c, _.toString);
 
         c = {user: c};
 
@@ -116,14 +115,9 @@ module.exports = {
               if(err) return cb(err);
 
               profiles = _.map(profiles, function (profile){
+                var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
                 profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
                 profile['friendship'] = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}).friendship;
-                return profile;
-              });
-
-              profiles = _.map(profiles, function (profile){
-                var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
-                // if( _.has(obj, 'estatus') )
                 profile['relationship'] = obj.estatus;
                 return profile;
               });
@@ -165,9 +159,11 @@ module.exports = {
             }
           }
         },
+        { $match: {relationship: { $ne: null }} }
       ]).toArray(function (err, __friends){
         var c = _.compact(__friends);
         c = _.map(c, 'relationship');
+        c = _.map(c, _.toString);
 
         c.push(opts.friend_one)
         c = {user: { '!': c }};
@@ -176,13 +172,9 @@ module.exports = {
     			.populate('user').exec(function(err, profiles){
     				if(err) return cb(err);
             profiles = _.map(profiles, function (profile){
-              var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
-              sails.log.info(obj.estatus);
-              if(typeof obj.estatus !== 'undefined')
-                profile['relationship'] = obj.estatus;
+              profile['friendship'] = 'maybe';
               return profile;
             });
-            // sails.log.info('profiles\n', profiles);
             return cb(null, {results: profiles});
     		});
 
