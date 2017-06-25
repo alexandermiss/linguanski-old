@@ -23,13 +23,33 @@ $(function (){
     className: 'item',
     template: Template.get('friend_item'),
     ui: {
-      friend: '.friend-btn'
+      friend: '.friend-btn',
+      i: 'i'
     },
     events: {
-      'click @ui.friend': 'friendBtn'
+      'click @ui.friend': 'friendBtn',
+      'mouseenter @ui.friend': 'mouseEnter',
+      'mouseleave @ui.friend': 'mouseLeave'
+    },
+    mouseEnter: function (e){
+      if( this.model.get('status') == 'friend'){
+        this.ui.friend
+          .removeClass('teal')
+          .removeClass('basic')
+          .addClass('red')
+          .html('<i class="remove icon"></i>  Delete');
+      }
+    },
+    mouseLeave: function (e){
+      if( this.model.get('status') == 'friend'){
+        this.ui.friend
+        .removeClass('red')
+        .addClass('basic')
+        .addClass('teal')
+        .html('<i class="checkmark icon"></i> Friends');
+      }
     },
     friendBtn: function (e){
-      this.model.set('relationship', 'friend');
       this.model.save();
     }
   });

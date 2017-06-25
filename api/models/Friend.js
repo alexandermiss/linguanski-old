@@ -40,24 +40,23 @@ module.exports = {
   			});
   },
 
-  acceptFriend: function (opts, cb){
+  confirmFriend: function (opts, cb){
     sails.log.verbose('opts\n', opts);
 
     Friend.update({or: [
       {friend_one: opts.friend_one, friend_two: opts.friend_two},
       {friend_one: opts.friend_two, friend_two: opts.friend_one}
-    ]}, {status: 'friend'}).exec(function (err, data){
-      sails.log.verbose('data\n', data);
+    ], status: 'pending'}, {status: 'friend'}).exec(function (err, data){
       if(err) return cb(err);
       Profile.findOne(opts.id)
         .populate('user').exec(function(err, profile){
           if(err) return cb(err);
 
-          Setting.findOne({user: profile.user.id}).populate('country').exec(function(err, settings){
+          Setting.findOne({user: profile.user.id}).populate('country').exec(function(err, setting){
             if(err) return cb(err);
 
-            profile['setting'] = settings || {};
-            profile['relationship'] = 'friend';
+            profile['setting'] = setting || {};
+            profile['friendship'] = 'friend';
             return cb(null, profile);
           });
 
@@ -72,15 +71,12 @@ module.exports = {
     Friend.native(function(err, _Friend){
 
       var friends = _Friend.aggregate([
-        { $match: {status: { $ne: 'me'}} },
+        { $match: {status: { $eq: 'friend'}} },
         {
           $project: {
             _id: 1,
-            estatus: "$status",
-            friendship: {
-              $cond: { if: {$eq: ["$friend_one", user_id]}, then: 1, else: 0 }
-            },
-            relationship: {
+            status: "$status",
+            friend: {
               $switch: {
                 branches: [
                   {
@@ -97,11 +93,11 @@ module.exports = {
             }
           }
         },
-        { $match: {relationship: { $ne: null }} }
+        { $match: {friend: { $ne: null } } }
       ]).toArray(function (err, __friends){
-
+        sails.log.info('__friends\n', __friends);
         var c = _.compact(__friends);
-        c = _.map(c, 'relationship');
+        c = _.map(c, 'friend');
         c = _.map(c, _.toString);
 
         c = {user: c};
@@ -111,14 +107,14 @@ module.exports = {
     				if(err) return cb(err);
             var ids = _.map(profiles, 'user.id');
 
-            Setting.find({user: ids}).populate('country').exec(function(err, settings){
+            Setting.find({user: ids}).populate('country').exec(function(err, setting){
               if(err) return cb(err);
 
               profiles = _.map(profiles, function (profile){
-                var obj = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}) || {};
-                profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                profile['friendship'] = _.find(__friends, {relationship: User.mongo.objectId(profile.user.id)}).friendship;
-                profile['relationship'] = obj.estatus;
+                var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
+                profile['setting'] = _.find(setting, {user: profile.user.id}) || {};
+                // profile['friendship'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).friendship;
+                profile['status'] = 'friend';
                 return profile;
               });
 

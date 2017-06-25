@@ -21,6 +21,7 @@ module.exports = {
 		_.extend(p, {friend_one: req.session.user.id}, req.query);
 		Friend.getFriends(p,
 			function(err, friends){
+				sails.log.info('friends\n', friends);
 				if(err) return res.json(err);
 				return res.json(friends);
 		});
@@ -46,27 +47,43 @@ module.exports = {
 		var p = req.params.all();
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
-			if( _.has(p, 'friendship') ){
-				Friend.acceptFriend(p,
+			if( p.status == 'friend' ){
+				var c = _.pick(p, 'friend_one', 'friend_two');
+
+				var or = {or: [
+					{friend_one: c.friend_one, friend_two: c.friend_two},
+					{friend_one: c.friend_two, friend_two: c.friend_one},
+				], status: 'friend'}
+
+				Friend.destroy( or ).exec(function(err){
+	        if(err) return res.json(err);
+
+	        var obj = _.omit(p, 'friend_one', 'friend_two');
+	        obj['status'] = 'maybe';
+	        sails.log.info('obj\n', obj);
+	        return res.json(obj);
+	      });
+			}else{
+				Friend.addFriend(p,
 					function(err, friend){
 						if(err) return res.json(err);
 						if(!friend) {
+							sails.log.error('friend', friend);
 							return res.json({error: 'no friend created'});
 						}
 						sails.log.debug('friend\n',friend);
 						return res.json(friend);
 					});
-			}else{
-				var c = _.pick(p, 'friend_one', 'friend_two');
 
-				Friend.destroy( c ).exec(function(err){
-	        if(err) return res.json(err);
-
-	        var obj = _.omit(p, 'friend_one', 'friend_two');
-	        obj['relationship'] = 'maybe';
-	        sails.log.info('obj\n', obj);
-	        return res.json(obj);
-	      });
+				// Friend.confirmFriend(p,
+				// 	function(err, friend){
+				// 		if(err) return res.json(err);
+				// 		if(!friend) {
+				// 			return res.json({error: 'no friend created'});
+				// 		}
+				// 		sails.log.debug('friend\n',friend);
+				// 		return res.json(friend);
+				// 	});
 			}
 	},
 
@@ -76,7 +93,7 @@ module.exports = {
 		Friend.getMaybes(p,
 			function(err, maybes){
 				if(err) return res.json(err);
-				sails.log.info(err, maybes);
+				// sails.log.info(err, maybes);
 				return res.json(maybes);
 		});
 	},

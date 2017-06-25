@@ -1,4 +1,4 @@
-<!-- <div class="item"> -->
+
   <a href="/profile?id={{ id }}" class="ui tiny bordered image">
     <img src="{{ user.photo }}">
   </a>
@@ -16,17 +16,16 @@
       <p></p>
     </div>
     <div class="extra">
-        {% if( status == 'friend' ){ %}
-        <div class="ui right floated teal basic tiny button friend-btn">
-          <i class="checkmark icon"></i> Friends
-        </div>
-        {% }else{ %}
-        <div class="ui right floated teal tiny button friend-btn">
-          <i class="add user icon"></i> Add friend
-        </div>
-        {% } %}
-        <i class="{{ setting.country.prefix }} flag"></i>
-        {{ setting.country.name }}
+      {% if( relationship == 'pending' ){ %}
+      <div class="ui right floated red basic tiny button friend-btn">
+        <i class="remove user icon"></i> Cancel request
+      </div>
+      {% }else{ %}
+      <div class="ui right floated red basic tiny button friend-btn">
+        <i class="add user icon"></i> Remove friend
+      </div>
+      {% } %}
+      <i class="{{ setting.country.prefix }} flag"></i>
+      {{ setting.country.name }}
     </div>
   </div>
-<!-- </div> -->
