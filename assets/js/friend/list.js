@@ -50,6 +50,7 @@ $(function (){
       }
     },
     friendBtn: function (e){
+      console.log(this.model.toJSON());
       this.model.save();
     }
   });

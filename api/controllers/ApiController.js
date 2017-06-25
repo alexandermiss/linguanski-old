@@ -71,6 +71,8 @@ module.exports = {
 							sails.log.error('friend', friend);
 							return res.json({error: 'no friend created'});
 						}
+						delete friend['friendship'];
+						friend['status'] = 'confirm'
 						sails.log.debug('friend\n',friend);
 						return res.json(friend);
 					});
