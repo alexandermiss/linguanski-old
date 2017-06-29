@@ -47,6 +47,7 @@ module.exports.routes = {
   'GET /practise'                         : 'AppController.practise',
   'GET /profile'                          : 'ProfileController.getProfile',
   'GET /friends'                          : 'FriendController.list',
+  'GET /requests'                         : 'FriendController.request',
 
   // Admin
   'GET /admin/authorizations'             : 'AppController.authorizations',

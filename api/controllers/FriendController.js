@@ -8,7 +8,11 @@
 module.exports = {
 
 	list: function (req, res, next){
-		return res.view('friends/friend_list', {menu: 'friends'});
+		return res.view('friends/friend_list', {menu: 'friends', secondary: 'friends'});
+	},
+
+	request: function (req, res, next){
+		return res.view('friends/request_list', {menu: 'friends', secondary: 'requests'});
 	}
 
 };
