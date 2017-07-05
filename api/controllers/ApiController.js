@@ -18,12 +18,23 @@ module.exports = {
 
 	getFriends: function( req, res, next){
 		var p = req.params.all();
-		_.extend(p, {friend_one: req.session.user.id}, req.query);
+		_.extend(p, {friend_one: req.session.user.id, status: 'friend'}, req.query);
 		Friend.getFriends(p,
 			function(err, friends){
 				sails.log.info('friends\n', friends);
 				if(err) return res.json(err);
 				return res.json(friends);
+		});
+	},
+
+	getRequests: function( req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
+		Friend.getFriends(p,
+			function(err, requests){
+				sails.log.info('requests\n', requests);
+				if(err) return res.json(err);
+				return res.json(requests);
 		});
 	},
 
@@ -126,6 +137,37 @@ module.exports = {
 				sails.log.info('obj\n', obj);
 				return res.json(obj);
 			});
+		}
+	},
+
+	updateRequest: function (req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+
+		if( p.status == 'pending' ){
+			var c = _.pick(p, 'friend_one', 'friend_two');
+
+			Friend.destroy( c ).exec(function(err){
+				if(err) return res.json(err);
+
+				var obj = _.omit(p, 'friend_one', 'friend_two');
+				obj['status'] = 'maybe';
+				sails.log.info('request obj\n', obj);
+				return res.json(obj);
+			});
+		}else{
+			Friend.addFriend(p,
+				function(err, friend){
+					if(err) return res.json(err);
+					if(!friend) {
+						sails.log.debug('no friend\n');
+						return res.json({error: 'no friend created'});
+					}
+					delete friend['friendship'];
+					friend['status'] = 'pending';
+					sails.log.debug('friend\n',friend);
+					return res.json(friend);
+				});
 		}
 	},
 

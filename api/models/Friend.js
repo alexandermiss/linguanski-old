@@ -67,11 +67,11 @@ module.exports = {
 
   getFriends: function (opts, cb){
     var user_id = User.mongo.objectId(opts.friend_one);
-
+    var status = opts.status;
     Friend.native(function(err, _Friend){
 
       var friends = _Friend.aggregate([
-        { $match: {status: { $eq: 'friend'}} },
+        { $match: {status: { $eq: status}} },
         {
           $project: {
             _id: 1,
@@ -114,7 +114,7 @@ module.exports = {
                 var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
                 profile['setting'] = _.find(setting, {user: profile.user.id}) || {};
                 // profile['friendship'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).friendship;
-                profile['status'] = 'friend';
+                profile['status'] = status;
                 return profile;
               });
 
