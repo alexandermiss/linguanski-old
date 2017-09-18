@@ -1,3 +1,3 @@
-# openidiom
+# Linguanski
 
-a [Sails](http://sailsjs.org) application
+Learning a language.
