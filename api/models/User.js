@@ -10,7 +10,7 @@ module.exports = {
 
   attributes: require('waterlock').models.user.attributes({
     name: { type: 'string' },
-    photo: { type: 'string', defaultsTo: '/images/me.jpg' },
+    photo: { type: 'string', defaultsTo: 'https://res.cloudinary.com/linguanski/image/upload/v1505708822/anon_user_suokqd.png' },
     role: {type: 'string', enum: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'},
     suscription: {type: 'string', enum: ['premium', 'free'], defaultsTo: 'free'},
     activated: {type: 'boolean', defaultsTo: 0},

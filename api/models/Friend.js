@@ -76,6 +76,9 @@ module.exports = {
           $project: {
             _id: 1,
             status: "$status",
+            relationship: {
+              $cond: {if: {$eq: ["$friend_one", user_id] }, then: "me", else: "net" }
+            },
             friend: {
               $switch: {
                 branches: [
@@ -113,7 +116,7 @@ module.exports = {
               profiles = _.map(profiles, function (profile){
                 var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
                 profile['setting'] = _.find(setting, {user: profile.user.id}) || {};
-                // profile['friendship'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).friendship;
+                profile['relationship'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).relationship;
                 profile['status'] = status;
                 return profile;
               });

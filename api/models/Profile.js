@@ -18,6 +18,7 @@ module.exports = {
 			if(err) return cb(err);
 			Setting.findOne({user: profile.user.id}).populateAll().exec(function(err, setting){
 				if(err) return cb(err);
+        if(!setting) return cb( new Error('Profile no complete') );
 				Language.findOne(setting.country.language).exec(function(err, lang){
 					if(err) return cb(err);
 					profile['setting'] = setting;
