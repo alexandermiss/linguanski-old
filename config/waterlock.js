@@ -25,7 +25,7 @@ module.exports.waterlock = {
     {
       name:'waterlock-local-auth',
       passwordReset:{
-        tokens: false,
+        tokens: true,
         mail: {
           protocol: 'SMTP',
           options:{
@@ -71,11 +71,11 @@ module.exports.waterlock = {
     // express session object and attach the
     // user to it during the hasJsonWebToken
     // middleware
-    stateless: false,
+    stateless: true,
 
     // set the name of the jwt token property
     // in the JSON response
-    tokenProperty: 'token',
+    tokenProperty: 'access_token',
 
     // set the name of the expires property
     // in the JSON response
@@ -84,7 +84,7 @@ module.exports.waterlock = {
     // configure whether or not to include
     // the user in the respnse - this is useful if
     // JWT is the default response for succesfull login
-    includeUserInJwtResponse: true
+    includeUserInJwtResponse: false
   },
 
   // Post Actions
@@ -103,7 +103,7 @@ module.exports.waterlock = {
       // obj - {controller: 'blog', action: 'post'}
       // string - 'custom json response string'
       // default - 'default'
-      success: 'default',
+      success: 'jwt',
 
       // This can be any one of the following
       //

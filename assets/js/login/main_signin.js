@@ -41,7 +41,7 @@ $(function(){
           })
           .done(function(data){
             console.log('done', data);
-            if(data && data.auth){
+            if(data && data.access_token){
               window.location.href='/dashboard';
             }
           }).fail(function(data){
