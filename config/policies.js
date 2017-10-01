@@ -52,6 +52,7 @@ module.exports.policies = {
 
   PhraseController: {
     '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
+    'getJwtPhrases': ['settingNecessary', 'hasJsonWebToken'],
     getOnePhrase: true
   },
 
