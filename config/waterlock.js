@@ -31,12 +31,12 @@ module.exports.waterlock = {
           options:{
             service: 'Gmail',
             auth: {
-              user: 'gmail.user@gmail.com',
-              pass: 'userpass'
+              user: 'somosnuevascriaturas@gmail.com',
+              pass: '1inguansKi'
             }
           },
-          from: 'no-reply@domain.com',
-          subject: 'Your password reset!',
+          from: 'somosnuevascriaturas@gmail.com',
+          subject: 'Recovery password',
           forwardUrl: 'http://localhost:1337'
         },
         template:{

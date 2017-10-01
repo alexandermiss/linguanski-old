@@ -36,8 +36,7 @@ $(function(){
 
         $.post('/auth/login', {
             email: fields.email,
-            password: fields.password,
-            name: fields.name
+            password: fields.password
           })
           .done(function(data){
             console.log('done', data);

@@ -66,6 +66,23 @@ module.exports = {
 		}), function(err, data){
 			return res.json(data);
 		});
-	}
+	},
+
+	getJwtPhrases: function (req, res, next){
+		try{
+			var sett = req.session.setting;
+
+			var native_room 	= 'phrase__' + sett.country.language.prefix + '_' + sett.language.prefix;
+			var	language_room = 'phrase__' + sett.language.prefix + '_' + sett.country.language.prefix;
+
+			var p = req.params.all();
+			Phrase.combineLanguages(_.extend(p, {country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id}), function(err, phrases){
+				if(err) return res.negotiate(err);
+				return res.json(phrases);
+			});
+		}catch(e){
+				return res.notFound(e);
+		}
+	},
 
 };
