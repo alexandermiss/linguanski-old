@@ -88,5 +88,5 @@ module.exports.routes = {
   'PUT /api/v1/add_phrase/:id'        : 'PhraseController.updatePhrase',
 
   'GET /api/v1.1/phrases'             : 'PhraseController.getJwtPhrases',
-
+  'GET /api/v1.1/friend'              : 'ApiController.getJwtFriends',
 };

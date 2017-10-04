@@ -1,24 +1,27 @@
-// MarionetteJS (Backbone.Marionette)
-// ----------------------------------
-// v3.3.1
-//
-// Copyright (c)2017 Derick Bailey, Muted Solutions, LLC.
-// Distributed under MIT license
-//
-// http://marionettejs.com
+/**
+* @license
+* MarionetteJS (Backbone.Marionette)
+* ----------------------------------
+* v3.4.3
+*
+* Copyright (c)2017 Derick Bailey, Muted Solutions, LLC.
+* Distributed under MIT license
+*
+* http://marionettejs.com
+*/
 
 
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('backbone'), require('underscore'), require('backbone.radio')) :
 	typeof define === 'function' && define.amd ? define(['backbone', 'underscore', 'backbone.radio'], factory) :
-	(global.Marionette = global['Mn'] = factory(global.Backbone,global._,global.Backbone.Radio));
+	(global.Marionette = factory(global.Backbone,global._,global.Backbone.Radio));
 }(this, (function (Backbone,_,Radio) { 'use strict';
 
-Backbone = 'default' in Backbone ? Backbone['default'] : Backbone;
-_ = 'default' in _ ? _['default'] : _;
-Radio = 'default' in Radio ? Radio['default'] : Radio;
+Backbone = Backbone && Backbone.hasOwnProperty('default') ? Backbone['default'] : Backbone;
+_ = _ && _.hasOwnProperty('default') ? _['default'] : _;
+Radio = Radio && Radio.hasOwnProperty('default') ? Radio['default'] : Radio;
 
-var version = "3.3.1";
+var version = "3.4.3";
 
 //Internal utility for creating context style global utils
 var proxy = function proxy(method) {
@@ -54,6 +57,7 @@ var deprecate = function deprecate(message, test) {
   }
 };
 
+/* istanbul ignore next: can't clear console */
 deprecate._console = typeof console !== 'undefined' ? console : {};
 deprecate._warn = function () {
   var warn = deprecate._console.warn || deprecate._console.log || _.noop;
@@ -143,7 +147,7 @@ var getOnMethodName = _.memoize(function (event) {
 //
 // `this.triggerMethod("foo:bar")` will trigger the "foo:bar" event and
 // call the "onFooBar" method.
-function triggerMethod$1(event) {
+function triggerMethod(event) {
   for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
   }
@@ -178,7 +182,7 @@ function triggerMethodOn(context) {
     return context.triggerMethod.apply(context, args);
   }
 
-  return triggerMethod$1.apply(context, args);
+  return triggerMethod.apply(context, args);
 }
 
 // DOM Refresh
@@ -262,7 +266,7 @@ function handleRender() {
 // Monitor a view's state, propagating attach/detach events to children and firing dom:refresh
 // whenever a rendered view is attached or an attached view is rendered.
 function monitorViewEvents(view) {
-  if (view._areViewEventsMonitored) {
+  if (view._areViewEventsMonitored || view.monitorViewEvents === false) {
     return;
   }
 
@@ -424,12 +428,8 @@ function unbindRequests(channel, bindings) {
 }
 
 // Internal utility for setting options consistently across Mn
-var setOptions = function setOptions() {
-  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-    args[_key] = arguments[_key];
-  }
-
-  this.options = _.extend.apply(_, [{}, _.result(this, 'options')].concat(args));
+var setOptions = function setOptions(options) {
+  this.options = _.extend({}, _.result(this, 'options'), options);
 };
 
 var CommonMixin = {
@@ -514,9 +514,11 @@ var ClassOptions = ['channelName', 'radioEvents', 'radioRequests'];
 // A Base Class that other Classes should descend from.
 // Object borrows many conventions and utilities from Backbone.
 var MarionetteObject = function MarionetteObject(options) {
-  this._setOptions(options);
+  if (!this.hasOwnProperty('options')) {
+    this._setOptions(options);
+  }
   this.mergeOptions(options, ClassOptions);
-  this.cid = _.uniqueId(this.cidPrefix);
+  this._setCid();
   this._initRadio();
   this.initialize.apply(this, arguments);
 };
@@ -540,6 +542,12 @@ _.extend(MarionetteObject.prototype, Backbone.Events, CommonMixin, RadioMixin, {
 
   //this is a noop method intended to be overridden by classes that extend from this base
   initialize: function initialize() {},
+  _setCid: function _setCid() {
+    if (this.cid) {
+      return;
+    }
+    this.cid = _.uniqueId(this.cidPrefix);
+  },
   destroy: function destroy() {
     if (this._isDestroyed) {
       return this;
@@ -559,51 +567,8 @@ _.extend(MarionetteObject.prototype, Backbone.Events, CommonMixin, RadioMixin, {
   },
 
 
-  triggerMethod: triggerMethod$1
+  triggerMethod: triggerMethod
 });
-
-// DomMixin
-//  ---------
-
-var DomMixin = {
-  createBuffer: function createBuffer() {
-    return document.createDocumentFragment();
-  },
-  appendChildren: function appendChildren(el, children) {
-    Backbone.$(el).append(children);
-  },
-  beforeEl: function beforeEl(el, sibling) {
-    Backbone.$(el).before(sibling);
-  },
-  replaceEl: function replaceEl(newEl, oldEl) {
-    if (newEl === oldEl) {
-      return;
-    }
-
-    var parent = oldEl.parentNode;
-
-    if (!parent) {
-      return;
-    }
-
-    parent.replaceChild(newEl, oldEl);
-  },
-  detachContents: function detachContents(el) {
-    Backbone.$(el).contents().detach();
-  },
-  setInnerContent: function setInnerContent(el, html) {
-    Backbone.$(el).html(html);
-  },
-  detachEl: function detachEl(el) {
-    Backbone.$(el).detach();
-  },
-  removeEl: function removeEl(el) {
-    Backbone.$(el).remove();
-  },
-  findEls: function findEls(selector, context) {
-    return Backbone.$(selector, context);
-  }
-};
 
 // Template Cache
 // --------------
@@ -618,6 +583,7 @@ var TemplateCache = function TemplateCache(templateId) {
 // caches from these method calls instead of creating
 // your own TemplateCache instances
 _.extend(TemplateCache, {
+
   templateCaches: {},
 
   // Get the specified template by id. Either
@@ -664,7 +630,7 @@ _.extend(TemplateCache, {
 // TemplateCache instance methods, allowing each
 // template cache object to manage its own state
 // and know whether or not it has been loaded
-_.extend(TemplateCache.prototype, DomMixin, {
+_.extend(TemplateCache.prototype, {
 
   // Internal method to load the template
   load: function load(options) {
@@ -687,7 +653,7 @@ _.extend(TemplateCache.prototype, DomMixin, {
   // using a template-loader plugin as described here:
   // https://github.com/marionettejs/backbone.marionette/wiki/Using-marionette-with-requirejs
   loadTemplate: function loadTemplate(templateId, options) {
-    var $template = this.findEls(templateId);
+    var $template = Backbone.$(templateId);
 
     if (!$template.length) {
       throw new MarionetteError({
@@ -824,7 +790,7 @@ var BehaviorsMixin = {
     var behaviors = this._behaviors;
     // Use good ol' for as this is a very hot function
     for (var i = 0, length = behaviors && behaviors.length; i < length; i++) {
-      triggerMethod$1.apply(behaviors[i], arguments);
+      triggerMethod.apply(behaviors[i], arguments);
     }
   }
 };
@@ -857,7 +823,7 @@ var DelegateEntityEventsMixin = {
 var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 
 function uniqueName(eventName, selector) {
-  return [eventName + _.uniqueId('.evt'), selector].join(' ');
+  return '' + eventName + _.uniqueId('.evt') + ' ' + selector;
 }
 
 // Set event name to be namespaced using a unique index
@@ -1055,6 +1021,131 @@ var UIMixin = {
   }
 };
 
+// DomApi
+//  ---------
+// Performant method for returning the jQuery instance
+function _getEl(el) {
+  return el instanceof Backbone.$ ? el : Backbone.$(el);
+}
+
+// Static setter
+function setDomApi(mixin) {
+  this.prototype.Dom = _.extend({}, this.prototype.Dom, mixin);
+  return this;
+}
+
+var DomApi = {
+
+  // Returns a new HTML DOM node instance
+  createBuffer: function createBuffer() {
+    return document.createDocumentFragment();
+  },
+
+
+  // Lookup the `selector` string
+  // Selector may also be a DOM element
+  // Returns an array-like object of nodes
+  getEl: function getEl(selector) {
+    return _getEl(selector);
+  },
+
+
+  // Finds the `selector` string with the el
+  // Returns an array-like object of nodes
+  findEl: function findEl(el, selector) {
+    var _$el = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _getEl(el);
+
+    return _$el.find(selector);
+  },
+
+
+  // Returns true if the el contains the node childEl
+  hasEl: function hasEl(el, childEl) {
+    return el.contains(childEl && childEl.parentNode);
+  },
+
+
+  // Detach `el` from the DOM without removing listeners
+  detachEl: function detachEl(el) {
+    var _$el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _getEl(el);
+
+    _$el.detach();
+  },
+
+
+  // Remove `oldEl` from the DOM and put `newEl` in its place
+  replaceEl: function replaceEl(newEl, oldEl) {
+    if (newEl === oldEl) {
+      return;
+    }
+
+    var parent = oldEl.parentNode;
+
+    if (!parent) {
+      return;
+    }
+
+    parent.replaceChild(newEl, oldEl);
+  },
+
+
+  // Swaps the location of `el1` and `el2` in the DOM
+  swapEl: function swapEl(el1, el2) {
+    if (el1 === el2) {
+      return;
+    }
+
+    var parent1 = el1.parentNode;
+    var parent2 = el2.parentNode;
+
+    if (!parent1 || !parent2) {
+      return;
+    }
+
+    var next1 = el1.nextSibling;
+    var next2 = el2.nextSibling;
+
+    parent1.insertBefore(el2, next1);
+    parent2.insertBefore(el1, next2);
+  },
+
+
+  // Replace the contents of `el` with the HTML string of `html`
+  setContents: function setContents(el, html) {
+    var _$el = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _getEl(el);
+
+    _$el.html(html);
+  },
+
+
+  // Takes the DOM node `el` and appends the DOM node `contents`
+  // to the end of the element's contents.
+  appendContents: function appendContents(el, contents) {
+    var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+        _ref$_$el = _ref._$el,
+        _$el = _ref$_$el === undefined ? _getEl(el) : _ref$_$el,
+        _ref$_$contents = _ref._$contents,
+        _$contents = _ref$_$contents === undefined ? _getEl(contents) : _ref$_$contents;
+
+    _$el.append(_$contents);
+  },
+
+
+  // Does the el have child nodes
+  hasContents: function hasContents(el) {
+    return el.hasChildNodes();
+  },
+
+
+  // Remove the inner contents of `el` from the DOM while leaving
+  // `el` itself in the DOM.
+  detachContents: function detachContents(el) {
+    var _$el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _getEl(el);
+
+    _$el.contents().detach();
+  }
+};
+
 // ViewMixin
 //  ---------
 
@@ -1070,6 +1161,8 @@ var UIMixin = {
 
 
 var ViewMixin = {
+  Dom: DomApi,
+
   supportsRenderLifecycle: true,
   supportsDestroyLifecycle: true,
 
@@ -1167,7 +1260,7 @@ var ViewMixin = {
     if (this._isDestroyed) {
       return this;
     }
-    var shouldTriggerDetach = !!this._isAttached;
+    var shouldTriggerDetach = this._isAttached && !this._shouldDisableEvents;
 
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
@@ -1182,7 +1275,7 @@ var ViewMixin = {
     this.unbindUIElements();
 
     // remove the view from the DOM
-    this.removeEl(this.el);
+    this._removeElement();
 
     if (shouldTriggerDetach) {
       this._isAttached = false;
@@ -1203,6 +1296,13 @@ var ViewMixin = {
     this.stopListening();
 
     return this;
+  },
+
+
+  // Equates to this.$el.remove
+  _removeElement: function _removeElement() {
+    this.$el.off().removeData();
+    this.Dom.detachEl(this.el, this.$el);
   },
   bindUIElements: function bindUIElements() {
     this._bindUIElements();
@@ -1233,8 +1333,8 @@ var ViewMixin = {
 
   // import the `triggerMethod` to trigger events with corresponding
   // methods if the method exists
-  triggerMethod: function triggerMethod() {
-    var ret = triggerMethod$1.apply(this, arguments);
+  triggerMethod: function triggerMethod$$1() {
+    var ret = triggerMethod.apply(this, arguments);
 
     this._triggerEventOnBehaviors.apply(this, arguments);
 
@@ -1281,14 +1381,36 @@ var ViewMixin = {
   }
 };
 
-_.extend(ViewMixin, DomMixin, BehaviorsMixin, CommonMixin, DelegateEntityEventsMixin, TriggersMixin, UIMixin);
+_.extend(ViewMixin, BehaviorsMixin, CommonMixin, DelegateEntityEventsMixin, TriggersMixin, UIMixin);
 
-function destroyBackboneView(view) {
+function renderView(view) {
+  if (view._isRendered) {
+    return;
+  }
+
+  if (!view.supportsRenderLifecycle) {
+    triggerMethodOn(view, 'before:render', view);
+  }
+
+  view.render();
+
+  if (!view.supportsRenderLifecycle) {
+    view._isRendered = true;
+    triggerMethodOn(view, 'render', view);
+  }
+}
+
+function destroyView(view) {
+  if (view.destroy) {
+    view.destroy();
+    return;
+  }
+
   if (!view.supportsDestroyLifecycle) {
     triggerMethodOn(view, 'before:destroy', view);
   }
 
-  var shouldTriggerDetach = !!view._isAttached;
+  var shouldTriggerDetach = view._isAttached && !view._shouldDisableEvents;
 
   if (shouldTriggerDetach) {
     triggerMethodOn(view, 'before:detach', view);
@@ -1314,6 +1436,8 @@ function destroyBackboneView(view) {
 var ClassOptions$2 = ['allowMissingEl', 'parentEl', 'replaceElement'];
 
 var Region = MarionetteObject.extend({
+  Dom: DomApi,
+
   cidPrefix: 'mnr',
   replaceElement: false,
   _isReplaced: false,
@@ -1367,11 +1491,11 @@ var Region = MarionetteObject.extend({
 
     this._setupChildView(view);
 
-    this._renderView(view);
+    this.currentView = view;
+
+    renderView(view);
 
     this._attachView(view, options);
-
-    this.currentView = view;
 
     this.triggerMethod('show', this, view, options);
 
@@ -1398,26 +1522,16 @@ var Region = MarionetteObject.extend({
 
     parentView._proxyChildViewEvents(view);
   },
-  _renderView: function _renderView(view) {
-    if (view._isRendered) {
-      return;
-    }
 
-    if (!view.supportsRenderLifecycle) {
-      triggerMethodOn(view, 'before:render', view);
-    }
 
-    view.render();
-
-    if (!view.supportsRenderLifecycle) {
-      view._isRendered = true;
-      triggerMethodOn(view, 'render', view);
-    }
+  // If the regions parent view is not monitoring its attach/detach events
+  _shouldDisableMonitoring: function _shouldDisableMonitoring() {
+    return this._parentView && this._parentView.monitorViewEvents === false;
   },
   _attachView: function _attachView(view) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    var shouldTriggerAttach = !view._isAttached && isNodeAttached(this.el);
+    var shouldTriggerAttach = !view._isAttached && isNodeAttached(this.el) && !this._shouldDisableMonitoring();
     var shouldReplaceEl = typeof options.replaceElement === 'undefined' ? !!_.result(this, 'replaceElement') : !!options.replaceElement;
 
     if (shouldTriggerAttach) {
@@ -1441,6 +1555,8 @@ var Region = MarionetteObject.extend({
     if (!_.isObject(this.el)) {
       this.$el = this.getEl(this.el);
       this.el = this.$el[0];
+      // Make sure the $el contains only the el
+      this.$el = this.Dom.getEl(this.el);
     }
 
     if (!this.$el || this.$el.length === 0) {
@@ -1501,7 +1617,13 @@ var Region = MarionetteObject.extend({
   // Override this method to change how the region finds the DOM element that it manages. Return
   // a jQuery selector object scoped to a provided parent el or the document if none exists.
   getEl: function getEl(el) {
-    return this.findEls(el, _.result(this, 'parentEl'));
+    var context = _.result(this, 'parentEl');
+
+    if (context && _.isString(el)) {
+      return this.Dom.findEl(context, el);
+    }
+
+    return this.Dom.getEl(el);
   },
   _replaceEl: function _replaceEl(view) {
     // always restore the el to ensure the regions el is present before replacing
@@ -1509,7 +1631,7 @@ var Region = MarionetteObject.extend({
 
     view.on('before:destroy', this._restoreEl, this);
 
-    this.replaceEl(view.el, this.el);
+    this.Dom.replaceEl(view.el, this.el);
 
     this._isReplaced = true;
   },
@@ -1549,7 +1671,7 @@ var Region = MarionetteObject.extend({
   // Override this method to change how the new view is appended to the `$el` that the
   // region is managing
   attachHtml: function attachHtml(view) {
-    this.appendChildren(this.el, view.el);
+    this.Dom.appendContents(this.el, view.el, { _$el: this.$el, _$contents: view.$el });
   },
 
 
@@ -1605,16 +1727,13 @@ var Region = MarionetteObject.extend({
 
     this._parentView.stopListening(view);
   },
-  destroyView: function destroyView(view) {
+  destroyView: function destroyView$$1(view) {
     if (view._isDestroyed) {
       return view;
     }
 
-    if (view.destroy) {
-      view.destroy();
-    } else {
-      destroyBackboneView(view);
-    }
+    view._shouldDisableEvents = this._shouldDisableMonitoring();
+    destroyView(view);
     return view;
   },
   removeView: function removeView(view) {
@@ -1636,14 +1755,14 @@ var Region = MarionetteObject.extend({
     return view;
   },
   _detachView: function _detachView(view) {
-    var shouldTriggerDetach = !!view._isAttached;
+    var shouldTriggerDetach = view._isAttached && !this._shouldDisableMonitoring();
     var shouldRestoreEl = this._isReplaced;
     if (shouldTriggerDetach) {
       triggerMethodOn(view, 'before:detach', view);
     }
 
     if (shouldRestoreEl) {
-      this.replaceEl(this.el, view.el);
+      this.Dom.replaceEl(this.el, view.el);
     } else {
       this.detachHtml();
     }
@@ -1657,7 +1776,7 @@ var Region = MarionetteObject.extend({
 
   // Override this method to change how the region detaches current content
   detachHtml: function detachHtml() {
-    this.detachContents(this.el);
+    this.Dom.detachContents(this.el, this.$el);
   },
 
 
@@ -1696,9 +1815,9 @@ var Region = MarionetteObject.extend({
 
     return MarionetteObject.prototype.destroy.apply(this, arguments);
   }
+}, {
+  setDomApi: setDomApi
 });
-
-_.extend(Region.prototype, DomMixin);
 
 // return the region instance from the definition
 var buildRegion = function (definition, defaults) {
@@ -2024,7 +2143,7 @@ var View = Backbone.View.extend({
     Backbone.View.prototype.setElement.apply(this, arguments);
 
     if (hasEl) {
-      this._isRendered = !!this.$el.length;
+      this._isRendered = this.Dom.hasContents(this.el);
       this._isAttached = isNodeAttached(this.el);
     }
 
@@ -2127,7 +2246,7 @@ var View = Backbone.View.extend({
   // }
   // ```
   attachElContent: function attachElContent(html) {
-    this.setInnerContent(this.el, html);
+    this.Dom.setContents(this.el, html, this.$el);
 
     return this;
   },
@@ -2144,7 +2263,11 @@ var View = Backbone.View.extend({
   // Sets the renderer for the Marionette.View class
   setRenderer: function setRenderer(renderer) {
     this.prototype._renderHtml = renderer;
-  }
+    return this;
+  },
+
+
+  setDomApi: setDomApi
 });
 
 _.extend(View.prototype, ViewMixin, RegionsMixin);
@@ -2159,9 +2282,9 @@ var methods = ['forEach', 'each', 'map', 'find', 'detect', 'filter', 'select', '
 var emulateCollection = function emulateCollection(object, listProperty) {
   _.each(methods, function (method) {
     object[method] = function () {
-      var list = _.values(_.result(this, listProperty));
-      var args = [list].concat(_.toArray(arguments));
-      return _[method].apply(_, args);
+      var list = _.result(this, listProperty);
+      var args = Array.prototype.slice.call(arguments);
+      return _[method].apply(_, [list].concat(args));
     };
   });
 };
@@ -2177,12 +2300,16 @@ var Container = function Container(views) {
   _.each(views, _.bind(this.add, this));
 };
 
-emulateCollection(Container.prototype, '_views');
+emulateCollection(Container.prototype, '_getViews');
 
 // Container Methods
 // -----------------
 
 _.extend(Container.prototype, {
+  _getViews: function _getViews() {
+    return _.values(this._views);
+  },
+
 
   // Add a view to this container. Stores the view
   // by `cid` and makes it searchable by the model
@@ -2341,7 +2468,7 @@ var CollectionView = Backbone.View.extend({
     this._isBuffering = true;
   },
   _endBuffering: function _endBuffering() {
-    var shouldTriggerAttach = !!this._isAttached;
+    var shouldTriggerAttach = this._isAttached && this.monitorViewEvents !== false;
     var triggerOnChildren = shouldTriggerAttach ? this._getImmediateChildren() : [];
 
     this._isBuffering = false;
@@ -2451,11 +2578,8 @@ var CollectionView = Backbone.View.extend({
     this.triggerMethod('before:remove:child', this, view);
 
     this.children._remove(view);
-    if (view.destroy) {
-      view.destroy();
-    } else {
-      destroyBackboneView(view);
-    }
+    view._shouldDisableEvents = this.monitorViewEvents === false;
+    destroyView(view);
 
     this.stopListening(view);
     this.triggerMethod('remove:child', this, view);
@@ -2546,6 +2670,8 @@ var CollectionView = Backbone.View.extend({
   // you can pass reorderOnSort: true to only reorder the DOM after a sort instead of
   // rendering all the collectionView.
   reorder: function reorder() {
+    var _this3 = this;
+
     var children = this.children;
     var models = this._filteredSortedModels();
 
@@ -2567,7 +2693,7 @@ var CollectionView = Backbone.View.extend({
 
       // Get the DOM nodes in the same order as the models and
       // find the model that were children before but aren't in this new order.
-      var elsToReorder = children.reduce(function (viewEls, view) {
+      var elsToReorder = _.reduce(this.children._views, function (viewEls, view) {
         var index = _.indexOf(models, view.model);
 
         if (index === -1) {
@@ -2584,9 +2710,15 @@ var CollectionView = Backbone.View.extend({
 
       this.triggerMethod('before:reorder', this);
 
+      var elBuffer = this.Dom.createBuffer();
+
+      _.each(elsToReorder, function (el) {
+        _this3.Dom.appendContents(elBuffer, el);
+      });
+
       // Since append moves elements that are already in the DOM, appending the elements
       // will effectively reorder them.
-      this._appendReorderedChildren(elsToReorder);
+      this._appendReorderedChildren(elBuffer);
 
       // remove any views that have been filtered out
       this._removeChildModels(filteredOutModels);
@@ -2612,13 +2744,13 @@ var CollectionView = Backbone.View.extend({
   // Internal method. This checks for any changes in the order of the collection.
   // If the index of any view doesn't match, it will render.
   _sortViews: function _sortViews() {
-    var _this3 = this;
+    var _this4 = this;
 
     var models = this._filteredSortedModels();
 
     // check for any changes in sort order of views
     var orderChanged = _.find(models, function (item, index) {
-      var view = _this3.children.findByModel(item);
+      var view = _this4.children.findByModel(item);
       return !view || view._index !== index;
     });
 
@@ -2634,7 +2766,7 @@ var CollectionView = Backbone.View.extend({
   // Internal method. Separated so that CompositeView can append to the childViewContainer
   // if necessary
   _appendReorderedChildren: function _appendReorderedChildren(children) {
-    this.appendChildren(this.el, children);
+    this.Dom.appendContents(this.el, children, { _$el: this.$el });
   },
 
 
@@ -2717,11 +2849,11 @@ var CollectionView = Backbone.View.extend({
 
   // Filter an array of models, if a filter exists
   _filterModels: function _filterModels(models) {
-    var _this4 = this;
+    var _this5 = this;
 
     if (this.filter) {
       models = _.filter(models, function (model, index) {
-        return _this4._shouldAddChild(model, index);
+        return _this5._shouldAddChild(model, index);
       });
     }
     return models;
@@ -2859,7 +2991,7 @@ var CollectionView = Backbone.View.extend({
       this.children.add(view);
     }
 
-    this._renderView(view);
+    renderView(view);
 
     this._attachView(view, index);
 
@@ -2888,33 +3020,17 @@ var CollectionView = Backbone.View.extend({
 
     if (_.isObject(view)) {
       // update the indexes of views after this one
-      this.children.each(function (laterView) {
+      _.each(this.children._views, function (laterView) {
         if (laterView._index >= view._index) {
           laterView._index += 1;
         }
       });
     }
   },
-  _renderView: function _renderView(view) {
-    if (view._isRendered) {
-      return;
-    }
-
-    if (!view.supportsRenderLifecycle) {
-      triggerMethodOn(view, 'before:render', view);
-    }
-
-    view.render();
-
-    if (!view.supportsRenderLifecycle) {
-      view._isRendered = true;
-      triggerMethodOn(view, 'render', view);
-    }
-  },
   _attachView: function _attachView(view, index) {
     // Only trigger attach if already attached and not buffering,
     // otherwise _endBuffering() or Region#show() handles this.
-    var shouldTriggerAttach = !view._isAttached && !this._isBuffering && this._isAttached;
+    var shouldTriggerAttach = !view._isAttached && !this._isBuffering && this._isAttached && this.monitorViewEvents !== false;
 
     if (shouldTriggerAttach) {
       triggerMethodOn(view, 'before:attach', view);
@@ -2966,17 +3082,17 @@ var CollectionView = Backbone.View.extend({
 
   // You might need to override this if you've overridden attachHtml
   attachBuffer: function attachBuffer(collectionView, buffer) {
-    this.appendChildren(collectionView.el, buffer);
+    this.Dom.appendContents(collectionView.el, buffer, { _$el: collectionView.$el });
   },
 
 
   // Create a fragment buffer from the currently buffered children
   _createBuffer: function _createBuffer() {
-    var _this5 = this;
+    var _this6 = this;
 
-    var elBuffer = this.createBuffer();
+    var elBuffer = this.Dom.createBuffer();
     _.each(this._bufferedChildren, function (b) {
-      _this5.appendChildren(elBuffer, b.el);
+      _this6.Dom.appendContents(elBuffer, b.el, { _$contents: b.$el });
     });
     return elBuffer;
   },
@@ -3007,7 +3123,7 @@ var CollectionView = Backbone.View.extend({
     var findPosition = this.sort && index < this.children.length - 1;
     if (findPosition) {
       // Find the view after this one
-      currentView = this.children.find(function (view) {
+      currentView = _.find(this.children._views, function (view) {
         return view._index === index + 1;
       });
     }
@@ -3021,9 +3137,15 @@ var CollectionView = Backbone.View.extend({
   },
 
 
+  // Override to handle DOM inserting differently
+  beforeEl: function beforeEl(el, siblings) {
+    this.$(el).before(siblings);
+  },
+
+
   // Internal method. Append a view to the end of the $el
   _insertAfter: function _insertAfter(childView) {
-    this.appendChildren(this.el, childView.el);
+    this.Dom.appendContents(this.el, childView.el, { _$el: this.$el, _$contents: childView.$el });
   },
 
 
@@ -3046,7 +3168,7 @@ var CollectionView = Backbone.View.extend({
     }
 
     this.triggerMethod('before:destroy:children', this);
-    this.children.each(_.bind(this._removeChildView, this));
+    _.each(this.children._views, _.bind(this._removeChildView, this));
     this.children._updateLength();
     this.triggerMethod('destroy:children', this);
   },
@@ -3061,13 +3183,15 @@ var CollectionView = Backbone.View.extend({
     var filter = this.filter;
     return !_.isFunction(filter) || filter.call(this, child, index, this.collection);
   }
+}, {
+  setDomApi: setDomApi
 });
 
 _.extend(CollectionView.prototype, ViewMixin);
 
 // Provide a container to store, retrieve and
 // shut down child views.
-var Container$1 = function Container$1() {
+var Container$1 = function Container() {
   this._init();
 };
 
@@ -3150,6 +3274,21 @@ _.extend(Container$1.prototype, {
   },
 
 
+  // Swap views by index
+  _swap: function _swap(view1, view2) {
+    var view1Index = this.findIndexByView(view1);
+    var view2Index = this.findIndexByView(view2);
+
+    if (view1Index === -1 || view2Index === -1) {
+      return;
+    }
+
+    var swapView = this._views[view1Index];
+    this._views[view1Index] = this._views[view2Index];
+    this._views[view2Index] = swapView;
+  },
+
+
   // Find a view by the model that was attached to it.
   // Uses the model's `cid` to find it.
   findByModel: function findByModel(model) {
@@ -3181,6 +3320,9 @@ _.extend(Container$1.prototype, {
   // Retrieve a view by its `cid` directly
   findByCid: function findByCid(cid) {
     return this._viewsByCid[cid];
+  },
+  hasView: function hasView(view) {
+    return !!this.findByCid(view.cid);
   },
 
 
@@ -3242,7 +3384,8 @@ var CollectionView$2 = Backbone.View.extend({
     args[0] = this.options;
     Backbone.View.prototype.constructor.apply(this, args);
 
-    this._initEmptyRegion();
+    // Init empty region
+    this.getEmptyRegion();
 
     this.delegateEntityEvents();
 
@@ -3257,10 +3400,16 @@ var CollectionView$2 = Backbone.View.extend({
 
 
   // Create an region to show the emptyView
-  _initEmptyRegion: function _initEmptyRegion() {
-    this.emptyRegion = new Region({ el: this.el });
+  getEmptyRegion: function getEmptyRegion() {
+    if (this._emptyRegion && !this._emptyRegion.isDestroyed()) {
+      return this._emptyRegion;
+    }
 
-    this.emptyRegion._parentView = this;
+    this._emptyRegion = new Region({ el: this.el, replaceElement: false });
+
+    this._emptyRegion._parentView = this;
+
+    return this._emptyRegion;
   },
 
 
@@ -3279,7 +3428,7 @@ var CollectionView$2 = Backbone.View.extend({
   _onCollectionSort: function _onCollectionSort() {
     var _this = this;
 
-    if (!this.sortWithCollection) {
+    if (!this.sortWithCollection || this.viewComparator === false) {
       return;
     }
 
@@ -3310,9 +3459,9 @@ var CollectionView$2 = Backbone.View.extend({
     var changes = options.changes;
 
     // Remove first since it'll be a shorter array lookup.
-    var removedViews = this._removeChildModels(changes.removed);
+    var removedViews = changes.removed.length && this._removeChildModels(changes.removed);
 
-    this._addChildModels(changes.added);
+    this._addedViews = changes.added.length && this._addChildModels(changes.added);
 
     this._detachChildren(removedViews);
 
@@ -3522,7 +3671,9 @@ var CollectionView$2 = Backbone.View.extend({
 
     var options = this._getEmptyViewOptions();
 
-    this.emptyRegion.show(new EmptyView(options));
+    var emptyRegion = this.getEmptyRegion();
+
+    emptyRegion.show(new EmptyView(options));
   },
 
 
@@ -3540,11 +3691,11 @@ var CollectionView$2 = Backbone.View.extend({
 
   // Remove the emptyView
   _destroyEmptyView: function _destroyEmptyView() {
-
+    var emptyRegion = this.getEmptyRegion();
     // Only empty if a view is show so the region
     // doesn't detach any other unrelated HTML
-    if (this.emptyRegion.hasView()) {
-      this.emptyRegion.empty();
+    if (emptyRegion.hasView()) {
+      emptyRegion.empty();
     }
   },
 
@@ -3563,6 +3714,10 @@ var CollectionView$2 = Backbone.View.extend({
 
   // Sorts views by viewComparator and sets the children to the new order
   _sortChildren: function _sortChildren() {
+    if (this.viewComparator === false) {
+      return;
+    }
+
     this.triggerMethod('before:sort', this);
 
     var viewComparator = this.getComparator();
@@ -3637,16 +3792,27 @@ var CollectionView$2 = Backbone.View.extend({
 
     return this;
   },
+  _isAddedAtEnd: function _isAddedAtEnd(addedView, index, addedViews) {
+    var viewIndex = this.children._views.length - addedViews.length + index;
+    return addedView === this.children._views[viewIndex];
+  },
   _filterChildren: function _filterChildren() {
     var viewFilter = this._getFilter();
+    var addedViews = this._addedViews;
+
+    delete this._addedViews;
 
     if (!viewFilter) {
+      if (addedViews && _.every(addedViews, _.bind(this._isAddedAtEnd, this))) {
+        return addedViews;
+      }
+
       return this.children._views;
     }
 
     this.triggerMethod('before:filter', this);
 
-    var filteredViews = this.children.partition(_.bind(viewFilter, this));
+    var filteredViews = _.partition(this.children._views, _.bind(viewFilter, this));
 
     this._detachChildren(filteredViews[1]);
 
@@ -3724,7 +3890,7 @@ var CollectionView$2 = Backbone.View.extend({
     _.each(detachingViews, _.bind(this._detachChildView, this));
   },
   _detachChildView: function _detachChildView(view) {
-    var shouldTriggerDetach = !!view._isAttached;
+    var shouldTriggerDetach = view._isAttached && this.monitorViewEvents !== false;
     if (shouldTriggerDetach) {
       triggerMethodOn(view, 'before:detach', view);
     }
@@ -3740,7 +3906,7 @@ var CollectionView$2 = Backbone.View.extend({
 
   // Override this method to change how the collectionView detaches a child view
   detachHtml: function detachHtml(view) {
-    this.detachEl(view.el);
+    this.Dom.detachEl(view.el, view.$el);
   },
   _renderChildren: function _renderChildren(views) {
     if (this.isEmpty(!views.length)) {
@@ -3759,7 +3925,7 @@ var CollectionView$2 = Backbone.View.extend({
     this.triggerMethod('render:children', this, views);
   },
   _attachChildren: function _attachChildren(els, views) {
-    var shouldTriggerAttach = !!this._isAttached;
+    var shouldTriggerAttach = this._isAttached && this.monitorViewEvents !== false;
 
     views = shouldTriggerAttach ? views : [];
 
@@ -3770,7 +3936,7 @@ var CollectionView$2 = Backbone.View.extend({
       triggerMethodOn(view, 'before:attach', view);
     });
 
-    this.attachHtml(this, els);
+    this.attachHtml(els);
 
     _.each(views, function (view) {
       if (view._isAttached) {
@@ -3786,37 +3952,39 @@ var CollectionView$2 = Backbone.View.extend({
   _getBuffer: function _getBuffer(views) {
     var _this2 = this;
 
-    var elBuffer = this.createBuffer();
+    var elBuffer = this.Dom.createBuffer();
 
     _.each(views, function (view) {
-      _this2._renderChildView(view);
-      _this2.appendChildren(elBuffer, view.el);
+      renderView(view);
+      _this2.Dom.appendContents(elBuffer, view.el, { _$contents: view.$el });
     });
 
     return elBuffer;
-  },
-  _renderChildView: function _renderChildView(view) {
-    if (view._isRendered) {
-      return;
-    }
-
-    if (!view.supportsRenderLifecycle) {
-      triggerMethodOn(view, 'before:render', view);
-    }
-
-    view.render();
-
-    if (!view.supportsRenderLifecycle) {
-      view._isRendered = true;
-      triggerMethodOn(view, 'render', view);
-    }
   },
 
 
   // Override this method to do something other than `.append`.
   // You can attach any HTML at this point including the els.
-  attachHtml: function attachHtml(collectionView, els) {
-    this.appendChildren(collectionView.el, els);
+  attachHtml: function attachHtml(els) {
+    this.Dom.appendContents(this.el, els, { _$el: this.$el });
+  },
+  swapChildViews: function swapChildViews(view1, view2) {
+    if (!this.children.hasView(view1) || !this.children.hasView(view2)) {
+      throw new MarionetteError({
+        name: 'ChildSwapError',
+        message: 'Both views must be children of the collection view'
+      });
+    }
+
+    this.children._swap(view1, view2);
+    this.Dom.swapEl(view1.el, view2.el);
+
+    // If the views are not filtered the same, refilter
+    if (this.Dom.hasEl(this.el, view1.el) !== this.Dom.hasEl(this.el, view2.el)) {
+      this.filter();
+    }
+
+    return this;
   },
 
 
@@ -3827,6 +3995,7 @@ var CollectionView$2 = Backbone.View.extend({
     }
 
     this._addChild(view, index);
+    this._addedViews = [view];
     this._showChildren();
 
     return view;
@@ -3882,18 +4051,17 @@ var CollectionView$2 = Backbone.View.extend({
       return;
     }
 
-    if (view.destroy) {
-      view.destroy();
-    } else {
-      destroyBackboneView(view);
-    }
+    view._shouldDisableEvents = this.monitorViewEvents === false;
+    destroyView(view);
   },
 
 
   // called by ViewMixin destroy
   _removeChildren: function _removeChildren() {
     this._destroyChildren();
-    this.emptyRegion.destroy();
+    var emptyRegion = this.getEmptyRegion();
+    emptyRegion.destroy();
+    delete this._addedViews;
   },
 
 
@@ -3904,9 +4072,14 @@ var CollectionView$2 = Backbone.View.extend({
     }
 
     this.triggerMethod('before:destroy:children', this);
-    this.children.each(_.bind(this._removeChildView, this));
+    if (this.monitorViewEvents === false) {
+      this.Dom.detachContents(this.el, this.$el);
+    }
+    _.each(this.children._views, _.bind(this._removeChildView, this));
     this.triggerMethod('destroy:children', this);
   }
+}, {
+  setDomApi: setDomApi
 });
 
 _.extend(CollectionView$2.prototype, ViewMixin);
@@ -4019,7 +4192,7 @@ var CompositeView = CollectionView.extend({
   // You might need to override this if you've overridden attachHtml
   attachBuffer: function attachBuffer(compositeView, buffer) {
     var $container = this.getChildViewContainer(compositeView);
-    this.appendChildren($container, buffer);
+    this.Dom.appendContents($container[0], buffer, { _$el: $container });
   },
 
 
@@ -4028,7 +4201,7 @@ var CompositeView = CollectionView.extend({
   // childViewContainer
   _insertAfter: function _insertAfter(childView) {
     var $container = this.getChildViewContainer(this, childView);
-    this.appendChildren($container, childView.el);
+    this.Dom.appendContents($container[0], childView.el, { _$el: $container, _$contents: childView.$el });
   },
 
 
@@ -4037,7 +4210,7 @@ var CompositeView = CollectionView.extend({
   // are appended to childViewContainer
   _appendReorderedChildren: function _appendReorderedChildren(children) {
     var $container = this.getChildViewContainer(this);
-    this.appendChildren($container, children);
+    this.Dom.appendContents($container[0], children, { _$el: $container });
   },
 
 
@@ -4057,7 +4230,7 @@ var CompositeView = CollectionView.extend({
       if (selector.charAt(0) === '@' && containerView.ui) {
         container = containerView.ui[selector.substr(4)];
       } else {
-        container = this.findEls(selector, containerView.$el);
+        container = this.$(selector);
       }
 
       if (container.length <= 0) {
@@ -4114,7 +4287,7 @@ var Behavior = MarionetteObject.extend({
 
     this.defaults = _.clone(_.result(this, 'defaults', {}));
 
-    this._setOptions(this.defaults, options);
+    this._setOptions(_.extend({}, this.defaults, options));
     this.mergeOptions(this.options, ClassOptions$6);
 
     // Construct an internal UI hash using
@@ -4366,7 +4539,7 @@ var AppRouter = Backbone.Router.extend({
   },
 
 
-  triggerMethod: triggerMethod$1
+  triggerMethod: triggerMethod
 });
 
 _.extend(AppRouter.prototype, CommonMixin);
@@ -4410,7 +4583,7 @@ Marionette.normalizeMethods = proxy(normalizeMethods);
 Marionette.extend = extend;
 Marionette.isNodeAttached = isNodeAttached;
 Marionette.deprecate = deprecate;
-Marionette.triggerMethod = proxy(triggerMethod$1);
+Marionette.triggerMethod = proxy(triggerMethod);
 Marionette.triggerMethodOn = triggerMethodOn;
 Marionette.isEnabled = isEnabled;
 Marionette.setEnabled = setEnabled;
@@ -4437,9 +4610,17 @@ Marionette.Object = MarionetteObject;
 Marionette.DEV_MODE = false;
 Marionette.FEATURES = FEATURES;
 Marionette.VERSION = version;
+Marionette.DomApi = DomApi;
+Marionette.setDomApi = function (mixin) {
+  CollectionView.setDomApi(mixin);
+  CompositeView.setDomApi(mixin);
+  CollectionView$2.setDomApi(mixin);
+  Region.setDomApi(mixin);
+  View.setDomApi(mixin);
+};
 
 return Marionette;
 
 })));
-
+this && this.Marionette && (this.Mn = this.Marionette);
 //# sourceMappingURL=backbone.marionette.js.map

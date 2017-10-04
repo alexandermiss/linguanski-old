@@ -181,6 +181,17 @@ module.exports = {
 		} catch (e) {
 			return res.badRequest();
 		}
-	}
+	},
+
+	getJwtFriends: function( req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, status: 'friend'}, req.query);
+		Friend.getFriends(p,
+			function(err, friends){
+				sails.log.info('friends\n', friends);
+				if(err) return res.json(err);
+				return res.json(friends);
+		});
+	},
 
 };
