@@ -51,53 +51,45 @@ module.exports = {
 				}
 				sails.log.debug('friend\n',friend);
 				return res.json(friend);
-			});
+		});
 	},
 
 	updateFriend: function ( req, res, next ){
 		var p = req.params.all();
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
-			if( p.status == 'friend' ){
-				var c = _.pick(p, 'friend_one', 'friend_two');
+		if( p.status == 'friend' ){
+			var c = _.pick(p, 'friend_one', 'friend_two');
 
-				var or = {or: [
-					{friend_one: c.friend_one, friend_two: c.friend_two},
-					{friend_one: c.friend_two, friend_two: c.friend_one},
-				], status: 'friend'}
+			var or = {
+                or: [
+				    {friend_one: c.friend_one, friend_two: c.friend_two},
+                    {friend_one: c.friend_two, friend_two: c.friend_one},
+				], status: 'friend'
+            };
 
-				Friend.destroy( or ).exec(function(err){
-	        if(err) return res.json(err);
+			Friend.destroy( or ).exec(function(err){
+	            if(err) return res.json(err);
 
-	        var obj = _.omit(p, 'friend_one', 'friend_two');
-	        obj['status'] = 'maybe';
-	        sails.log.info('obj\n', obj);
-	        return res.json(obj);
-	      });
-			}else{
-				Friend.addFriend(p,
-					function(err, friend){
-						if(err) return res.json(err);
-						if(!friend) {
-							sails.log.error('friend', friend);
-							return res.json({error: 'no friend created'});
-						}
-						delete friend['friendship'];
-						friend['status'] = 'confirm'
-						sails.log.debug('friend\n',friend);
-						return res.json(friend);
-					});
+	            var obj = _.omit(p, 'friend_one', 'friend_two');
+	            obj['status'] = 'maybe';
+	            sails.log.info('obj\n', obj);
+	            return res.json(obj);
+	        });
+		}else{
+			Friend.addFriend(p,	function(err, friend){
+				if(err) return res.json(err);
+				if(!friend) {
+					sails.log.error('friend', friend);
+					return res.json({error: 'no friend created'});
+				}
+				delete friend['friendship'];
+				friend['status'] = 'confirm'
+				sails.log.debug('friend\n',friend);
+				return res.json(friend);
+			});
 
-				// Friend.confirmFriend(p,
-				// 	function(err, friend){
-				// 		if(err) return res.json(err);
-				// 		if(!friend) {
-				// 			return res.json({error: 'no friend created'});
-				// 		}
-				// 		sails.log.debug('friend\n',friend);
-				// 		return res.json(friend);
-				// 	});
-			}
+		}
 	},
 
 	getMaybe: function (req, res, next){
@@ -106,7 +98,6 @@ module.exports = {
 		Friend.getMaybes(p,
 			function(err, maybes){
 				if(err) return res.json(err);
-				// sails.log.info(err, maybes);
 				return res.json(maybes);
 		});
 	},
@@ -125,7 +116,7 @@ module.exports = {
 					}
 					sails.log.debug('friend\n',friend);
 					return res.json(friend);
-				});
+			});
 		}else{
 			var c = _.pick(p, 'friend_one', 'friend_two');
 
@@ -167,7 +158,7 @@ module.exports = {
 					friend['status'] = 'pending';
 					sails.log.debug('friend\n',friend);
 					return res.json(friend);
-				});
+			});
 		}
 	},
 
@@ -194,4 +185,13 @@ module.exports = {
 		});
 	},
 
+	getJwtMaybe: function (req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id}, req.query);
+		Friend.getMaybes(p,
+			function(err, maybes){
+				if(err) return res.json(err);
+				return res.json(maybes);
+		});
+	},
 };

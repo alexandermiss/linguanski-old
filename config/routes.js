@@ -89,4 +89,5 @@ module.exports.routes = {
 
   'GET /api/v1.1/phrases'             : 'PhraseController.getJwtPhrases',
   'GET /api/v1.1/friend'              : 'ApiController.getJwtFriends',
+  'GET /api/v1.1/maybe'               : 'ApiController.getJwtMaybe',
 };
