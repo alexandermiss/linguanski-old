@@ -66,6 +66,8 @@ module.exports.policies = {
 
   ApiController: {
     '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
+    'getJwtFriends': ['settingNecessary', 'hasJsonWebToken'],
+    'getJwtMaybe': ['settingNecessary', 'hasJsonWebToken']
   },
 
   ProfileController: {
