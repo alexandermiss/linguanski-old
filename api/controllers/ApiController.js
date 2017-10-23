@@ -38,6 +38,17 @@ module.exports = {
 		});
 	},
 
+	getInvitations: function( req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
+		Friend.getInvitations(p,
+			function(err, invitations){
+				sails.log.info('Invitations\n', invitations);
+				if(err) return res.json(err);
+				return res.json(invitations);
+		});
+	},
+
 	createFriend: function ( req, res, next ){
 		var p = req.params.all();
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});

@@ -138,6 +138,75 @@ module.exports = {
     });
   },
 
+  getInvitations: function (opts, cb){
+    var user_id = User.mongo.objectId(opts.friend_one);
+    var status = opts.status;
+    sails.log.debug('INVITATIONS');
+    sails.log.debug('STATUS', status);
+    Friend.native(function(err, _Friend){
+
+      var friends = _Friend.aggregate([
+        { $match: {status: { $eq: status}} },
+        {
+          $project: {
+            _id: 1,
+            status: "$status",
+            me: {
+              $cond: {if: {$eq: ["$friend_one", user_id] }, then: "da", else: "net" }
+            },
+            friend: {
+              $switch: {
+                branches: [
+                  {
+                    case: { $eq: ["$friend_one", user_id] },
+                    then: "$friend_two"
+                  },
+                  {
+                    case: { $eq: ["$friend_two", user_id]},
+                    then: "$friend_one"
+                  }
+                ],
+                default: null
+              }
+            }
+          }
+        },
+        { $match: {friend: { $ne: null } }},
+        { $match: {me: {$eq: "net"} } }
+      ]).toArray(function (err, __friends){
+        sails.log.info('__friends\n', __friends);
+        var c = _.compact(__friends);
+        c = _.map(c, 'friend');
+        c = _.map(c, _.toString);
+
+        c = {user: c};
+
+    		Profile.find(c)
+    			.populate('user').exec(function(err, profiles){
+    				if(err) return cb(err);
+            var ids = _.map(profiles, 'user.id');
+
+            Setting.find({user: ids}).populate('country').exec(function(err, settings){
+              if(err) return cb(err);
+
+              profiles = _.map(profiles, function (profile){
+                var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
+                profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
+                profile['friend_id'] = obj._id;
+                profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
+                profile['status'] = status;
+                return profile;
+              });
+
+              return cb(null, {results: profiles});
+            });
+
+    		});
+
+      });
+
+    });
+  },
   // Get maybes
   getMaybes: function (opts, cb){
     var user_id = User.mongo.objectId(opts.friend_one);

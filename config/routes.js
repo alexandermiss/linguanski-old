@@ -48,7 +48,8 @@ module.exports.routes = {
   'GET /practise'                         : 'AppController.practise',
   'GET /profile'                          : 'ProfileController.getProfile',
   'GET /friends'                          : 'FriendController.list',
-  'GET /requests'                         : 'FriendController.request',
+  'GET /requests'                         : 'FriendController.requests',
+  'GET /invitations'                      : 'FriendController.invitations',
 
   // Admin
   'GET /admin/authorizations'             : 'AppController.authorizations',
@@ -74,6 +75,10 @@ module.exports.routes = {
   // Requests
   'GET /api/v1/request'               : 'ApiController.getRequests',
   'PUT /api/v1/request/:id'           : 'ApiController.updateRequest',
+
+  // Invitations
+  'GET /api/v1/invitation'            : 'ApiController.getInvitations',
+  // 'PUT /api/v1/invitation/:id'        : 'ApiController.updateInvitation',
 
   // Maybe
   'GET /api/v1/maybe'                 : 'ApiController.getMaybe',

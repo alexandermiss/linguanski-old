@@ -17,12 +17,15 @@
     </div>
     <div class="extra">
         {% if( status == 'pending' ){ %}
-            <div class="ui right floated basic red tiny button friend-btn">
-                <i class="remove user icon"></i> Cancel
+            <div class="ui right floated basic red tiny button invitation-btn">
+              <i class="remove user icon"></i> Cancel 
+            </div>
+            <div class="ui right floated basic teal tiny button invitation-btn">
+              <i class="add user icon"></i> Confirm
             </div>
         {% }else{ %}
-          <div class="ui right floated basic teal tiny button friend-btn">
-            <i class="add user icon"></i> Add friend
+          <div class="ui right floated basic teal tiny button invitation-btn">
+            <i class="add user icon"></i> Friend 
           </div>
         {% } %}
 
