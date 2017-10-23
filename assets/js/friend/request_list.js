@@ -18,7 +18,7 @@ $(function (){
     url: '/api/v1/maybe'
   });
 
-  var FriendView = L.View.FriendView.extend({
+  var RequestView = L.View.FriendView.extend({
     tagName: 'div',
     className: 'item',
     template: Template.get('friend/request_item'),
@@ -58,7 +58,7 @@ $(function (){
   var RequestCollectionView = L.CollectionView.FriendCollectionView.extend({
     tagName: 'div',
     className: 'ui divided items',
-    childView: FriendView,
+    childView: RequestView,
     emptyView: Marionette.View.extend({
       template: _.template('<div> You have no friends</div>')
     }),
@@ -75,6 +75,7 @@ $(function (){
       'click @ui.maybe': 'maybeBtn'
     },
     maybeBtn: function (e){
+      _debug('Request Model', this.model.toJSON());
       this.model.save();
     }
   });
@@ -83,11 +84,12 @@ $(function (){
     tagName: 'div',
     className: 'ui middle aligned divided list',
     childView: MaybeView,
-    emptyView: Marionette.View.extend({template: _.template('<div> You have no friends</div>')}),
+    emptyView: Marionette.View.extend({
+      template: _.template('<div> You have no friends</div>')
+    }),
   });
 
   var AppMain = Marionette.Application.extend({
-    // region: '#friendList',
 
     initialize: function (options){
       this.request = options.request;

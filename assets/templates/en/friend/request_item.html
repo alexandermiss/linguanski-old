@@ -16,23 +16,26 @@
       <p></p>
     </div>
     <div class="extra">
-      {% if(relationship == 'me'){ %}
+      {% if(me == 'da'){ %}
         {% if( status == 'pending' ){ %}
-          <div class="ui right floated red tiny button friend-btn">
-            <i class="remove user icon"></i> Cancel request
-          </div>
+            <div class="ui right floated basic red tiny button friend-btn">
+                <i class="remove user icon"></i> Cancel request
+            </div>
         {% }else{ %}
-          <div class="ui right floated teal tiny button friend-btn">
+          <div class="ui right floated basic teal tiny button friend-btn">
             <i class="add user icon"></i> Add friend
           </div>
         {% } %}
       {% }else{ %}
         {% if( status == 'pending' ){ %}
-            <div class="ui right floated red tiny button friend-btn">
-              <i class="remove user icon"></i> Confirm request
+            <div class="ui right floated basic red tiny button friend-btn">
+              <i class="remove user icon"></i> Cancel 
+            </div>
+            <div class="ui right floated basic teal tiny button friend-btn">
+              <i class="add user icon"></i> Confirm
             </div>
         {% }else{ %}
-          <div class="ui right floated teal tiny button friend-btn">
+          <div class="ui right floated basic teal tiny button friend-btn">
             <i class="add user icon"></i> Add friend2
           </div>
         {% } %}

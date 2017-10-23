@@ -107,6 +107,8 @@ module.exports = {
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
 		if(p.friendship == 'maybe'){
+
+			// Add friend
 			Friend.addFriend(p,
 				function(err, friend){
 					if(err) return res.json(err);
@@ -119,8 +121,10 @@ module.exports = {
 			});
 		}else{
 			var c = _.pick(p, 'friend_one', 'friend_two');
+			_.extend(c, {status: 'pending'});
 
-			Friend.destroy( c ).exec(function(err){
+			// Cancel maybe
+			Friend.update(c, {status: 'canceled'}).exec(function(err){
 				if(err) return res.json(err);
 
 				var obj = _.omit(p, 'friend_one', 'friend_two');
@@ -133,12 +137,17 @@ module.exports = {
 
 	updateRequest: function (req, res, next){
 		var p = req.params.all();
+
+		sails.log.debug('updateRequest');
+		sails.log.debug('STATUS ', p.status);
+		sails.log.debug('OBJ ', p);
+
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
 		if( p.status == 'pending' ){
 			var c = _.pick(p, 'friend_one', 'friend_two');
 
-			Friend.destroy( c ).exec(function(err){
+			Friend.update({id: p.friend_id}, {status: 'canceled'}).exec(function(err, updated){
 				if(err) return res.json(err);
 
 				var obj = _.omit(p, 'friend_one', 'friend_two');
@@ -147,6 +156,8 @@ module.exports = {
 				return res.json(obj);
 			});
 		}else{
+
+			// status:
 			Friend.addFriend(p,
 				function(err, friend){
 					if(err) return res.json(err);

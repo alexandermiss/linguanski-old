@@ -17,10 +17,15 @@ var _debug = function (){
 Template = {
 	get: function(name){
 		var tpl = Lang.get()+'/'+name;
-		var t = 'assets/templates/'+tpl+'.html';
-		if( !JST[t] ) console.log('template:no found:', t);
-		_debug('template:', t);
-		return JST[t];
+		try {
+			var t = 'assets/templates/'+tpl+'.html';
+			if( !JST[t] ) _debug('template:no found:', t);
+			return JST[t];
+		} catch (e) {
+			_debug('template:no found:', tpl);
+			return null;
+		}
+
 	}
 };
 

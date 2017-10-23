@@ -69,32 +69,33 @@
               <label><%= __('Name') %></label>
               <input name="name" placeholder="<%= __('Write your name') %>" type="text">
             </div>
+
             <div class="field">
-              <label><%= __('I am from') %></label>
               <div class="ui fluid search selection dropdown">
                 <input name="country" type="hidden">
                 <i class="dropdown icon"></i>
-                <div class="default text"><%= __('Select country') %></div>
+                <div class="default text"><%= __('What is your country?') %></div>
                 <div class="menu">
-                  <div class="item" data-value="mx"><i class="mx flag"></i>Mexico</div>
-                  <div class="item" data-value="ru"><i class="ru flag"></i>Russia</div>
-                  <div class="item" data-value="us"><i class="us flag"></i>United States</div>
+                  <% _.each(countries, function (country){ %>
+                  <div class="item" data-value="<%= country.flag %>"><i class="<%= country.flag %> flag"></i><%= country.name %></div>
+                  <% }) %>
                 </div>
                </div>
             </div>
+
             <div class="field">
-              <label><%= __('I want to practice') %></label>
               <div class="ui fluid search selection dropdown">
                 <input name="language" type="hidden">
                 <i class="dropdown icon"></i>
-                <div class="default text"><%= __('Select language') %></div>
+                <div class="default text"><%= __('I want to learn...') %></div>
                 <div class="menu">
-                  <div class="item" data-value="us"><i class="us flag"></i>English</div>
-                  <div class="item" data-value="ru"><i class="ru flag"></i>Russian</div>
-                  <div class="item" data-value="es"><i class="es flag"></i>Spain</div>
+                  <% _.each(langs, function (lang){ %>
+                  <div class="item" data-value="<%= lang.flag %>"><i class="<%= lang.flag %> flag"></i><%= lang.name %></div>
+                  <% }) %>
                 </div>
                </div>
             </div>
+
             <button class="ui fluid large basic blue button"><%= __('Next') %></button>
 
         </form>
@@ -119,6 +120,10 @@
               {
                 type   : 'empty',
                 prompt : '<%= __('Please enter your name') %>'
+              },
+              {
+                type   : 'length[2]',
+                prompt : '<%= __('More than two letters') %>'
               }
             ]
           },
