@@ -78,7 +78,7 @@ module.exports.routes = {
 
   // Invitations
   'GET /api/v1/invitation'            : 'ApiController.getInvitations',
-  // 'PUT /api/v1/invitation/:id'        : 'ApiController.updateInvitation',
+  'PUT /api/v1/invitation/:id'        : 'ApiController.updateInvitation',
 
   // Maybe
   'GET /api/v1/maybe'                 : 'ApiController.getMaybe',

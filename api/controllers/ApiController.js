@@ -73,20 +73,20 @@ module.exports = {
 			var c = _.pick(p, 'friend_one', 'friend_two');
 
 			var or = {
-                or: [
-				    {friend_one: c.friend_one, friend_two: c.friend_two},
-                    {friend_one: c.friend_two, friend_two: c.friend_one},
-				], status: 'friend'
-            };
+	              or: [
+								    {friend_one: c.friend_one, friend_two: c.friend_two},
+				            {friend_one: c.friend_two, friend_two: c.friend_one},
+								], status: 'friend'
+      };
 
-			Friend.destroy( or ).exec(function(err){
-	            if(err) return res.json(err);
+			Friend.update( or, {status: 'canceled'} ).exec(function(err){
+          if(err) return res.json(err);
 
-	            var obj = _.omit(p, 'friend_one', 'friend_two');
-	            obj['status'] = 'maybe';
-	            sails.log.info('obj\n', obj);
-	            return res.json(obj);
-	        });
+          var obj = _.omit(p, 'friend_one', 'friend_two');
+          obj['status'] = 'maybe';
+          sails.log.info('obj\n', obj);
+          return res.json(obj);
+      });
 		}else{
 			Friend.addFriend(p,	function(err, friend){
 				if(err) return res.json(err);
@@ -182,6 +182,36 @@ module.exports = {
 					return res.json(friend);
 			});
 		}
+	},
+
+	// Update Invitation
+	updateInvitation: function (req, res, next){
+		var p = req.params.all();
+
+		sails.log.debug('updateInvitation');
+		sails.log.debug('method', req.method);
+		sails.log.debug('STATUS ', p.status);
+		sails.log.debug('OBJ ', p);
+
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+
+		if( p._action == 'confirm' ){
+			var c = _.pick(p, 'friend_one', 'friend_two');
+
+			// Action: confirm
+			Friend.update({id: p.friend_id}, {status: 'friend'}).exec(function(err, updated){
+				if(err) return res.json(err);
+				return res.json({status: 'friend'});
+			});
+		}else{
+
+			// Action: canceled
+			Friend.update({id: p.friend_id}, {status: 'canceled'}).exec(function(err, updated){
+				if(err) return res.json(err);
+				return res.json({status: 'canceled'});
+			});
+		}
+
 	},
 
 	updateActivation: function (req, res, next){

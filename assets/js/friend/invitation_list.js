@@ -23,37 +23,20 @@ $(function (){
     className: 'item',
     template: Template.get('friend/invitation_item'),
     ui: {
-      invitation: '.invitation-btn',
       cancel: '.cancel-btn',
       confirm: '.confirm-btn',
-      i: 'i'
     },
     events: {
-      'click @ui.invitation': 'invitationBtn',
-      'mouseenter @ui.invitation': 'mouseEnter',
-      'mouseleave @ui.invitation': 'mouseLeave'
+      'click @ui.cancel': 'cancelBtn',
+      'click @ui.confirm': 'confirmBtn',
     },
-    mouseEnter: function (e){
-      if( this.model.get('status') == 'friend'){
-        this.ui.invitation
-          .removeClass('teal')
-          .removeClass('basic')
-          .addClass('red')
-          .html('<i class="remove icon"></i>  Delete');
-      }
+
+    confirmBtn: function (e){
+      this.model.save( {_action: 'confirm'} );
     },
-    mouseLeave: function (e){
-      if( this.model.get('status') == 'friend'){
-        this.ui.invitation
-        .removeClass('red')
-        .addClass('basic')
-        .addClass('teal')
-        .html('<i class="checkmark icon"></i> Invitations');
-      }
-    },
-    invitationBtn: function (e){
-      console.log(this.model.toJSON());
-      this.model.save();
+
+    cancelBtn: function (e){
+      this.model.save( {_action: 'cancel'} );
     }
   });
 

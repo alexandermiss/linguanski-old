@@ -5,18 +5,22 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var Promise = require('bluebird');
+
 module.exports = {
 	init: function (req, res, next){
-		Profile.findOne({user: req.session.user.id}).exec(function(err, profile){
-			if(err) return res.negotiate(err);
 
-			req.session.profile = profile;
-
-			Traduction.find({}).populateAll().exec(function (err, trads ){
-				if (err) { return res.negotiate(err); }
+		Promise.all([
+				Profile.findOne({user: req.session.user.id}),
+				Traduction.find({}).populateAll()]
+			)
+			.spread(function(profile, trads){
+				req.session.profile = profile;
 				return res.view('dashboard/init', { trads: trads, menu: 'dashboard' });
+			})
+			.catch(function(err){
+				return res.negotiate(err);
 			});
-		});
-	}
 
+	}
 };

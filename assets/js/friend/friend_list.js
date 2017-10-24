@@ -49,7 +49,6 @@ $(function (){
       }
     },
     friendBtn: function (e){
-      console.log(this.model.toJSON());
       this.model.save();
     }
   });
@@ -86,7 +85,6 @@ $(function (){
   });
 
   var AppMain = Marionette.Application.extend({
-    // region: '#friendList',
 
     initialize: function (options){
       this.friends = options.friends;
