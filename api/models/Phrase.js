@@ -75,11 +75,11 @@ module.exports = {
             	_.each(phrases[t], function(ph){
                 var obj = {};
             		if ( ph.language.id == opts.country_language_id )
-            			    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.prefix, phrase_native_id: ph.id };
+            			    obj = { phrase_native: ph.phrase, phrase_native_flag_prefix: ph.language.flag, phrase_native_id: ph.id };
             		else if ( ph.language.id == opts.language_id )
-            			    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.prefix, phrase_language_id: ph.id };
+            			    obj = { phrase_language: ph.phrase, phrase_language_flag_prefix: ph.language.flag, phrase_language_id: ph.id };
                 else
-                  sails.log.debug('no phrase', ph.phrase, ph.language.prefix);
+                  sails.log.debug('no phrase', ph.phrase, ph.language.flag);
 
                 _.extend(_ph, obj); // Get Phrase Id
             	});

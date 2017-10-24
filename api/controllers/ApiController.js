@@ -30,7 +30,7 @@ module.exports = {
 	getRequests: function( req, res, next){
 		var p = req.params.all();
 		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
-		Friend.getFriends(p,
+		Friend.getRequests(p,
 			function(err, requests){
 				sails.log.info('requests\n', requests);
 				if(err) return res.json(err);

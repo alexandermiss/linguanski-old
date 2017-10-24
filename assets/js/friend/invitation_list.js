@@ -24,6 +24,8 @@ $(function (){
     template: Template.get('friend/invitation_item'),
     ui: {
       invitation: '.invitation-btn',
+      cancel: '.cancel-btn',
+      confirm: '.confirm-btn',
       i: 'i'
     },
     events: {

@@ -35,9 +35,8 @@ $(function (){
       if( this.model.get('status') == 'friend'){
         this.ui.friend
           .removeClass('teal')
-          .removeClass('basic')
           .addClass('red')
-          .html('<i class="remove icon"></i>  Delete');
+          .html('<i class="remove icon"></i> Delete');
       }
     },
     mouseLeave: function (e){

@@ -17,7 +17,7 @@
     </div>
     <div class="extra">
         {% if( status == 'friend' ){ %}
-        <div class="ui right floated teal tiny button friend-btn">
+        <div class="ui right floated basic teal tiny button friend-btn">
           <i class="checkmark icon"></i> Friends
         </div>
         {% }else if( status == 'confirm'){ %}
@@ -26,11 +26,11 @@
           </div> -->
           <p class="right floated"><i class="wait icon"></i> Waiting confirmation</p>
         {% }else{ %}
-        <div class="ui right floated teal tiny button friend-btn">
+        <div class="ui right floated basic teal tiny button friend-btn">
           <i class="add user icon"></i> Add friend
         </div>
         {% } %}
-        <i class="{{ setting.country.prefix }} flag"></i>
+        <i class="{{ setting.country.flag }} flag"></i>
         {{ setting.country.name }}
     </div>
   </div>

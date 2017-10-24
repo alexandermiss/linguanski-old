@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= req.session.setting ? req.session.setting.country.language.prefix: 'en' %>">
   <head>
-    <title> <%= __('Homepage') %> - Linguanski</title>
+    <title> <%= __('Homepage') %> - Linguanski (beta)</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -113,29 +113,20 @@
     </style>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64643522-4"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64643522-4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'UA-64643522-4');
-    </script>
+    </script> -->
 
   </head>
 
   <body>
 
     <style type="text/css">
-      body {
-        /*background-color: #DADADA;*/
-        background-image: url(/images/dreamstime-min.jpg);
-        background-repeat: no-repeat;
-        background-size: cover;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-      }
       body > .grid {
         height: 100%;
       }
@@ -163,6 +154,7 @@
     <script src="/js/dependencies/FileUpload.js"></script>
     <script src="/js/accounts/authorization.js"></script>
     <script src="/js/friend/friend_list.js"></script>
+    <script src="/js/friend/invitation_list.js"></script>
     <script src="/js/friend/request_list.js"></script>
     <script src="/js/home_page.js"></script>
     <script src="/js/login/main_signin.js"></script>
