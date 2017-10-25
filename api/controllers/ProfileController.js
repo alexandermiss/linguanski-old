@@ -40,7 +40,7 @@ module.exports = {
 		  api_secret: '-WwDb-q4CDx4ZhPSm_oIssibKb0'
 		});
 
-		var uploader = Promise.promisify(req.file('file').upload);
+		var uploader = Promise.promisifyAll(req.file('file'));
 
 		Promise.bind({}, uploader.uploadAsync({dirname: sails.config.rootPath + '/assets/images'}))
 		.then(function(uploaded){

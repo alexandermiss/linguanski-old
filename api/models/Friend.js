@@ -119,16 +119,21 @@ module.exports = {
             Setting.find({user: ids}).populate('country').exec(function(err, settings){
               if(err) return cb(err);
 
-              profiles = _.map(profiles, function (profile){
-                var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-                profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                profile['friend_id'] = obj._id;
-                profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-                profile['status'] = status;
-                return profile;
+              Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
+
+                profiles = _.map(profiles, function (profile){
+                  var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
+                  profile['image'] = _.first(_.filter(ficheros, {user: profile.user.id})) || {};
+                  profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
+                  profile['friend_id'] = obj._id;
+                  profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
+                  profile['status'] = status;
+                  return profile;
+                });
+
+                return cb(null, {results: profiles});
               });
 
-              return cb(null, {results: profiles});
             });
 
     		});
@@ -188,16 +193,21 @@ module.exports = {
             Setting.find({user: ids}).populate('country').exec(function(err, settings){
               if(err) return cb(err);
 
-              profiles = _.map(profiles, function (profile){
-                var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-                profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                profile['friend_id'] = obj._id;
-                profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-                profile['status'] = status;
-                return profile;
+              Fichero.find({user: ids}).sort('createdAt DESC').exec(function (err, ficheros){
+
+                profiles = _.map(profiles, function (profile){
+                  var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
+                  profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
+                  profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
+                  profile['friend_id'] = obj._id;
+                  profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
+                  profile['status'] = status;
+                  return profile;
+                });
+
+                return cb(null, {results: profiles});
               });
 
-              return cb(null, {results: profiles});
             });
 
     		});
@@ -259,16 +269,22 @@ module.exports = {
             Setting.find({user: ids}).populate('country').exec(function(err, settings){
               if(err) return cb(err);
 
-              profiles = _.map(profiles, function (profile){
-                var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-                profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                profile['friend_id'] = obj._id;
-                profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-                profile['status'] = status;
-                return profile;
+              Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
+                if(err) return cb(err);
+
+                profiles = _.map(profiles, function (profile){
+                  var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
+                  profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
+                  profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
+                  profile['friend_id'] = obj._id;
+                  profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
+                  profile['status'] = status;
+                  return profile;
+                });
+
+                return cb(null, {results: profiles});
               });
 
-              return cb(null, {results: profiles});
             });
 
     		});
@@ -316,11 +332,20 @@ module.exports = {
         Profile.find(c)
     			.populate('user').exec(function(err, profiles){
     				if(err) return cb(err);
-            profiles = _.map(profiles, function (profile){
-              profile['friendship'] = 'maybe';
-              return profile;
+
+            var ids = _.map(profiles, 'user.id');
+
+            Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
+              if(err) return cb(err);
+
+              profiles = _.map(profiles, function (profile){
+                profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
+                profile['friendship'] = 'maybe';
+                return profile;
+              });
+              return cb(null, {results: profiles});
             });
-            return cb(null, {results: profiles});
+
     		});
 
       });
