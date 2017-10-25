@@ -5,8 +5,10 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var cloudinary = require('cloudinary').v2;
-var _ = require('lodash');
+var cloudinary 	= require('cloudinary').v2,
+		_ 					= require('lodash'),
+		Promise 		= require('bluebird');
+
 
 module.exports = {
 	getProfile: function (req, res, next){
@@ -21,9 +23,12 @@ module.exports = {
 
 	getFullProfile: function (req, res, next){
 		var id = _.get(_.extend(req.params.all(), req.query), 'id');
-		Profile.getFullProfile({id: id},function(err, profile){
-			if(err) return res.json(err);
+
+		Profile.getFullProfile({id: id}).then(function(profile){
 			return res.json(profile);
+		})
+		.catch(function(e){
+			return res.notFound(e);
 		});
 
 	},
@@ -35,40 +40,36 @@ module.exports = {
 		  api_secret: '-WwDb-q4CDx4ZhPSm_oIssibKb0'
 		});
 
-		req.file('file').upload({
-			dirname: sails.config.rootPath + '/assets/images'
-		},function(err, uploaded){
-			if(err){
-				sails.log.debug(err);
-				return res.json(err);
-			}
-			var file = uploaded[0].fd;
-			var _result = null;
+		var uploader = Promise.promisifyAll(req.file('file'));
 
-			cloudinary.uploader.upload(file)
-				.then(function(result){
-					sails.log.info('_result', _result);
-					_result = result;
-					return _result;
-				}).then(function(data){
-					sails.log.info('data', data);
-				}).finally(function(){
-					User.update({id: req.session.user.id}, {photo: _result.secure_url})
-						.exec(function(err, user){
-							if(err) return res.json({err: err});
-							var c = {};
-							_.extend(c, {user: req.session.user.id},
-								_.pick(_result,
-									'public_id', 'url', 'secure_url', 'original_filename',
-									'resource_type', 'signature', 'type', 'format', 'bytes'));
-								sails.log.info('c', c);
-							Fichero.create(c).exec(function(err, file){
-								if(err) return res.json({err: 'Fichero create error'});
-								return res.json(_result);
-							});
+		Promise.bind({}, uploader.uploadAsync({dirname: sails.config.rootPath + '/assets/images'}))
+		.then(function(uploaded){
+			return cloudinary.uploader.upload(uploaded[0].fd)
+		})
+		.then(function (r){
+			this.result = r;
 
-						});
-				});
+			var domain = 'https://res.cloudinary.com/linguanski/image/upload/';
+	    var custom = domain + 'c_thumb,w_80/v';
+	    r.photo80x80 = custom+r.version+'/'+r.public_id+'.'+r.format;
+
+			var c = {};
+			_.extend(c, {user: req.session.user.id}, {photo80x80: r.photo80x80},
+				_.pick(r,
+					'public_id', 'url', 'secure_url', 'original_filename',
+					'resource_type', 'signature', 'type', 'format', 'bytes', 'version',
+					'width', 'height'
+				));
+			sails.log.debug('r', r);
+			return Fichero.create(c);
+		})
+		.then(function(file){
+			sails.log.debug('FILE', file);
+			return res.json(this.result);
+		})
+		.catch(function(e){
+			sails.log.error(e);
+			return res.json(e);
 		});
 
 	}

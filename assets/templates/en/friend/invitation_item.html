@@ -17,13 +17,18 @@
     </div>
     <div class="extra">
         {% if( status == 'pending' ){ %}
-            <div class="ui right floated basic red tiny button friend-btn">
-                <i class="remove user icon"></i> Cancel
+            <div class="ui right floated basic red tiny button cancel-btn">
+              <i class="remove user icon"></i> Cancel
             </div>
-        {% }else{ %}
-          <div class="ui right floated basic teal tiny button friend-btn">
-            <i class="add user icon"></i> Add friend
-          </div>
+            <div class="ui right floated basic teal tiny button confirm-btn">
+              <i class="add user icon"></i> Confirm
+            </div>
+        {% }else if(status == 'friend'){ %}
+          <p class="right floated"><i class="ok icon"></i> You are friend</p>
+        {% }else if(status == 'canceled'){ %}
+          <p class="right floated"><i class="ok icon"></i> You cancel</p>
+        {% }else if(status == 'friend'){ %}
+          <p class="right floated"><i class="ok icon"></i> Unknown action</p>
         {% } %}
 
       <i class="{{ setting.country.prefix }} flag"></i>

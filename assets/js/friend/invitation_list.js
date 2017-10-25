@@ -1,13 +1,13 @@
 $(function (){
 
-  if( __n('#friendListController') ) return;
+  if( __n('#invitationListController') ) return;
 
-  var FriendModel = L.Model.Friend.extend({
-    urlRoot: '/api/v1/friend'
+  var InvitationModel = L.Model.Friend.extend({
+    urlRoot: '/api/v1/invitation'
   });
 
-  var FriendCollection = L.Collection.Default.extend({
-    url: '/api/v1/friend'
+  var InvitationCollection = L.Collection.Default.extend({
+    url: '/api/v1/invitation'
   });
 
   var MaybeModel = L.Model.Friend.extend({
@@ -18,47 +18,34 @@ $(function (){
     url: '/api/v1/maybe'
   });
 
-  var FriendView = L.View.FriendView.extend({
+  var InvitationView = L.View.FriendView.extend({
     tagName: 'div',
     className: 'item',
-    template: Template.get('friend_item'),
+    template: Template.get('friend/invitation_item'),
     ui: {
-      friend: '.friend-btn',
-      i: 'i'
+      cancel: '.cancel-btn',
+      confirm: '.confirm-btn',
     },
     events: {
-      'click @ui.friend': 'friendBtn',
-      'mouseenter @ui.friend': 'mouseEnter',
-      'mouseleave @ui.friend': 'mouseLeave'
+      'click @ui.cancel': 'cancelBtn',
+      'click @ui.confirm': 'confirmBtn',
     },
-    mouseEnter: function (e){
-      if( this.model.get('status') == 'friend'){
-        this.ui.friend
-          .removeClass('teal')
-          .addClass('red')
-          .html('<i class="remove icon"></i> Delete');
-      }
+
+    confirmBtn: function (e){
+      this.model.save( {_action: 'confirm'} );
     },
-    mouseLeave: function (e){
-      if( this.model.get('status') == 'friend'){
-        this.ui.friend
-        .removeClass('red')
-        .addClass('basic')
-        .addClass('teal')
-        .html('<i class="checkmark icon"></i> Friends');
-      }
-    },
-    friendBtn: function (e){
-      this.model.save();
+
+    cancelBtn: function (e){
+      this.model.save( {_action: 'cancel'} );
     }
   });
 
-  var FriendCollectionView = L.CollectionView.FriendCollectionView.extend({
+  var InvitationCollectionView = L.CollectionView.FriendCollectionView.extend({
     tagName: 'div',
     className: 'ui divided items',
-    childView: FriendView,
+    childView: InvitationView,
     emptyView: Marionette.View.extend({
-      template: _.template('<div> You have no friends</div>')
+      template: _.template('<div> You have no invitations</div>')
     }),
   });
 
@@ -94,8 +81,8 @@ $(function (){
       this.listenTo(this.maybe, 'sync', this.maybeList);
     },
     friendsList: function (){
-      var v = new FriendCollectionView({collection: this.friends});
-      $('#friendList').html(v.render().el);
+      var v = new InvitationCollectionView({collection: this.friends});
+      $('#invitationList').html(v.render().el);
     },
     maybeList: function (){
       console.log(this.maybe.toJSON());
@@ -108,7 +95,7 @@ $(function (){
     }
   });
 
-  var friends = new FriendCollection();
+  var friends = new InvitationCollection();
   var maybe = new MaybeCollection();
 
   app.main = new AppMain({friends: friends, maybe: maybe});

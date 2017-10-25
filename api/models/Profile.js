@@ -5,6 +5,9 @@
  * @docs        :: http://sailsjs.org/documentation/concepts/models-and-orm/models
  */
 
+var Promise = require('bluebird');
+var _ = require('lodash');
+
 module.exports = {
 
   attributes: {
@@ -12,21 +15,31 @@ module.exports = {
     info: { type: 'string', defaultsTo: 'No info'}
   },
 
-  getFullProfile: function (opts, cb){
+  getFullProfile: Promise.method(function (opts){
 
-    Profile.findOne(opts).populateAll().exec(function(err, profile){
-			if(err) return cb(err);
-			Setting.findOne({user: profile.user.id}).populateAll().exec(function(err, setting){
-				if(err) return cb(err);
-        if(!setting) return cb( new Error('Profile no complete') );
-				Language.findOne(setting.country.language).exec(function(err, lang){
-					if(err) return cb(err);
-					profile['setting'] = setting;
-					profile.setting.country.language = lang;
-					return cb(null, profile);
-				});
-			});
-		});
+    return Promise.bind({}, Profile.findOne(opts).populateAll())
+      .then(function(profile){
+        this.profile = profile;
+        return Setting.findOne({user: profile.user.id}).populateAll();
+      })
+      .then(function(setting){
+        this.setting = setting;
+        return Language.findOne(setting.country.language);
+      })
+      .then(function(language){
+        this.language = language;
+        return Fichero.find({user:this.profile.user.id}).sort('createdAt DESC');
+      })
+      .then(function(fichero){
+        fichero = _.isArray(fichero) ? fichero[0] : fichero;
+        this.profile['setting']               = this.setting;
+        this.profile.setting.country.language = this.language;
+        this.profile.image = fichero;
+        return this.profile;
+      })
+      .catch(function(e){
+        return e;
+      });
 
-  }
+  })
 };

@@ -51,7 +51,21 @@ module.exports = {
 	},
 
 	firstConfiguration: function ( req, res, next ){
-		res.view('settings/data_person', {layout: false});
+
+		Country.find({}).exec(function (err, countries){
+			if (err) res.notFound();
+
+			Language.find({}).exec(function(err, langs){
+				if (err) res.notFound();
+
+				res.view('settings/data_person', {
+					layout: false,
+					langs: langs,
+					countries: countries
+				});
+			});
+		});
+
 	},
 
 

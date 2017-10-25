@@ -30,11 +30,22 @@ module.exports = {
 	getRequests: function( req, res, next){
 		var p = req.params.all();
 		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
-		Friend.getFriends(p,
+		Friend.getRequests(p,
 			function(err, requests){
 				sails.log.info('requests\n', requests);
 				if(err) return res.json(err);
 				return res.json(requests);
+		});
+	},
+
+	getInvitations: function( req, res, next){
+		var p = req.params.all();
+		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
+		Friend.getInvitations(p,
+			function(err, invitations){
+				sails.log.info('Invitations\n', invitations);
+				if(err) return res.json(err);
+				return res.json(invitations);
 		});
 	},
 
@@ -62,20 +73,20 @@ module.exports = {
 			var c = _.pick(p, 'friend_one', 'friend_two');
 
 			var or = {
-                or: [
-				    {friend_one: c.friend_one, friend_two: c.friend_two},
-                    {friend_one: c.friend_two, friend_two: c.friend_one},
-				], status: 'friend'
-            };
+	              or: [
+								    {friend_one: c.friend_one, friend_two: c.friend_two},
+				            {friend_one: c.friend_two, friend_two: c.friend_one},
+								], status: 'friend'
+      };
 
-			Friend.destroy( or ).exec(function(err){
-	            if(err) return res.json(err);
+			Friend.update( or, {status: 'canceled'} ).exec(function(err){
+          if(err) return res.json(err);
 
-	            var obj = _.omit(p, 'friend_one', 'friend_two');
-	            obj['status'] = 'maybe';
-	            sails.log.info('obj\n', obj);
-	            return res.json(obj);
-	        });
+          var obj = _.omit(p, 'friend_one', 'friend_two');
+          obj['status'] = 'maybe';
+          sails.log.info('obj\n', obj);
+          return res.json(obj);
+      });
 		}else{
 			Friend.addFriend(p,	function(err, friend){
 				if(err) return res.json(err);
@@ -107,6 +118,8 @@ module.exports = {
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
 		if(p.friendship == 'maybe'){
+
+			// Add friend
 			Friend.addFriend(p,
 				function(err, friend){
 					if(err) return res.json(err);
@@ -119,8 +132,10 @@ module.exports = {
 			});
 		}else{
 			var c = _.pick(p, 'friend_one', 'friend_two');
+			_.extend(c, {status: 'pending'});
 
-			Friend.destroy( c ).exec(function(err){
+			// Cancel maybe
+			Friend.update(c, {status: 'canceled'}).exec(function(err){
 				if(err) return res.json(err);
 
 				var obj = _.omit(p, 'friend_one', 'friend_two');
@@ -133,12 +148,17 @@ module.exports = {
 
 	updateRequest: function (req, res, next){
 		var p = req.params.all();
+
+		sails.log.debug('updateRequest');
+		sails.log.debug('STATUS ', p.status);
+		sails.log.debug('OBJ ', p);
+
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
 
 		if( p.status == 'pending' ){
 			var c = _.pick(p, 'friend_one', 'friend_two');
 
-			Friend.destroy( c ).exec(function(err){
+			Friend.update({id: p.friend_id}, {status: 'canceled'}).exec(function(err, updated){
 				if(err) return res.json(err);
 
 				var obj = _.omit(p, 'friend_one', 'friend_two');
@@ -147,6 +167,8 @@ module.exports = {
 				return res.json(obj);
 			});
 		}else{
+
+			// status:
 			Friend.addFriend(p,
 				function(err, friend){
 					if(err) return res.json(err);
@@ -160,6 +182,36 @@ module.exports = {
 					return res.json(friend);
 			});
 		}
+	},
+
+	// Update Invitation
+	updateInvitation: function (req, res, next){
+		var p = req.params.all();
+
+		sails.log.debug('updateInvitation');
+		sails.log.debug('method', req.method);
+		sails.log.debug('STATUS ', p.status);
+		sails.log.debug('OBJ ', p);
+
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+
+		if( p._action == 'confirm' ){
+			var c = _.pick(p, 'friend_one', 'friend_two');
+
+			// Action: confirm
+			Friend.update({id: p.friend_id}, {status: 'friend'}).exec(function(err, updated){
+				if(err) return res.json(err);
+				return res.json({status: 'friend'});
+			});
+		}else{
+
+			// Action: canceled
+			Friend.update({id: p.friend_id}, {status: 'canceled'}).exec(function(err, updated){
+				if(err) return res.json(err);
+				return res.json({status: 'canceled'});
+			});
+		}
+
 	},
 
 	updateActivation: function (req, res, next){

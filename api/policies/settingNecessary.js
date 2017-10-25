@@ -9,6 +9,8 @@
  */
 module.exports = function(req, res, next) {
 
+  if (req.session.setting && req.session.setting.country) return next();
+
   Setting.findOne({user: req.session.user.id})
     .populate('country').populate('language').exec(function( err, setting ){
     if ( err ) return res.negotiate(err);
