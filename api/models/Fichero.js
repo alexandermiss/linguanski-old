@@ -10,6 +10,9 @@ module.exports = {
   attributes: {
     user: {model: 'user'},
     public_id: {type: 'string'},
+    version: {type: 'string'},
+    width: {type: 'string'},
+    height: {type: 'string'},
     url: {type: 'string'},
     secure_url: {type: 'string'},
     original_filename: {type: 'string'},
@@ -17,6 +20,9 @@ module.exports = {
     signature: {type: 'string'},
     type: {type: 'string'},
     format: {type: 'string'},
-    bytes: {type: 'integer'}
-  }
+    bytes: {type: 'integer'},
+
+    photo80x80: {type: 'string'}
+  },
+
 };
