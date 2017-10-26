@@ -3,12 +3,14 @@
 
     <a style="color:#ffffff;" class="active item" href="/dashboard">
       <%= __('LINGUANSKI') %>
+      <% if( req.session.user.suscription == 'premium' ){ %>
+      <div class="ui teal mini label">Premium</div>
+      <% } %>
     </a>
-
     <div style="color:#ffffff;" class="right menu">
 
-      <a style="color:#ffffff;" class="item" href="/profile?id=<%= req.session.profile.id %>">
-        <img class="ui avatar image" src="<%= req.session.user.photo %>"> <%= req.session.user.name %>
+      <a style="color:#ffffff;" class="item" href="/profile/<%= req.session.profile.id %>">
+        <img class="ui avatar image" src="<%= req.session.user.image.photo80x80 %>"> <%= req.session.user.name %>
       </a>
 
       <div class="ui pointing dropdown link item">

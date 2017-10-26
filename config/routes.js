@@ -41,12 +41,14 @@ module.exports.routes = {
   'GET /account/signup'                   : 'AppController.registerform',
   'GET /account/info'                     : 'AppController.info',
 
+  'POST /auth/login'                      : 'AuthController.login',
+
   // Menu
   'GET /dashboard'                        : 'DashboardController.init',
   'GET /traductions'                      : 'AppController.traductions',
   'GET /phrases'                          : 'AppController.phrases',
   'GET /practise'                         : 'AppController.practise',
-  'GET /profile'                          : 'ProfileController.getProfile',
+  'GET /profile/:id'                      : 'ProfileController.getProfile',
   'GET /friends'                          : 'FriendController.list',
   'GET /requests'                         : 'FriendController.requests',
   'GET /invitations'                      : 'FriendController.invitations',
