@@ -27,8 +27,7 @@ $(function (){
         }
       },
 			onSuccess: function (event, fields){
-
-				var phrase_native 	= fields.phrase_native
+				var phrase_native 		= fields.phrase_native
 				,		phrase_language 	= fields.phrase_language;
 
 		    var ph = new Phrase({
@@ -39,7 +38,7 @@ $(function (){
 				ph.save();
 
 				$('#phrase_native, #phrase_language').val('');
-				Backbone.history.navigate('!/page/1');
+				Backbone.history.navigate('/page/1');
 
 				$('#modal-phrases').modal('hide');
 			}
@@ -74,7 +73,7 @@ $(function (){
 		},
 		updatePhrase: function (e){
 			var lang = $(e.target).data('lang');
-			Backbone.history.navigate('!/update/'+this.model.get('id')+'/lang/'+lang, {trigger:true});
+			Backbone.history.navigate('/update/'+this.model.get('id')+'/lang/'+lang, {trigger:true});
 		}
 	});
 
@@ -95,8 +94,8 @@ $(function (){
 			this.collection = opts.collection;
 		},
 		routes: {
-			'!/update/:id/lang/:lang' : 'update',
-			'!/page/:id' : 'pageNumber',
+			'update/:id/lang/:lang' : 'update',
+			'page/:id' : 'pageNumber',
 		},
 		update: function (id, lang){
 			console.log('updating route', id, lang);
@@ -107,7 +106,7 @@ $(function (){
 				transition: 'scale',
 			  closable: false,
 			  onDeny    : function(){
-					Backbone.history.navigate('!/page/'+phrases.page, {trigger:true});
+					Backbone.history.navigate('/page/'+phrases.page, {trigger:true});
 			  },
 			  onApprove : function() {
 			    var text 	= $('#phrase_text').val();
@@ -127,7 +126,7 @@ $(function (){
 				id = parseInt(id);
 				this.collection.fetch({ reset: true, data: { page: id} });
 			}catch(err){
-				Backbone.history.navigate('!/page/1', {triger: true});
+				Backbone.history.navigate('/page/1', {triger: true});
 			}
 		},
 	});
@@ -176,7 +175,7 @@ $(function (){
 				page--;
 				this.ui.atras.addClass('loading');
 				this.collection.page = page;
-				Backbone.history.navigate('!/page/'+page, {trigger:true});
+				Backbone.history.navigate('/page/'+page, {trigger:true});
 			}
 		},
 		adelanteEvent: function(){
@@ -187,7 +186,7 @@ $(function (){
 				page++;
 				this.ui.adelante.addClass('loading');
 				this.collection.page = page;
-				Backbone.history.navigate('!/page/'+page, {trigger:true});
+				Backbone.history.navigate('/page/'+page, {trigger:true});
 			}
 		}
 	});
@@ -202,8 +201,8 @@ $(function (){
 			var pagination = new Pagination({collection: col});
 			phrases = app.main.getView().collection;
 			pagination.render();
-			Backbone.history.start({ root: 'phrases' });
-			Backbone.history.navigate('!/page/1', {trigger:true});
+			Backbone.history.start({ root: 'phrases', pushState: true });
+			Backbone.history.navigate('/page/1', {trigger:true});
 		}
 	});
 
@@ -226,14 +225,14 @@ $(function (){
 		  transition: 'scale',
 		  closable: false,
 		  onDeny    : function(){
-				Backbone.history.navigate('!/page/'+phrases.page, {trigger:true});
+				Backbone.history.navigate('/page/'+phrases.page, {trigger:true});
 		  },
 		  onApprove : function() {
 				$('#formPhraseAdd').form('validate form');
 				return false;
 		  },
 		  onShow    : function(){
-				Backbone.history.navigate('!/new', {trigger:true});
+				Backbone.history.navigate('/new', {trigger:true});
 		  },
 		}).modal('show');
 	});

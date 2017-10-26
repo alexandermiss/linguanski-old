@@ -98,7 +98,6 @@ $(function (){
       $('#friendList').html(v.render().el);
     },
     maybeList: function (){
-      console.log(this.maybe.toJSON());
       var v = new MaybeCollectionView({collection: this.maybe});
       $('#maybeList').html(v.render().el);
     },
