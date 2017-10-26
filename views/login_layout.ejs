@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<%= req.session.setting ? req.session.setting.country.language.prefix: 'en' %>">
   <head>
-    <title> <%=typeof title == 'undefined' ? 'Linguanski' : 'Linguanski - ' + title%> (Beta)</title>
+    <title> <%=typeof title == 'undefined' ? 'Linguanski' : 'Linguanski - ' + title%> (beta)</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -101,7 +101,7 @@
     -->
 
     <!--TEMPLATES-->
-    <script type="text/javascript" src="/jst.js?20171022091221"></script>
+    <script type="text/javascript" src="/jst.js?20171026060446"></script>
     <!--TEMPLATES END-->
 
 
@@ -141,6 +141,7 @@
     <script src="/js/dependencies/FileUpload.js"></script>
     <script src="/js/accounts/authorization.js"></script>
     <script src="/js/friend/friend_list.js"></script>
+    <script src="/js/friend/invitation_list.js"></script>
     <script src="/js/friend/request_list.js"></script>
     <script src="/js/home_page.js"></script>
     <script src="/js/login/main_signin.js"></script>

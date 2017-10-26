@@ -46,7 +46,7 @@ module.exports.routes = {
   // Menu
   'GET /dashboard'                        : 'DashboardController.init',
   'GET /traductions'                      : 'AppController.traductions',
-  'GET /phrases'                          : 'AppController.phrases',
+  'GET /phrases*'                         : 'AppController.phrases',
   'GET /practise'                         : 'AppController.practise',
   'GET /profile/:id'                      : 'ProfileController.getProfile',
   'GET /friends'                          : 'FriendController.list',
