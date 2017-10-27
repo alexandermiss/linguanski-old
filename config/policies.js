@@ -52,7 +52,7 @@ module.exports.policies = {
 
   PhraseController: {
     '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
-    'getJwtPhrases': ['settingNecessary', 'hasJsonWebToken'],
+    'getJwtPhrases': 'hasJsonWebToken',
     getOnePhrase: true
   },
 
@@ -66,8 +66,8 @@ module.exports.policies = {
 
   ApiController: {
     '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
-    'getJwtFriends': ['settingNecessary', 'hasJsonWebToken'],
-    'getJwtMaybe': ['settingNecessary', 'hasJsonWebToken']
+    'getJwtFriends': 'hasJsonWebToken',
+    'getJwtMaybe': 'hasJsonWebToken'
   },
 
   ProfileController: {

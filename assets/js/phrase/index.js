@@ -96,6 +96,7 @@ $(function (){
 		routes: {
 			'update/:id/lang/:lang' : 'update',
 			'page/:id' : 'pageNumber',
+			'search/:q' : 'searchPhrase'
 		},
 		update: function (id, lang){
 			console.log('updating route', id, lang);
@@ -126,9 +127,12 @@ $(function (){
 				id = parseInt(id);
 				this.collection.fetch({ reset: true, data: { page: id} });
 			}catch(err){
-				Backbone.history.navigate('/page/1', {triger: true});
+				Backbone.history.navigate('/page/1', {trigger: true});
 			}
 		},
+		searchPhrase: function (q){
+			app.main.getView().collection.fetch({reset: true, data: {q: q}});
+		}
 	});
 
 	var Pagination = Marionette.View.extend({
@@ -239,10 +243,14 @@ $(function (){
 
 	$('.prompt').on('change', _.debounce(function(e){
 		var val = $(this).val() || '';
-		if (val !== '')
-			app.main.getView().collection.fetch({reset: true, data: {q: val}});
-		else
-			app.main.getView().collection.fetch({reset: true});
+
+		if ( val != '' ){
+			Backbone.history.navigate('/search/'+val, {trigger: true});
+		}
+		else{
+			Backbone.history.navigate('/page/1', {trigger: true});
+		}
+
 	}, 500));
 
 });
