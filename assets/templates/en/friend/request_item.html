@@ -1,9 +1,9 @@
 
-  <a href="/profile?id={{ id }}" class="ui tiny bordered image">
+  <a href="/profile/{{ id }}" class="ui tiny bordered image">
     <img src="{{ image.photo80x80 }}">
   </a>
   <div style="position:relative;" class="content">
-    <a href="/profile?id={{ id }}" class="header">
+    <a href="/profile/{{ id }}" class="header">
       {{ user.name }}
     </a>
     {% if(user.verified){ %}

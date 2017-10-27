@@ -1,10 +1,6 @@
+
 <h2 class="ui header">
   {{ user.name }}
-  {% if(user.suscription == 'premium'){ %}
-    <div class="ui mini teal label">
-     PREMIUM
-    </div>
-  {% } %}
   <div class="sub header">
     {{ info || 'Ninguna informacion' }}
   </div>
@@ -17,7 +13,7 @@
       <p>Pais</p>
     </div>
     <div class="six wide column">
-      <p><i class="{{ setting.country.prefix }} flag"></i> {{ setting.country.name }}</p>
+      <p><i class="{{ setting.country.flag }} flag"></i> {{ setting.country.name }}</p>
     </div>
   </div>
   <div class="column row">
@@ -25,7 +21,7 @@
       <p>Aprendiendo</p>
     </div>
     <div class="six wide column">
-      <p><i class="{{ setting.language.prefix }} flag"></i> {{ setting.language.name }}</p>
+      <p><i class="{{ setting.language.flag }} flag"></i> {{ setting.language.name }}</p>
     </div>
   </div>
 </div>

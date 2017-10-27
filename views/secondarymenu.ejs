@@ -2,7 +2,7 @@
   <a class="<% if(menu === 'dashboard'){ %>active <% } %>item" href="/dashboard">
     <i class="home icon"></i> Dashboard
   </a>
-  <a class="<% if(menu === 'profile'){ %>active <% } %>item" href="/profile?id=<%= session.profile.id %>">
+  <a class="<% if(menu === 'profile'){ %>active <% } %>item" href="/profile/<%= req.session.profile.id %>">
     <i class="user icon"></i> Profile
   </a>
   <a class="<% if(menu === 'friends'){ %>active <% } %>item" href="/friends">
