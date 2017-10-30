@@ -51,27 +51,27 @@ module.exports.policies = {
   },
 
   PhraseController: {
-    '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
+    '*': ['sessionAuth', 'activatedUser'],
     'getJwtPhrases': 'hasJsonWebToken',
     getOnePhrase: true
   },
 
   FriendController: {
-    '*': ['sessionAuth', 'settingNecessary', 'activatedUser']
+    '*': ['sessionAuth', 'activatedUser']
   },
 
   DashboardController: {
-    '*': ['sessionAuth', 'settingNecessary', 'activatedUser']
+    '*': ['sessionAuth', 'activatedUser']
   },
 
   ApiController: {
-    '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
+    '*': ['sessionAuth', 'activatedUser'],
     'getJwtFriends': 'hasJsonWebToken',
     'getJwtMaybe': 'hasJsonWebToken'
   },
 
   ProfileController: {
-    '*': ['sessionAuth', 'settingNecessary', 'activatedUser'],
+    '*': ['sessionAuth', 'activatedUser'],
   }
 
 };
