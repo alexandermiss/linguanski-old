@@ -12,14 +12,20 @@
 module.exports = function(req, res, next) {
   waterlock.validator.validateTokenRequest(req, function(err, user){
 
-    sails.log.debug('USER JWT DEBUG', user || {});
-    sails.log.debug('SESSION JWT DEBUG', req.session || {});
-
     if(err){
       return res.unauthorized(err);
     }
 
-    // valid request
-    next();
+    Profile.getFullProfile({user: user.id}).then(function(profile){
+      sails.log.debug('PROFILE getFullProfile', profile);
+      req.session['profile'] = profile;
+      req.session['image'] = profile.image;
+      req.session['setting'] = profile.setting;
+      return next();
+    })
+    .catch(function(err){
+      return res.json(new Error('Profile not found'));
+    });
+
   });
 };

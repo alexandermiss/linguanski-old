@@ -71,7 +71,7 @@ module.exports.waterlock = {
     // express session object and attach the
     // user to it during the hasJsonWebToken
     // middleware
-    stateless: true,
+    stateless: false,
 
     // set the name of the jwt token property
     // in the JSON response
