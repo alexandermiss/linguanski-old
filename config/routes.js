@@ -37,7 +37,7 @@ module.exports.routes = {
 
   // Login
   'GET /account/signin'                   : 'AppController.loginform',
-  'GET /account/logout'                   : 'AppController.logout',
+  'GET /account/logout'                   : 'AuthController.logout',
   'GET /account/signup'                   : 'AppController.registerform',
   'GET /account/info'                     : 'AppController.info',
 

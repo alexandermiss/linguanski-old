@@ -11,6 +11,10 @@
  */
 module.exports = function(req, res, next) {
   waterlock.validator.validateTokenRequest(req, function(err, user){
+
+    sails.log.debug('USER JWT DEBUG', user || {});
+    sails.log.debug('SESSION JWT DEBUG', req.session || {});
+
     if(err){
       return res.unauthorized(err);
     }

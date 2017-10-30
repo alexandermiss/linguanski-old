@@ -33,8 +33,9 @@ module.exports = require('waterlock').waterlocked({
           if(user){
             if(bcrypt.compareSync(params.password, user.auth.password)){
   						Profile.getFullProfile({user: user.id}).then(function(profile){
-  							user['image'] = profile.image;
-  							user['setting'] = profile.setting;
+                req.session['profile'] = profile;
+                req.session['image'] = profile.image;
+                req.session['setting'] = profile.setting;
   							return waterlock.cycle.loginSuccess(req, res, user);
   						})
   						.catch(function(err){
@@ -49,4 +50,14 @@ module.exports = require('waterlock').waterlocked({
           }
         });
   	},
+
+    logout: function (req, res){
+  		if( req.session['setting'] ) delete req.session['setting'];
+  		if( req.session['user'] ) delete req.session['user'];
+  		if( req.session['image'] ) delete req.session['image'];
+  		if( req.session['profile'] ) delete req.session['profile'];
+
+  		return waterlock.cycle.logout(req, res);
+  	}
+
 });
