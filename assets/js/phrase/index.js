@@ -32,8 +32,7 @@ $(function (){
 
 		    var ph = new Phrase({
 					phrase_native: phrase_native,
-					phrase_language: phrase_language,
-					source: $('#source').dropdown('get value')
+					phrase_language: phrase_language
 				});
 				ph.save();
 
@@ -96,11 +95,19 @@ $(function (){
 		routes: {
 			'update/:id/lang/:lang' : 'update',
 			'page/:id' : 'pageNumber',
+			'search/:q' : 'searchPhrase'
 		},
 		update: function (id, lang){
-			console.log('updating route', id, lang);
+			_debug('updating route', id, lang, phrases.get(id).toJSON());
 			var self = this;
 			var col = this.collection;
+			var m = phrases.get(id);
+
+			if ( m.get('phrase_native_flag_prefix') == lang ){
+				$('#phrase_text').val(m.get('phrase_native'));
+			}else{
+				$('#phrase_text').val(m.get('phrase_language'));
+			}
 
 			$('#modal-phrases-detail').modal({
 				transition: 'scale',
@@ -111,11 +118,10 @@ $(function (){
 			  onApprove : function() {
 			    var text 	= $('#phrase_text').val();
 
-					var m = phrases.get(id)
 					var p = 'phrase_'+lang;
 					m.set(p, text);
 					m.save({lang: lang});
-					console.log(p, 'm', m.toJSON());
+					_debug(p, 'm', m.toJSON());
 
 					$('#phrase_text, #phrase_lang').val('');
 			  }
@@ -126,9 +132,12 @@ $(function (){
 				id = parseInt(id);
 				this.collection.fetch({ reset: true, data: { page: id} });
 			}catch(err){
-				Backbone.history.navigate('/page/1', {triger: true});
+				Backbone.history.navigate('/page/1', {trigger: true});
 			}
 		},
+		searchPhrase: function (q){
+			app.main.getView().collection.fetch({reset: true, data: {q: q}});
+		}
 	});
 
 	var Pagination = Marionette.View.extend({
@@ -210,7 +219,7 @@ $(function (){
 		app.main.start();
 
 	io.socket.on('phrase', function (msg){
-		console.log('msg', msg);
+		_debug('msg', msg);
 
     switch (msg.method) {
         case 'created': phrases.add(msg.data); break;
@@ -239,10 +248,14 @@ $(function (){
 
 	$('.prompt').on('change', _.debounce(function(e){
 		var val = $(this).val() || '';
-		if (val !== '')
-			app.main.getView().collection.fetch({reset: true, data: {q: val}});
-		else
-			app.main.getView().collection.fetch({reset: true});
+
+		if ( val != '' ){
+			Backbone.history.navigate('/search/'+val, {trigger: true});
+		}
+		else{
+			Backbone.history.navigate('/page/1', {trigger: true});
+		}
+
 	}, 500));
 
 });

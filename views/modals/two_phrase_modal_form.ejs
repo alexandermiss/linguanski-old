@@ -5,31 +5,16 @@
       <div class="ui error message"></div>
       <div class="two fields">
         <div class="field">
-          <label><%= session.setting.country.language.name %> </label>
+          <label><%= session.user.setting.country.language.name %> </label>
           <textarea type="text" id="phrase_native" name="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.country.language.name) %>" rows="3"></textarea>
           <input type="hidden" id="phrase_native_flag_prefix" name="phrase_native_flag_prefix" value="<%= session.setting.country.language.prefix %>">
         </div>
         <div class="field">
-          <label><%= session.setting.language.name %> </label>
+          <label><%= session.user.setting.language.name %> </label>
           <textarea type="text" id="phrase_language" name="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>" rows="3"></textarea>
           <input type="hidden" id="phrase_language_flag_prefix" name="phrase_language_flag_prefix" value="<%= session.setting.language.prefix %>">
         </div>
       </div>
-      <% if ( _.includes(['superadmin', 'admin'], session.user.role)) { %>
-      <div class="field">
-        <label><%= __('Source') %> </label>
-        <div id="source" class="ui selection dropdown">
-          <input type="hidden">
-          <i class="dropdown icon"></i>
-          <div class="default text">Seleccione</div>
-          <div class="menu">
-            <% _.each(sources, function (source){ %>
-              <div class="item" data-value="<%= source.id %>"><%= source.name %></div>
-            <% }) %>
-          </div>
-        </div>
-      </div>
-      <% } %>
     </form>
   </div>
   <div class="actions">

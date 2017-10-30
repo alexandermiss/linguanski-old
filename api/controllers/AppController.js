@@ -42,11 +42,6 @@ module.exports = {
 
 	info: function (req, res, next){
 		return res.json(req.session || {});
-	},
-
-	logout: function (req, res){
-		delete req.session['setting'];
-		waterlock.cycle.logout(req, res);
 	}
 
 };

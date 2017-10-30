@@ -21,7 +21,7 @@ module.exports = {
 		sails.sockets.join(req, language_room);
 
 		var p = req.params.all();
-		Phrase.combineLanguages(_.extend(p, {country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id}), function(err, phrases){
+		Phrase.combineLanguages(_.extend(p, {country_language_id: sett.country.language.id, language_id: sett.language.id}), function(err, phrases){
 			if(err) return res.negotiate(err);
 			res.json(phrases);
 		});
@@ -30,11 +30,12 @@ module.exports = {
 	addPhrase: function (req, res, next){
 		if (!req.isSocket){ return res.badRequest();}
 		var p = req.params.all();
+		var sett = req.session.setting;
 
 		Phrase.addPhrase(_.extend(p, {
-			country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id,
-			phrase_native_flag_prefix: req.session.setting.country.language.prefix,
-			phrase_language_flag_prefix: req.session.setting.language.prefix
+			country_language_id: sett.country.language.id, language_id: sett.language.id,
+			phrase_native_flag_prefix: sett.country.language.prefix,
+			phrase_language_flag_prefix: sett.language.prefix
 		}), function(err, phrases){
 			if(err) return res.negotiate(err);
 			var sent = {method: 'created', data: phrases};
@@ -59,10 +60,12 @@ module.exports = {
 
 	getOnePhrase: function (req, res, next){
 		var p = req.params.all();
+		var sett = req.session.setting;
+
 		Phrase.getOnePhrase(_.extend(p, {
-			country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id,
-			phrase_native_flag_prefix: req.session.setting.country.language.prefix,
-			phrase_language_flag_prefix: req.session.setting.language.prefix
+			country_language_id: sett.country.language.id, language_id: sett.language.id,
+			phrase_native_flag_prefix: sett.country.language.prefix,
+			phrase_language_flag_prefix: sett.language.prefix
 		}), function(err, data){
 			return res.json(data);
 		});
@@ -70,18 +73,16 @@ module.exports = {
 
 	getJwtPhrases: function (req, res, next){
 		try{
+			sails.log.info(req.session.user);
 			var sett = req.session.setting;
 
-			var native_room 	= 'phrase__' + sett.country.language.prefix + '_' + sett.language.prefix;
-			var	language_room = 'phrase__' + sett.language.prefix + '_' + sett.country.language.prefix;
-
 			var p = req.params.all();
-			Phrase.combineLanguages(_.extend(p, {country_language_id: req.session.setting.country.language.id, language_id: req.session.setting.language.id}), function(err, phrases){
-				if(err) return res.negotiate(err);
+			Phrase.combineLanguages(_.extend(p, {country_language_id: sett.country.language.id, language_id: sett.language.id}), function(err, phrases){
+				if(err) return res.serverError(err);
 				return res.json(phrases);
 			});
 		}catch(e){
-				return res.notFound(e);
+				return res.serverError(e);
 		}
 	},
 
