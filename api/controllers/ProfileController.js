@@ -5,7 +5,8 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var cloudinary 	= require('cloudinary').v2,
+var fs 					= require('fs'),
+		cloudinary 	= require('cloudinary').v2,
 		_ 					= require('lodash'),
 		Promise 		= require('bluebird');
 
@@ -44,11 +45,13 @@ module.exports = {
 
 		Promise.bind({}, uploader.uploadAsync({dirname: sails.config.rootPath + '/assets/images'}))
 		.then(function(uploaded){
-			return cloudinary.uploader.upload(uploaded[0].fd)
+			this.uploaded = uploaded[0].fd;
+			return cloudinary.uploader.upload(this.uploaded);
 		})
 		.then(function (r){
-			this.result = r;
+			fs.unlinkSync(this.uploaded);
 
+			this.result = r;
 			var domain = 'https://res.cloudinary.com/linguanski/image/upload/';
 	    var custom = domain + 'c_thumb,w_80/v';
 	    r.photo80x80 = custom+r.version+'/'+r.public_id+'.'+r.format;
@@ -64,7 +67,15 @@ module.exports = {
 			return Fichero.create(c);
 		})
 		.then(function(file){
-			sails.log.debug('FILE', file);
+			this.file = file;
+			return Profile.getFullProfile({user: req.session.user.id});
+		})
+		.then(function(profile){
+			req.session.user = profile.user;
+			req.session['profile'] = profile;
+      req.session['image'] = profile.image;
+      req.session['setting'] = profile.setting;
+
 			return res.json(this.result);
 		})
 		.catch(function(e){
