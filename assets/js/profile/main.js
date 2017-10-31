@@ -121,6 +121,8 @@ $(function(){
           model.set('user', obj);
           var img = document.getElementById('imageProfile')
           img.src = model.get('user').photo;
+          if(document.getElementById('avatar'))
+            document.getElementById('avatar').src = json.photo80x80;
         }
       }
     };
