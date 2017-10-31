@@ -2,18 +2,16 @@
   <a href="/profile/{{ id }}" class="ui tiny bordered image">
     <img src="{{ image.photo80x80 }}">
   </a>
-  <div style="position:relative;" class="content">
+  <div style="position:relative;" class="middle aligned content">
     <a href="/profile/{{ id }}" class="header">
       {{ user.name }}
     </a>
     {% if(user.verified){ %}
       <i style="position:absolute;top:-5px;" class="asterisk small icon blue"></i>
     {% } %}
-    <div class="meta">
-      <span class="cinema">{{ info }}</span>
-    </div>
+
     <div class="description">
-      <p></p>
+      <p>{{ info }}</p>
     </div>
     <div class="extra">
         {% if( status == 'pending' ){ %}
@@ -31,7 +29,9 @@
           <p class="right floated"><i class="ok icon"></i> Unknown action</p>
         {% } %}
 
-      <i class="{{ setting.country.prefix }} flag"></i>
-      {{ setting.country.name }}
+        <div class="ui label">
+          <i class="{{ setting.country.flag }} flag"></i>
+          {{ setting.country.name }}
+        </div>
     </div>
   </div>
