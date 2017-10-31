@@ -1,10 +1,12 @@
 <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui centered header">
-        <%= __('Login')  %>
-    </h2>
-    <form id="signinForm" class="ui large form" method="POST" autocomplete="off">
-      <div class="ui stacked segment">
+    
+    <div class="ui attached message">
+      <h2 class="ui centered header">
+          <%= __('Login')  %>
+      </h2>
+    </div>
+    <form id="signinForm" class="ui form attached fluid segment" method="POST" autocomplete="off">
         <div class="field">
           <div class="ui left icon input">
             <i class="at icon"></i>
@@ -18,13 +20,12 @@
           </div>
         </div>
         <button class="ui fluid large basic blue button"><%= __('Sign In') %></button>
-      </div>
 
       <div class="ui error message"></div>
-
     </form>
 
-    <div class="ui message">
+    <div class="ui bottom attached warning message">
+      <i class="icon help"></i>
       <%= __('New to us?') %> <a href="/account/signup"><%= __('Sign Up') %></a>
     </div>
   </div>

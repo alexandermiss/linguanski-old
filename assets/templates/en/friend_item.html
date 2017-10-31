@@ -1,19 +1,16 @@
-<!-- <div class="item"> -->
-  <a href="/profile/{{ id }}" class="ui tiny bordered image">
+  <a href="/profile/{{ id }}" class="ui tiny bordered middle aligned image">
     <img src="{{ image.photo80x80 }}">
   </a>
-  <div style="position:relative;" class="content">
+  <div style="position:relative;" class="middle aligned content">
     <a href="/profile/{{ id }}" class="header">
-      {{ user.name }}
+        {{ user.name }}
     </a>
     {% if(user.verified){ %}
       <i style="position:absolute;top:-5px;" class="asterisk small icon blue"></i>
     {% } %}
-    <div class="meta">
-      <span class="cinema">{{ info }}</span>
-    </div>
+
     <div class="description">
-      <p></p>
+      <p>{{ info }}</p>
     </div>
     <div class="extra">
         {% if( status == 'friend' ){ %}
@@ -21,17 +18,16 @@
           <i class="checkmark icon"></i> Friends
         </div>
         {% }else if( status == 'confirm'){ %}
-          <!-- <div class="ui right floated secondary basic tiny button friend-btn">
-            <i class="wait icon"></i> Waiting confirmation
-          </div> -->
           <p class="right floated"><i class="wait icon"></i> Waiting confirmation</p>
         {% }else{ %}
         <div class="ui right floated basic teal tiny button friend-btn">
           <i class="add user icon"></i> Add friend
         </div>
         {% } %}
-        <i class="{{ setting.country.flag }} flag"></i>
-        {{ setting.country.name }}
+
+        <div class="ui label">
+          <i class="{{ setting.country.flag }} flag"></i>
+          {{ setting.country.name }}
+        </div>
     </div>
   </div>
-<!-- </div> -->
