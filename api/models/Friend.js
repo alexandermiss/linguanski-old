@@ -24,7 +24,7 @@ module.exports = {
   				if(err) return cb(err);
   				if(_.isArray(friend) && _.first(friend)) friend = friend[0];
 
-          Profile.findOne({user: opts.user.id})
+          Profile.findOne({user: opts.user_id})
             .populate('user').exec(function(err, profile){
               if(err) return cb(err);
 
@@ -104,49 +104,31 @@ module.exports = {
         },
         { $match: {friend: { $ne: null } } }
       ]).toArray(function (err, __friends){
-        sails.log.info('__friends\n', __friends);
         var c = _.compact(__friends);
         c = _.map(c, 'friend');
         c = _.map(c, _.toString);
 
         c = {user: c};
 
-    		Profile.find(c)
-    			.populate('user').exec(function(err, profiles){
-    				if(err) return cb(err);
-            var ids = _.map(profiles, 'user.id');
-
-            Setting.find({user: ids}).populate('country').exec(function(err, settings){
-              if(err) return cb(err);
-
-              Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
-
-                profiles = _.map(profiles, function (profile){
-                  var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-                  profile['image'] = _.first(_.filter(ficheros, {user: profile.user.id})) || {};
-                  profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                  profile['friend_id'] = obj._id;
-                  profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-                  profile['status'] = status;
-                  return profile;
-                });
-
-                return cb(null, {results: profiles});
-              });
-
-            });
-
-    		});
+        Profile.getIntermediateData(c, {
+          __friends: __friends, status: status})
+        .then(function(profiles){
+          sails.log.debug('FRIENDSS\n', profiles);
+          return cb(null, {results: profiles});
+        })
+        .catch(function(err){
+          sails.log.debug('FRIENDS\n', profiles);
+          return err;
+        });
 
       });
-
     });
   },
 
   getRequests: function (opts, cb){
     var user_id = User.mongo.objectId(opts.friend_one);
     var status = opts.status;
-    sails.log.debug('STATUS', status);
+
     Friend.native(function(err, _Friend){
 
       var friends = _Friend.aggregate([
@@ -178,42 +160,24 @@ module.exports = {
         { $match: {friend: { $ne: null } } },
         { $match: {me: {$eq: "da"} } }
       ]).toArray(function (err, __friends){
-        sails.log.info('__friends\n', __friends);
         var c = _.compact(__friends);
         c = _.map(c, 'friend');
         c = _.map(c, _.toString);
 
         c = {user: c};
 
-    		Profile.find(c)
-    			.populate('user').exec(function(err, profiles){
-    				if(err) return cb(err);
-            var ids = _.map(profiles, 'user.id');
-
-            Setting.find({user: ids}).populate('country').exec(function(err, settings){
-              if(err) return cb(err);
-
-              Fichero.find({user: ids}).sort('createdAt DESC').exec(function (err, ficheros){
-
-                profiles = _.map(profiles, function (profile){
-                  var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-                  profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
-                  profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                  profile['friend_id'] = obj._id;
-                  profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-                  profile['status'] = status;
-                  return profile;
-                });
-
-                return cb(null, {results: profiles});
-              });
-
-            });
-
-    		});
+        Profile.getIntermediateData(c, {
+          __friends: __friends, status: status})
+        .then(function(profiles){
+          sails.log.debug('REQUESTSS\n', profiles);
+          return cb(null, {results: profiles});
+        })
+        .catch(function(err){
+          sails.log.debug('REQUESTSS\n', profiles);
+          return err;
+        });
 
       });
-
     });
   },
 
@@ -222,7 +186,7 @@ module.exports = {
     var user_id = User.mongo.objectId(opts.friend_one);
     var status = opts.status;
     sails.log.debug('INVITATIONS');
-    sails.log.debug('STATUS', status);
+    // sails.log.debug('STATUS', status);
     Friend.native(function(err, _Friend){
 
       var friends = _Friend.aggregate([
@@ -254,40 +218,51 @@ module.exports = {
         { $match: {friend: { $ne: null } }},
         { $match: {me: {$eq: "net"} } }
       ]).toArray(function (err, __friends){
-        sails.log.info('__friends\n', __friends);
         var c = _.compact(__friends);
         c = _.map(c, 'friend');
         c = _.map(c, _.toString);
 
         c = {user: c};
 
-    		Profile.find(c)
-    			.populate('user').exec(function(err, profiles){
-    				if(err) return cb(err);
-            var ids = _.map(profiles, 'user.id');
+        Profile.getIntermediateData(c, {
+          __friends: __friends, status: status})
+        .then(function(profiles){
+          sails.log.debug('INVITATIONSS\n', profiles);
+          return cb(null, {results: profiles});
+        })
+        .catch(function(err){
+          sails.log.debug('INVITATIONSS\n', profiles);
+          return err;
+        });
 
-            Setting.find({user: ids}).populate('country').exec(function(err, settings){
-              if(err) return cb(err);
 
-              Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
-                if(err) return cb(err);
-
-                profiles = _.map(profiles, function (profile){
-                  var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-                  profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
-                  profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-                  profile['friend_id'] = obj._id;
-                  profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-                  profile['status'] = status;
-                  return profile;
-                });
-
-                return cb(null, {results: profiles});
-              });
-
-            });
-
-    		});
+    		// Profile.find(c)
+    		// 	.populate('user').exec(function(err, profiles){
+    		// 		if(err) return cb(err);
+        //     var ids = _.map(profiles, 'user.id');
+        //
+        //     Setting.find({user: ids}).populate('country').exec(function(err, settings){
+        //       if(err) return cb(err);
+        //
+        //       Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
+        //         if(err) return cb(err);
+        //
+        //         profiles = _.map(profiles, function (profile){
+        //           var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
+        //           profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
+        //           profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
+        //           profile['friend_id'] = obj._id;
+        //           profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
+        //           profile['status'] = status;
+        //           return profile;
+        //         });
+        //
+        //         return cb(null, {results: profiles});
+        //       });
+        //
+        //     });
+        //
+    		// });
 
       });
 
@@ -329,24 +304,13 @@ module.exports = {
         c.push(opts.friend_one)
         c = {user: { '!': c }};
 
-        Profile.find(c)
-    			.populate('user').exec(function(err, profiles){
-    				if(err) return cb(err);
-
-            var ids = _.map(profiles, 'user.id');
-
-            Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
-              if(err) return cb(err);
-
-              profiles = _.map(profiles, function (profile){
-                profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
-                profile['friendship'] = 'maybe';
-                return profile;
-              });
-              return cb(null, {results: profiles});
-            });
-
-    		});
+        Profile.getBasicData(c).then(function(profiles){
+          sails.log.debug('PROFILES MAYBE\n', profiles);
+          return cb(null, {results: profiles});
+        }).catch(function(err){
+          sails.log.debug('Profile.getBasicDat', err);
+          return err;
+        });
 
       });
     });
