@@ -7,6 +7,26 @@
 
 module.exports = {
 	index: function (req, res, next){
-		return res.view('homepage', {layout: 'landing_layout'});
+
+		User.find({activated: true}).then(function(users){
+			this.users = users;
+			return Phrase.find({});
+		})
+		.then(function(phrases){
+			this.phrases = phrases;
+			return Language.find({});
+		})
+		.then(function(languages){
+			return res.view('homepage', {
+				layout: 'landing_layout',
+				users: this.users,
+				phrases: this.phrases,
+				languages: languages
+			});
+		})
+		.catch(function(err){
+			return res.serverError(err);
+		});
+
 	}
 };

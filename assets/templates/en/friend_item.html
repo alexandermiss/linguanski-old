@@ -3,9 +3,9 @@
   </a>
   <div style="position:relative;" class="middle aligned content">
     <a href="/profile/{{ id }}" class="header">
-        {{ user.name }}
+        {{ name }}
     </a>
-    {% if(user.verified){ %}
+    {% if(verified){ %}
       <i style="position:absolute;top:-5px;" class="asterisk small icon blue"></i>
     {% } %}
 
@@ -26,8 +26,8 @@
         {% } %}
 
         <div class="ui label">
-          <i class="{{ setting.country.flag }} flag"></i>
-          {{ setting.country.name }}
+          <i class="{{ country.flag }} flag"></i>
+          {{ country.name }}
         </div>
     </div>
   </div>

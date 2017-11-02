@@ -51,7 +51,7 @@ module.exports = {
 
 	createFriend: function ( req, res, next ){
 		var p = req.params.all();
-		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		Friend.addFriend(p,
 			function(err, friend){
@@ -67,7 +67,7 @@ module.exports = {
 
 	updateFriend: function ( req, res, next ){
 		var p = req.params.all();
-		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		if( p.status == 'friend' ){
 			var c = _.pick(p, 'friend_one', 'friend_two');
@@ -115,7 +115,7 @@ module.exports = {
 
 	updateMaybe: function (req, res, next){
 		var p = req.params.all();
-		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		if(p.friendship == 'maybe'){
 
@@ -153,7 +153,7 @@ module.exports = {
 		sails.log.debug('STATUS ', p.status);
 		sails.log.debug('OBJ ', p);
 
-		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		if( p.status == 'pending' ){
 			var c = _.pick(p, 'friend_one', 'friend_two');
@@ -193,7 +193,7 @@ module.exports = {
 		sails.log.debug('STATUS ', p.status);
 		sails.log.debug('OBJ ', p);
 
-		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user.id});
+		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		if( p._action == 'confirm' ){
 			var c = _.pick(p, 'friend_one', 'friend_two');
