@@ -42,6 +42,10 @@ module.exports = {
 
 	info: function (req, res, next){
 		return res.json(req.session || {});
-	}
+	},
+
+	feed: function (req, res, next){
+		return res.view('post/post_index', {menu: 'feed', secondary: 'feed'});
+	},
 
 };

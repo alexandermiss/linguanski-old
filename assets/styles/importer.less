@@ -14,21 +14,6 @@
  * or any other Grunt tasks you like.)
  */
 
-
-
-// For example:
-//
-// @import 'variables/colors.less';
-// @import 'mixins/foo.less';
-// @import 'mixins/bar.less';
-// @import 'mixins/baz.less';
-//
-// @import 'styleguide.less';
-// @import 'pages/login.less';
-// @import 'pages/signup.less';
-//
-// etc.
-
 body{
 	background-color: #f1f2f4;
 }
@@ -59,7 +44,10 @@ body{
 	border-bottom: 1px solid #D4D4D5;
 }
 
-.ui.basic.teal.button, .ui.teal.button, .ui[class*="right floated"].buttons, .ui[class*="right floated"].button, .ui[class*="right floated"].basic.teal.button, .ui[class*="right floated"].basic.teal.tiny.button{
+.ui.basic.teal.button,
+.ui.teal.basic.button,
+.ui[class*="right floated"].buttons,
+.ui[class*="right floated"].basic.button, .ui[class*="right floated"].basic.teal.button, .ui[class*="right floated"].basic.teal.tiny.button{
     color: #001C20 !important;
     box-shadow: 0px 0px 0px 1px #001C20 inset !important;
     border-color: #001C20 !important;
@@ -106,4 +94,43 @@ body{
     text-align: center;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
+}
+
+.ui.event.segment {
+    position: relative;
+    background: #FFFFFF;
+    box-shadow: 0px 1px 2px 0 rgba(34, 36, 38, 0.15);
+    margin: 1rem 0em;
+    padding: 15px 10px;
+    border-radius: 0.28571429rem;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.ui.feed > .event.segment:first-child, .ui.feed > .event.segment:last-child {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.ui.stacked.event.segment:before, .ui.stacked.event.segment:after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0%;
+    border-top: 1px solid rgba(34, 36, 38, 0.15);
+    background: rgba(0, 0, 0, 0.03);
+    width: 100%;
+    height: 6px;
+    visibility: visible;
+}
+
+.ui.comments .reply.form textarea {
+    height: 5em;
+}
+
+.ui.reply.form textarea, .ui.post.form textarea{
+	resize: none;
+}
+
+.ui.feed > .event > .label img{
+	border-radius: 4px;
 }

@@ -45,6 +45,7 @@ module.exports.routes = {
 
   // Menu
   'GET /dashboard'                        : 'DashboardController.init',
+  'GET /feed*'                             : 'AppController.feed',
   'GET /traductions'                      : 'AppController.traductions',
   'GET /phrases*'                         : 'AppController.phrases',
   'GET /practise'                         : 'AppController.practise',
@@ -91,6 +92,10 @@ module.exports.routes = {
   'GET /api/v1/getOnePhrase'          : 'PhraseController.getOnePhrase',
   'POST /api/v1/add_phrase'           : 'PhraseController.addPhrase',
   'PUT /api/v1/add_phrase/:id'        : 'PhraseController.updatePhrase',
+
+  // Post
+  'GET /api/v1/post'                  : 'PostController.listPost',
+  'POST /api/v1/post'                 : 'PostController.addPost',
 
   // API v1.1
   'GET /api/v1.1/phrases'             : 'PhraseController.getJwtPhrases',

@@ -28,10 +28,10 @@ module.exports = {
       })
       .then(function(language){
         this.language = language;
-        return Fichero.find({user:this.profile.user.id}).sort('createdAt DESC');
+        return Fichero.findOne({user:this.profile.user.id}).sort('createdAt DESC');
       })
       .then(function(fichero){
-        fichero = _.isArray(fichero) ? fichero[0] : fichero;
+        // fichero = _.isArray(fichero) ? fichero[0] : fichero;
         this.profile['setting']               = this.setting;
         this.profile.setting.country.language = this.language;
         this.profile.image = fichero;
@@ -48,7 +48,7 @@ module.exports = {
     return Promise.bind({}, Profile.find(opts).populateAll())
       .then(function(profiles){
         this.profiles = profiles;
-        return Fichero.find({user: _.map(profiles, 'user.id')})
+        return Fichero.find({user: _.map(profiles, 'user.id')}).sort('createdAt DESC');
       })
       .then(function(ficheros){
 
@@ -77,7 +77,7 @@ module.exports = {
     return Promise.bind({}, Profile.find(opts).populateAll())
       .then(function(profiles){
         this.profiles = profiles;
-        return Fichero.find({user: _.map(profiles, 'user.id')});
+        return Fichero.find({user: _.map(profiles, 'user.id')}).sort('createdAt DESC');
       })
       .then(function(ficheros){
         this.ficheros = ficheros;

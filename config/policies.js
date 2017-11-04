@@ -72,6 +72,10 @@ module.exports.policies = {
 
   ProfileController: {
     '*': ['sessionAuth', 'activatedUser'],
-  }
+  },
+
+  PostController: {
+    '*': ['sessionAuth', 'activatedUser'],
+  },
 
 };

@@ -1,0 +1,246 @@
+<%- include ../menu %>
+
+<%- include ../modals/two_phrase_modal_form %>
+
+<div id="feedListController" style="margin-top:20px;min-height:600px;" class="ui grid container">
+
+		<div class="three wide column">
+			<%- include ../secondarymenu %>
+		</div>
+
+		<div style="min-height:550px;" class="nine wide column">
+
+			<div style="min-height:40px;" class="ui segment">
+				<div id="friendList" class="">
+          <div class="ui items">
+            <div class="item">
+              <div class="ui mini image">
+                <img src="<%= session.image.photo80x80 %>">
+              </div>
+              <div class="middle aligned content">
+                <div class="ui form post">
+                  <div class="field">
+                    <textarea id="text-post" style="border: none;" placeholder="Write an exercise or phrase?" rows="1"></textarea>
+                  </div>
+                </div> <!-- form -->
+              </div>
+            </div>
+						<div id="divider-post" style="display:none;" class="ui divider"></div>
+						<div id="divider-post-item" style="display:none;" class="item">
+
+							<button id="add-phrase" class="ui compact icon basic grey button">
+							  <i class="write icon"></i>
+							</button>
+							<div class="right floated content">
+								<button type="button" class="ui right floated teal button">Send</button>
+								<button type="button" class="ui right floated secondary button cancelPost">Cancel</button>
+							</div>
+
+						</div>
+          </div> <!-- items -->
+				</div>
+      </div>
+
+      <div id="feedPostListContainer" style="margin-top: 20px;" class="ui fluid container">
+
+        <div class="ui feed">
+          <div class="ui event segment">
+            <div class="label">
+              <img src="https://semantic-ui.com/images/avatar/small/elliot.jpg">
+            </div>
+            <div class="content">
+
+							<div style="float: right;" class="right floated content">
+
+								<div class="ui right floated dropdown">
+									<i class="dropdown icon"></i>
+									<div class="menu">
+										<div class="item">Report</div>
+										<div class="item">Delete</div>
+										<div class="divider"></div>
+										<div class="item">Hide</div>
+									</div>
+								</div>
+
+							</div>
+
+              <div class="summary">
+                <a class="user">
+                  Elliot Fu
+                </a> creó una nueva frase.
+                <div class="date">
+                  hace una hora
+                </div>
+
+              </div>
+              <div class="meta">
+                <a class="like">
+                  <i class="like icon"></i> 4 Likes
+                </a>
+								<a class="save">
+                  <i class="write icon"></i> Practise
+                </a>
+              </div>
+
+              <div class="ui divider"></div>
+            <div class="ui comments">
+              <!-- <h3 class="ui dividing header">Comments</h3> -->
+              <div class="comment">
+                <a class="avatar">
+                  <img src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+                </a>
+                <div class="content">
+                  <a class="author">Matt</a>
+                  <div class="metadata">
+                    <span class="date">hoy a las 5:42PM</span>
+                  </div>
+                  <div class="text">
+                    Excelente frase para practicar!
+                  </div>
+                  <div class="actions">
+                    <a class="like">
+                      <i class="like icon"></i> 1 Like
+                    </a>
+                    <a class="reply">Responder</a>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <a class="avatar">
+                  <img src="https://semantic-ui.com/images/avatar/small/elliot.jpg">
+                </a>
+                <div class="content">
+                  <a class="author">Elliot Fu</a>
+                  <div class="metadata">
+                    <span class="date">Yesterday at 12:30AM</span>
+                  </div>
+                  <div class="text">
+                    <p>Esta frase me ha sido util. Gracias!</p>
+                  </div>
+                  <div class="actions">
+                    <a class="like">
+                      <i class="like icon"></i> 1 Like
+                    </a>
+                    <a class="reply">Responder</a>
+                  </div>
+                </div>
+                <div class="comments">
+                  <div class="comment">
+                    <a class="avatar">
+                      <img src="https://semantic-ui.com/images/avatar/small/jenny.jpg">
+                    </a>
+                    <div class="content">
+                      <a class="author">Jenny Hess</a>
+                      <div class="metadata">
+                        <span class="date">Just now</span>
+                      </div>
+                      <div class="text">
+                        Gracias por compartir :)
+                      </div>
+                      <div class="actions">
+                        <a class="like">
+                          <i class="like icon"></i> 1 Like
+                        </a>
+                        <a class="reply">Reply</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <a class="avatar">
+                  <img src="https://semantic-ui.com/images/avatar/small/joe.jpg">
+                </a>
+                <div class="content">
+                  <a class="author">Joe Henderson</a>
+                  <div class="metadata">
+                    <span class="date">hace 5 dias</span>
+                  </div>
+                  <div class="text">
+                    Tienes alguna otra que sea como esta misma frase?
+                  </div>
+                  <div class="actions">
+                    <a class="like">
+                      <i class="like icon"></i> 1 Like
+                    </a>
+                    <a class="reply">Reply</a>
+                  </div>
+                </div>
+              </div>
+              <form class="ui reply form">
+                <div class="field">
+                  <textarea rows="1"></textarea>
+                </div>
+                <div class="ui teal labeled submit icon button">
+                  <i class="icon edit"></i> Responder
+                </div>
+              </form>
+            </div>
+            </div>
+          </div> <!-- First event -->
+
+          <div class="ui event segment">
+            <div class="label">
+              <i class="pencil icon"></i>
+            </div>
+            <div class="content">
+              <div class="summary">
+                Agregaste un nuevo ejercicio en <a>ruso</a>
+                <div class="date">
+                  hace 3 dias
+                </div>
+              </div>
+              <div class="extra text">
+                Este ejercicio les ayudara a conocer los casos de uso.
+              </div>
+              <div class="meta">
+                <a class="like">
+                  <i class="like icon"></i> 11 Likes
+                </a>
+								<a class="save">
+                  <i class="write icon"></i> Practise
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="ui event segment">
+            <div class="label">
+              <img src="https://semantic-ui.com/images/avatar/small/helen.jpg">
+            </div>
+            <div class="content">
+              <div class="date">
+                4 days ago
+              </div>
+              <div class="summary">
+                <a>Sasha Troy</a> agrego <a>2 nuevas imagenes</a>
+              </div>
+              <div class="extra images">
+                <a><img src="https://semantic-ui.com/images/wireframe/image.png"></a>
+                <a><img src="https://semantic-ui.com/images/wireframe/image.png"></a>
+              </div>
+              <div class="meta">
+                <a class="like">
+                  <i class="like icon"></i> 1 Like
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+			</div> <!-- Segment -->
+
+    </div>
+
+		<div class="four wide column">
+      <div style="min-height:550px;" class="ui segment">
+
+				<h4 class="ui header">Personas que estudian el mismo idioma</h4>
+				<div class="ui divider"></div>
+				<div id="maybeList" class="">
+
+				</div>
+
+
+      </div>
+		</div>
+
+</div>

@@ -236,34 +236,6 @@ module.exports = {
         });
 
 
-    		// Profile.find(c)
-    		// 	.populate('user').exec(function(err, profiles){
-    		// 		if(err) return cb(err);
-        //     var ids = _.map(profiles, 'user.id');
-        //
-        //     Setting.find({user: ids}).populate('country').exec(function(err, settings){
-        //       if(err) return cb(err);
-        //
-        //       Fichero.find({user: ids}).sort('createdAt DESC').exec(function(err, ficheros){
-        //         if(err) return cb(err);
-        //
-        //         profiles = _.map(profiles, function (profile){
-        //           var obj = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}) || {};
-        //           profile['image'] = _.first(_.filter(ficheros, {user:profile.user.id})) || {};
-        //           profile['setting'] = _.find(settings, {user: profile.user.id}) || {};
-        //           profile['friend_id'] = obj._id;
-        //           profile['me'] = _.find(__friends, {friend: User.mongo.objectId(profile.user.id)}).me;
-        //           profile['status'] = status;
-        //           return profile;
-        //         });
-        //
-        //         return cb(null, {results: profiles});
-        //       });
-        //
-        //     });
-        //
-    		// });
-
       });
 
     });

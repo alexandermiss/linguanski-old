@@ -1,6 +1,9 @@
 <div class="ui secondary vertical menu">
   <a class="<% if(menu === 'dashboard'){ %>active <% } %>item" href="/dashboard">
-    <i class="home icon"></i> Dashboard
+    <i class="dashboard icon"></i> Dashboard
+  </a>
+  <a class="<% if(menu === 'feed'){ %>active <% } %>item" href="/feed">
+    <i class="feed icon"></i> Feed
   </a>
   <a class="<% if(menu === 'profile'){ %>active <% } %>item" href="/profile/<%= req.session.profile.id %>">
     <i class="user icon"></i> Profile

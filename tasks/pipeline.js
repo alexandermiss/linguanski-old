@@ -37,6 +37,8 @@ var jsFilesToInject = [
   'js/dependencies/sails.io.backbone.js',
   'js/dependencies/backbone.radio.js',
   'js/dependencies/backbone.marionette.js',
+  'js/dependencies/moment.js',
+  'js/dependencies/moment-timezone.js',
   'js/dependencies/L.js',
   'js/dependencies/FileUpload.js',
 
