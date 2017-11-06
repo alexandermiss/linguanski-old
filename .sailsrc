@@ -3,6 +3,9 @@
     "grunt": false,
     "pubsub": false
   },
+  "paths":{
+    "public": "www"
+  },
   "generators": {
     "modules": {}
   }
