@@ -9,14 +9,13 @@ module.exports = {
 
 	listPost: function ( req, res, next ){
 
-		return res.json({results: []});
-
-		// Post.listPost().then(function(posts){
-		// 	return res.json({results: []});
-		// })
-		// .catch(function(err){
-		// 	return res.json(err);
-		// });
+		Post.listPost().then(function(posts){
+			return res.json({results: posts});
+		})
+		.catch(function(err){
+			sails.log.debug('listPost ERR\n', err);
+			return res.json(err);
+		});
 
 	},
 
@@ -33,8 +32,8 @@ module.exports = {
 			post_type: 'p',
 			post_text: p.post_text || '',
 			phrase_native: p.phrase_native,
-			phrase_native_flag_prefix: s.country.language.flag,
-			phrase_language_flag_prefix: s.language.flag,
+			native: s.country.language,
+			learning: s.language,
 			country_language_id: s.country.language.id,
 			phrase_language: p.phrase_language,
 			language_id: s.language.id,

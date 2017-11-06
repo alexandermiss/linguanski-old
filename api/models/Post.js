@@ -20,6 +20,9 @@ module.exports = {
     traduction: {model: 'traduction'},
     conversation: {model: 'conversation'},
 
+    native: {model: 'language'},
+    learning: {model: 'language'},
+
     comments: {
       collection: 'post',
       via: 'posts',
@@ -38,13 +41,20 @@ module.exports = {
 
   listPost: function (){
 
-    return Post.find({}).populate('user').then(function(posts){
-      this.posts = post;
-      return Traduction.find({id: _.map(post, 'traduction')});
+    return Post.find({}).populate('native').populate('learning').then(function(posts){
+      this.posts = posts;
+      return User.find({id: _.map(posts, 'user')}).populate('image');
     })
-    .then(function(trads){
-      var post = this.post;
-      return Setting.find({user: _.map(post, 'user')});
+    .then(function(users){
+      this.users = users;
+      var posts = this.posts;
+
+      posts = _.map(posts, function(post){
+        post['user'] = _.find(users, {id: post['user']}) || {};
+        return post;
+      });
+
+      return posts;
     })
     .catch(function(err){
       sails.log.debug('LISTPOST ERR\n', err);
@@ -86,14 +96,15 @@ module.exports = {
       .then(function(phrase){
         this.phrase = _.isArray(phrase) ? phrase[0] : phrase;
         var trad = this.trad;
-        var _opts = _.omit(opts, 'phrase_native', 'phrase_native_flag_prefix',
-                            'phrase_language', 'phrase_language_flag_prefix',
+        var _opts = _.omit(opts, 'phrase_native', 'native',
+                            'phrase_language', 'learning',
                             'phrase_id', 'user');
         _opts['user'] = opts.user.id;
         _opts = _.assign(_opts, _.omit(_.pick(opts, 'user'), 'id'));
         if(_opts.user.auth) delete _opts.user['auth'];
         this.user = _opts.user;
         this._opts = _opts;
+        _.extend(_opts, {native: opts.native.id, learning: opts.learning.id})
         return Post.create(_.extend(_opts, {traduction: trad.id}));
       })
       .then(function(post){
@@ -102,7 +113,8 @@ module.exports = {
         post['user'] = _.omit(this.user, 'createdAt', 'updatedAt', 'role', 'photo', 'activated');
         post['user']['image'] = _.pick(this._opts.image, 'photo80x80', 'secure_url');
         post['phrase'] = this.phrase;
-        post = _.assign(post, _.pick(opts, 'phrase_language_flag_prefix', 'phrase_native_flag_prefix'));
+        post['native'] = _.pick(opts.native, 'flag');
+        post['learning'] = _.pick(opts.learning, 'flag');
 
         return post;
       })
