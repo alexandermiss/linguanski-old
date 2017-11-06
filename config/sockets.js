@@ -136,6 +136,6 @@ module.exports.sockets = {
   * transport should be disabled.                                            *
   *                                                                          *
   ***************************************************************************/
-  transports: ["websocket"]
+  transports: ["polling", "websocket"]
 
 };
