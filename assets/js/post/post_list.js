@@ -113,7 +113,10 @@ $(function (){
     tagName: 'div',
     className: 'ui feed',
     childView: PostView,
-    emptyView: Marionette.View.extend({template: _.template('<div> No posts </div>')})
+    emptyView: Marionette.View.extend({template: _.template('<div> No posts </div>')}),
+    attachHtml: function (collectionView, childView, index){
+      collectionView.$el.prepend(childView.el);
+    }
   });
 
   var MaybeView = Marionette.View.extend({

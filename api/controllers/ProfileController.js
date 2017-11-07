@@ -13,12 +13,16 @@ var fs 					= require('fs'),
 
 module.exports = {
 	getProfile: function (req, res, next){
-		var __i = req.param('id');
-		Profile.findOne(__i).exec(function(err, profile){
-			if(err) return res.negotiate(err);
-			var __s = (req.param('id') === req.session.profile.id) ? true : false;
-			return res.view('profile/main', {__s: __s, __i: __i, menu: 'profile'});
-		});
+		try{
+			var __i = req.param('id');
+			Profile.findOne(__i).exec(function(err, profile){
+				if(err) return res.negotiate(err);
+				var __s = (req.param('id') === req.session.profile.id) ? true : false;
+				return res.view('profile/main', {__s: __s, __i: __i, menu: 'profile'});
+			});
+		}catch(err){
+			return res.notFound('Profile not found!');
+		}
 
 	},
 

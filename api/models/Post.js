@@ -41,16 +41,22 @@ module.exports = {
 
   listPost: function (){
 
-    return Post.find({}).populate('native').populate('learning').then(function(posts){
+    return Post.find({}).populate('native').populate('learning').sort('createdAt DESC').then(function(posts){
       this.posts = posts;
-      return User.find({id: _.map(posts, 'user')}).populate('image');
+      return Profile.find({user: _.map(posts, 'user')});
+    })
+    .then(function(profiles){
+      this.profiles = profiles;
+      return User.find({id: _.map(this.posts, 'user')}).populate('image');
     })
     .then(function(users){
-      this.users = users;
-      var posts = this.posts;
+      this.users    = users;
+      var posts     = this.posts;
+      var profiles  = this.profiles;
 
       posts = _.map(posts, function(post){
-        post['user'] = _.find(users, {id: post['user']}) || {};
+        post['user']    = _.find(users, {id: post['user']}) || {};
+        post['profile'] = _.find(profiles, {user: post['user'].id});
         return post;
       });
 
@@ -111,6 +117,7 @@ module.exports = {
         sails.log.debug('POST', post);
         post = _.isArray(post) ? post[0] : post;
         post['user'] = _.omit(this.user, 'createdAt', 'updatedAt', 'role', 'photo', 'activated');
+        post['profile'] = _.pick(opts.profile, 'id');
         post['user']['image'] = _.pick(this._opts.image, 'photo80x80', 'secure_url');
         post['phrase'] = this.phrase;
         post['native'] = _.pick(opts.native, 'flag');

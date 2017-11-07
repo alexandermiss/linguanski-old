@@ -17,7 +17,7 @@ module.exports = {
 
   getFullProfile: Promise.method(function (opts){
 
-    return Promise.bind({}, Profile.findOne(opts).populateAll())
+    return Promise.bind({}, Profile.findOne(opts).populate('user'))
       .then(function(profile){
         this.profile = profile;
         return Setting.findOne({user: profile.user.id}).populateAll();
@@ -31,7 +31,6 @@ module.exports = {
         return Fichero.findOne({user:this.profile.user.id}).sort('createdAt DESC');
       })
       .then(function(fichero){
-        // fichero = _.isArray(fichero) ? fichero[0] : fichero;
         this.profile['setting']               = this.setting;
         this.profile.setting.country.language = this.language;
         this.profile.image = fichero;
