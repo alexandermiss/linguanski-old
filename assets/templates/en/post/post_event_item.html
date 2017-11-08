@@ -5,7 +5,8 @@
   <div class="content">
 
     <div style="float: right;" class="right floated content">
-      <i class="{{ native.flag }} flag"></i> <i class="caret right icon"></i> <i class="{{ learning.flag }} flag"></i>
+      <!-- <i class="{{ native.flag }} flag"></i> <i class="caret right icon"></i> <i class="{{ learning.flag }} flag"></i> -->
+      <a class="ui basic label">{{ _.upperCase(native.prefix) }}</a> <i class="caret right icon"></i> <a class="ui basic label">{{ _.upperCase(learning.prefix) }}</a>
       <div class="ui right floated dropdown">
         <i class="ellipsis horizontal icon"></i>
         <div class="menu">
@@ -25,9 +26,20 @@
       </div>
     </div>
 
-    <div class="extra text">
-      Practica esta clase.
-    </div>
+      <div class="ui relaxed divided list">
+        <div class="item">
+          <div class="middle aligned content">
+            <i class="{{ phrase_native.language.flag }} flag"></i>
+            {{ phrase_native.phrase }}
+          </div>
+        </div>
+        <div class="item">
+          <div class="middle aligned content">
+            <i class="{{ phrase_learning.language.flag }} flag"></i>
+            {{ phrase_learning.phrase }}
+          </div>
+        </div>
+      </div>
 
     <div class="meta">
       <a class="like">

@@ -51,12 +51,22 @@ module.exports = {
     })
     .then(function(users){
       this.users    = users;
+      return Phrase.find({traduction: _.map(this.posts, 'traduction')}).populate('language');
+    })
+    .then(function(phrases){
       var posts     = this.posts;
+      var users     = this.users;
       var profiles  = this.profiles;
 
       posts = _.map(posts, function(post){
         post['user']    = _.find(users, {id: post['user']}) || {};
         post['profile'] = _.find(profiles, {user: post['user'].id});
+        post['phrase_native'] = _.find(phrases, function(ph){
+           return ph.traduction == post['traduction'] && post.native.id == ph.language.id;
+         });
+        post['phrase_learning'] = _.find(phrases, function(ph){
+          return ph.traduction == post['traduction'] && post.learning.id == ph.language.id;
+        });
         return post;
       });
 
