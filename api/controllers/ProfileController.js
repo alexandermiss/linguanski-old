@@ -68,16 +68,24 @@ module.exports = {
 					'width', 'height'
 				));
 			sails.log.debug('r', r);
-			return Fichero.create(c);
+			return Fichero.create(c); // Saves the image
 		})
 		.then(function(file){
+			console.log('file', file);
 			this.file = file;
 			return Profile.getFullProfile({user: req.session.user.id});
 		})
 		.then(function(profile){
+			this.profile = profile;
+			return User.update({id: req.session.user.id}, {image: this.fichero});
+		})
+		.then(function(user){
+			var profile = this.profile;
+
 			req.session.user = profile.user;
+			req.session.user['image'] = this.file;
 			req.session['profile'] = profile;
-      req.session['image'] = profile.image;
+      // req.session['image'] = this.file;
       req.session['setting'] = profile.setting;
 
 			return res.json(this.result);

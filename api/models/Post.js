@@ -106,11 +106,10 @@ module.exports = {
             native: false
           }
         ];
-        sails.log.debug('TRAD', trad);
         return Phrase.create(_.map(phrases, function(phra){return _.omit(phra, 'native');}));
       })
-      .then(function(phrase){
-        this.phrase = _.isArray(phrase) ? phrase[0] : phrase;
+      .then(function(phrases){
+        this.phrases = phrases;
         var trad = this.trad;
         var _opts = _.omit(opts, 'phrase_native', 'native',
                             'phrase_language', 'learning',
@@ -124,14 +123,23 @@ module.exports = {
         return Post.create(_.extend(_opts, {traduction: trad.id}));
       })
       .then(function(post){
-        sails.log.debug('POST', post);
         post = _.isArray(post) ? post[0] : post;
         post['user'] = _.omit(this.user, 'createdAt', 'updatedAt', 'role', 'photo', 'activated');
         post['profile'] = _.pick(opts.profile, 'id');
         post['user']['image'] = _.pick(this._opts.image, 'photo80x80', 'secure_url');
-        post['phrase'] = this.phrase;
+        post['phrase'] = this.phrases;
         post['native'] = _.pick(opts.native, 'flag');
         post['learning'] = _.pick(opts.learning, 'flag');
+
+        post['phrase_native'] = _.find(this.phrases, function(ph){
+           return ph.traduction == post['traduction'] && opts.native.id == ph.language;
+         });
+        post['phrase_learning'] = _.find(this.phrases, function(ph){
+          return ph.traduction == post['traduction'] && opts.learning.id == ph.language;
+        });
+
+        post.phrase_native['language'] = opts.native;
+        post.phrase_learning['language'] = opts.learning;
 
         return post;
       })
