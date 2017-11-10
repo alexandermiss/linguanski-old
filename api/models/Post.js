@@ -39,9 +39,9 @@ module.exports = {
 
   },
 
-  listPost: function (){
+  listPost: function (opts){
 
-    return Post.find({}).populate('native').populate('learning').sort('createdAt DESC').then(function(posts){
+    return Post.find({}).populate('native').populate('learning').skip(opts.page).limit(opts.limit).sort('createdAt DESC').then(function(posts){
       this.posts = posts;
       return Profile.find({user: _.map(posts, 'user')});
     })

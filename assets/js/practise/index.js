@@ -24,9 +24,16 @@ $(function(){
     events:{
       'keyup @ui.input': 'onKey'
     },
-    onKey: function (e){
+    onKey: _.debounce(function (e){
+      if( this.ui.input.val().length > 1) {
+        e.preventDefault();
+        console.log('Escritura no permitida');
+        this.ui.input.val('');
+        return;
+      }
+
       this.triggerMethod('typing:item', this);
-    },
+    }, 100, {leading: false}),
     readyTyping: function(){
       this.ui.input.get(0).removeAttribute('disabled');
       this.ui.input.removeClass('disabled');

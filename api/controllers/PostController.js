@@ -8,8 +8,8 @@
 module.exports = {
 
 	listPost: function ( req, res, next ){
-
-		Post.listPost().then(function(posts){
+		var p = _.extend({}, req.params.all());
+		Post.listPost(p).then(function(posts){
 			return res.json({results: posts});
 		})
 		.catch(function(err){

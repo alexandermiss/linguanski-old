@@ -2,7 +2,36 @@ $(function (){
 
   if( __n('#feedListController') ) return;
 
+  var page = 0;
+
+  function getScrollTop() {
+  	return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+  }
+
+  function getDocumentHeight() {
+  	const body = document.body;
+  	const html = document.documentElement;
+
+  	return Math.max(
+  		body.scrollHeight, body.offsetHeight,
+  		html.clientHeight, html.scrollHeight, html.offsetHeight
+  	);
+  };
+
+  function updatePosts () {
+  	if (getScrollTop() < getDocumentHeight() - window.innerHeight) return;
+  	app.posts.fetch({ set: true, remove: false, data: {page: ++page, limit: 5}});
+  };
+
+  jQuery(window).on('scroll', _.throttle(updatePosts, 50));
+
   $('.ui.dropdown').dropdown();
+
+  // $('#sticky, #menusticky')
+  //   .sticky({
+  //     context: '#feedPostListContainer'
+  //   })
+  // ;
 
   $('#text-post').on('focusin', function (e){
     $('#divider-post').css('display', '');
@@ -91,21 +120,21 @@ $(function (){
       dropdown: '.ui.dropdown',
       date: '.date'
     },
-    attachElContent: function (html){
-      this.$el.html(html);
-      this.$el.find('.ellipsis.horizontal').dropdown();
-      this.getDate();
-      return this;
-    },
 
-    getDate: function (){
+    onRender: function (){
       var self = this;
-      window.setInterval(function(){
+      self.ui.dropdown.dropdown();
+
+      var getTime = function (){
         moment.locale(self.model.get('phrase_native_flag_prefix'));
         var createdAt = moment.tz(self.model.get('createdAt'), 'America/Merida').fromNow();
         self.ui.date.text(createdAt);
-      }, 1000);
+      }
 
+      getTime();
+      window.setInterval(function(){
+        getTime();
+      }, 1000);
     }
   });
 
@@ -113,10 +142,7 @@ $(function (){
     tagName: 'div',
     className: 'ui feed',
     childView: PostView,
-    emptyView: Marionette.View.extend({template: _.template('<div> No posts </div>')}),
-    attachHtml: function (collectionView, childView, index){
-      collectionView.$el.prepend(childView.el);
-    }
+    emptyView: Marionette.View.extend({template: _.template('<div> No posts </div>')})
   });
 
   var MaybeView = Marionette.View.extend({
@@ -159,8 +185,8 @@ $(function (){
       $('#feedPostListContainer').html(v.render().el);
     },
     onStart: function(){
-      this.posts.fetch({reset: true});
-      this.maybe.fetch({reset: true, data: {page: 1}});
+      this.posts.fetch({reset: true, data: {page: page, limit: 4}});
+      this.maybe.fetch({reset: true, data: {limit: 5}});
     }
   });
 
@@ -192,10 +218,10 @@ $(function (){
   Backbone.history.start({ root: 'feed', pushState: true });
 
   var maybe = new MaybeCollection();
-  var posts = new PostCollection();
+  app.posts = new PostCollection();
 
   app.router = new AppRoute();
-  app.main = new AppMain({maybe: maybe, posts: posts});
+  app.main = new AppMain({maybe: maybe, posts: app.posts});
   app.main.start();
 
 });
