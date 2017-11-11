@@ -2,7 +2,7 @@ $(function (){
 
   if( __n('#feedListController') ) return;
 
-  var page = 0;
+  var page = 1, data_posts = 'da';
 
   function getScrollTop() {
   	return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
@@ -19,19 +19,15 @@ $(function (){
   };
 
   function updatePosts () {
-  	if (getScrollTop() < getDocumentHeight() - window.innerHeight) return;
-  	app.posts.fetch({ set: true, remove: false, data: {page: ++page, limit: 5}});
+    if( data_posts == 'da' ){
+      if (getScrollTop() < getDocumentHeight() - window.innerHeight) return;
+      app.posts.fetch({ set: true, remove: false, data: {page: ++page, limit: 6}});
+    }
   };
 
-  jQuery(window).on('scroll', _.throttle(updatePosts, 50));
+  jQuery(window).on('scroll', _.throttle(updatePosts, 100));
 
   $('.ui.dropdown').dropdown();
-
-  // $('#sticky, #menusticky')
-  //   .sticky({
-  //     context: '#feedPostListContainer'
-  //   })
-  // ;
 
   $('#text-post').on('focusin', function (e){
     $('#divider-post').css('display', '');
@@ -100,6 +96,7 @@ $(function (){
     url: '/api/v1/post',
     model: PostModel,
     parse: function(resp){
+      data_posts = resp.data;
       return resp.results;
     }
   });
@@ -126,7 +123,7 @@ $(function (){
       self.ui.dropdown.dropdown();
 
       var getTime = function (){
-        moment.locale(self.model.get('phrase_native_flag_prefix'));
+        moment.locale($('#prefix').val());
         var createdAt = moment.tz(self.model.get('createdAt'), 'America/Merida').fromNow();
         self.ui.date.text(createdAt);
       }
@@ -185,7 +182,7 @@ $(function (){
       $('#feedPostListContainer').html(v.render().el);
     },
     onStart: function(){
-      this.posts.fetch({reset: true, data: {page: page, limit: 4}});
+      this.posts.fetch({reset: true, data: {page: page, limit: 6}});
       this.maybe.fetch({reset: true, data: {limit: 5}});
     }
   });

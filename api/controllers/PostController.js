@@ -5,16 +5,20 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var _ = require('lodash');
+
 module.exports = {
 
 	listPost: function ( req, res, next ){
-		var p = _.extend({}, req.params.all());
-		Post.listPost(p).then(function(posts){
-			return res.json({results: posts});
-		})
-		.catch(function(err){
-			sails.log.debug('listPost ERR\n', err);
-			return res.json(err);
+		var p = _.pick(req.params.all(), 'page', 'limit');
+		Post.listPost(p, function(err, posts){
+			if(err){
+				sails.log.debug('listPost ERR\n', err);
+				return res.json(err);
+			}
+			if( posts.length )
+				return res.json({ data: 'da', page: p.page, limit: p.limit, results: posts});
+			return res.json({ data: 'niet', page: p.page, limit: p.limit, results: posts});
 		});
 
 	},

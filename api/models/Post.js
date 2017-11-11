@@ -6,6 +6,7 @@
  */
 
 var _ = require('lodash');
+var Promise = require('bluebird');
 
 module.exports = {
   schema: true,
@@ -39,42 +40,51 @@ module.exports = {
 
   },
 
-  listPost: function (opts){
+  listPost: function (opts, cb){
+    opts.page = parseInt(opts.page);
 
-    return Post.find({}).populate('native').populate('learning').skip(opts.page).limit(opts.limit).sort('createdAt DESC').then(function(posts){
-      this.posts = posts;
-      return Profile.find({user: _.map(posts, 'user')});
-    })
-    .then(function(profiles){
-      this.profiles = profiles;
-      return User.find({id: _.map(this.posts, 'user')}).populate('image');
-    })
-    .then(function(users){
-      this.users    = users;
-      return Phrase.find({traduction: _.map(this.posts, 'traduction')}).populate('language');
-    })
-    .then(function(phrases){
-      var posts     = this.posts;
-      var users     = this.users;
-      var profiles  = this.profiles;
+    var skip = (opts.page - 1) * parseInt(opts.limit);
 
-      posts = _.map(posts, function(post){
-        post['user']    = _.find(users, {id: post['user']}) || {};
-        post['profile'] = _.find(profiles, {user: post['user'].id});
-        post['phrase_native'] = _.find(phrases, function(ph){
-           return ph.traduction == post['traduction'] && post.native.id == ph.language.id;
-         });
-        post['phrase_learning'] = _.find(phrases, function(ph){
-          return ph.traduction == post['traduction'] && post.learning.id == ph.language.id;
+    Post.find({}).populate('native').populate('learning').skip(skip).limit(parseInt(opts.limit)).sort('createdAt DESC').exec(function(err, posts){
+
+      if(err) {
+        sails.log.verbose('ERR POSTSLISTS\n', err);
+        return cb(err);
+      }
+      if (posts.length == 0){
+        return cb(null, posts);
+      }
+
+      Profile.find({user: _.map(posts, 'user')}).then(function(profiles){
+        this.profiles = profiles;
+        return User.find({id: _.map(posts, 'user')}).populate('image');
+      })
+      .then(function(users){
+        this.users    = users;
+        return Phrase.find({traduction: _.map(posts, 'traduction')}).populate('language');
+      })
+      .then(function(phrases){
+        var users     = this.users;
+        var profiles  = this.profiles;
+
+        posts = _.map(posts, function(post){
+          post['user']    = _.find(users, {id: post['user']}) || {};
+          post['profile'] = _.find(profiles, {user: post['user'].id});
+          post['phrase_native'] = _.find(phrases, function(ph){
+             return ph.traduction == post['traduction'] && post.native.id == ph.language.id;
+           });
+          post['phrase_learning'] = _.find(phrases, function(ph){
+            return ph.traduction == post['traduction'] && post.learning.id == ph.language.id;
+          });
+          return post;
         });
-        return post;
+        return cb(null, posts);
+      })
+      .catch(function(err){
+        sails.log.debug('LISTPOST ERR\n', err);
+        cb(err);
       });
 
-      return posts;
-    })
-    .catch(function(err){
-      sails.log.debug('LISTPOST ERR\n', err);
-      return err;
     });
 
   },
