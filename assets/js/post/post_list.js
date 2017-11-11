@@ -73,7 +73,7 @@ $(function (){
 				post.save({},{success: function(post){
           $('#divider-post').css('display', 'none');
           $('#divider-post-item').slideUp(150);
-          posts.add(post.toJSON());
+          app.posts.add(post.toJSON());
         }});
 
 				$('#phrase_native, #phrase_language').val('');

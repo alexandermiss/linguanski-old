@@ -9,11 +9,15 @@ var _ = require('lodash');
 module.exports = {
 
 	getUser: function (req, res, next){
-		var p = req.params.all() || {};
-		Profile.find(p).populate('user').exec(function(err, profiles){
-			if(err) return res.json({err: err});
-			return res.json({results: profiles})
+
+		User.find({}).populate('image').then(function(users){
+			return res.json({results: users});
+		})
+		.catch(function(err){
+			sails.log.debug('ERR getUser\n', err);
+			return res.json(err);
 		});
+
 	},
 
 	getFriends: function( req, res, next){
@@ -219,7 +223,15 @@ module.exports = {
 			User.update({id: req.param('id')}, {activated: req.param('activated')}).exec(function(err, user){
 				if(err) return res.notFound();
 				if(_.isArray(user)) user = user[0];
-				return res.json(user)
+
+				User.findOne(req.param('id')).populate('image').then(function(user){
+					return res.json(user);
+				})
+				.catch(function(err){
+					sails.log.debug('ERR updateActivation\n', err);
+					return res.json(err);
+				});
+
 			});
 		} catch (e) {
 			return res.badRequest();
