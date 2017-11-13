@@ -39,22 +39,15 @@ module.exports = {
 	},
 
 	updatePhoto: function (req, res, next){
+		var file = req.files.file;
+
 		cloudinary.config({
 		  cloud_name: 'linguanski',
 		  api_key: '882717145424918',
 		  api_secret: '-WwDb-q4CDx4ZhPSm_oIssibKb0'
 		});
 
-		var uploader = Promise.promisifyAll(req.file('file'));
-
-		Promise.bind({}, uploader.uploadAsync({dirname: sails.config.rootPath + '/assets/images'}))
-		.then(function(uploaded){
-			this.uploaded = uploaded[0].fd;
-			return cloudinary.uploader.upload(this.uploaded);
-		})
-		.then(function (r){
-			fs.unlinkSync(this.uploaded);
-
+		cloudinary.uploader.upload(file.path).then(function(r){
 			this.result = r;
 			var domain = 'https://res.cloudinary.com/linguanski/image/upload/';
 	    var custom = domain + 'c_thumb,w_80/v';
@@ -67,34 +60,23 @@ module.exports = {
 					'resource_type', 'signature', 'type', 'format', 'bytes', 'version',
 					'width', 'height'
 				));
-			sails.log.debug('r', r);
 			return Fichero.create(c); // Saves the image
 		})
 		.then(function(file){
-			console.log('file', file);
 			this.file = file;
-			return Profile.getFullProfile({user: req.session.user.id});
-		})
-		.then(function(profile){
-			this.profile = profile;
-			return User.update({id: req.session.user.id}, {image: this.fichero});
+			sails.log.verbose('__file', file);
+			return User.update({id: req.session.user.id}, {image: file});
 		})
 		.then(function(user){
-			var profile = this.profile;
-
-			req.session.user = profile.user;
+			var profile = req.session.profile;
 			req.session.user['image'] = this.file;
-			req.session['profile'] = profile;
-      // req.session['image'] = this.file;
-      req.session['setting'] = profile.setting;
-
+			req.session['image'] = this.file;
 			return res.json(this.result);
 		})
 		.catch(function(e){
 			sails.log.error(e);
 			return res.json(e);
 		});
-
 	}
 
 };

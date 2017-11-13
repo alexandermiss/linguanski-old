@@ -1,6 +1,8 @@
 $(function(){
   if( __n('#profileController') ) return;
 
+  var _progressbar_time;
+
   var Profile  = L.Model.Default.extend({
     urlRoot: '/api/v1/profile/getFullProfile'
   });
@@ -27,7 +29,7 @@ $(function(){
       if( eval($('#__s').val()) ) this.ui.image.dimmer({on: 'hover'});
     },
     showModal: function (){
-      $('.ui.small.modal').modal({
+      $('.ui.tiny.modal').modal({
   		  transition: 'scale',
   		  closable: false,
   		  onDeny    : function(){
@@ -35,6 +37,7 @@ $(function(){
   		  },
   		  onApprove : function() {
           profileUpload(profile);
+          // return false;
   		  },
   		  onShow    : function(){
           $('[description], [image-content]').hide();
@@ -93,7 +96,6 @@ $(function(){
   app.main = new AppView({profile: profile});
   app.main.start();
 
-
   var profileUpload = function (model){
     var formElement = document.getElementById('fileinfo');
 
@@ -104,10 +106,33 @@ $(function(){
 
     xhr.open('PUT', '/api/v1/profile/getFullProfile/'+model.get('id'));
 
+    $('#progressBar').show();
+    $('#progressBar')
+      .progress('set value', 0)
+      .progress('set progress', 0)
+      .progress('set percent', 0)
+      .progress('set label', 'Uploading photo...')
+      ;
+
     xhr.upload.addEventListener('progress', function (d){
-      _debug('progress', d.loaded);
-      if( d.total === d.loaded ){
-        _debug('total', d.total);
+      _debug('progress', d.loaded, d.total);
+
+      if( d.total == d.loaded ){
+        $('#progressBar')
+          .progress('set percent', 99)
+          .progress('set label', 'Updating user data...')
+        ;
+
+        _progressbar_time = window.setInterval(function(){
+          $('#progressBar').progress('update progress', 99);
+        }, 500);
+
+
+      }else{
+        $('#progressBar')
+          .progress('set percent', (((d.loaded) * 100) / d.total))
+          .progress('set label', 'Updating user data...')
+        ;
       }
     });
 
@@ -120,9 +145,13 @@ $(function(){
           obj.photo = json.secure_url;
           model.set('user', obj);
           var img = document.getElementById('imageProfile')
-          img.src = model.get('user').photo;
+          img.src = json.secure_url;
           if(document.getElementById('avatar'))
             document.getElementById('avatar').src = json.photo80x80;
+            $('#progressBar').progress('set label','Success!');
+            $('#progressBar').progress('set success');
+            $('#progressBar').hide();
+            window.clearInterval(_progressbar_time);
         }
       }
     };
