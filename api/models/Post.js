@@ -14,7 +14,7 @@ module.exports = {
     user: {model: 'user'},
   	post_type: {
       type: 'string',
-      enum: ['p', 'c', 's'], // Post, Comment, Share
+      enum: ['t', 'p', 'c', 's'], // Text, Post, Comment, Share
     },
   	post_text: {type: 'string'},
 
@@ -91,7 +91,28 @@ module.exports = {
 
   addPost: function (opts){
 
-    if(opts.phrase_id){
+    if(opts.post_type == 't'){
+      var p = _.pick(opts,
+        'post_type', 'post_text'
+      );
+
+      _.extend(p, {
+        user: opts.user.id, native: opts.native.id,
+        learning: opts.learning.id, traduction: null
+      });
+
+      return Post.create(p).then(function(post){
+        post['user'] = _.omit(opts.user, 'createdAt', 'updatedAt', 'role', 'photo', 'activated');
+        post['profile'] = _.pick(opts.profile, 'id');
+        post['user']['image'] = _.pick(opts.image, 'photo80x80', 'secure_url');
+        post['native'] = _.pick(opts.native, 'prefix', 'flag');
+        post['learning'] = _.pick(opts.learning, 'prefix', 'flag');
+        return post;
+      })
+      .catch(function(err){
+        sails.log.verbose('POST TEXT\n', err);
+        return err;
+      });
 
     }else{
 

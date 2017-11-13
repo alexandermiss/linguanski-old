@@ -67,7 +67,8 @@ $(function (){
 
 		    var post = new PostModel({
 					phrase_native: phrase_native,
-					phrase_language: phrase_language
+					phrase_language: phrase_language,
+          post_type: 'p'
 				});
 
 				post.save({},{success: function(post){
@@ -86,6 +87,22 @@ $(function (){
 
   $('#add-phrase').on('click', function (e){
     Backbone.history.navigate('phrase/new', {trigger: true});
+  });
+
+  $('#sendTextPost').on('click', function (e){
+    var text = $('#text-post').val();
+    var post = new PostModel({
+      post_text: text,
+      post_type: 't'
+    });
+
+    post.save({},{success: function(post){
+      $('#divider-post').css('display', 'none');
+      $('#divider-post-item').slideUp(150);
+      $('#text-post').val('');
+      app.posts.add(post.toJSON());
+    }});
+
   });
 
   var PostModel = L.Model.Friend.extend({
@@ -112,7 +129,13 @@ $(function (){
   var PostView = Marionette.View.extend({
     tagName: 'div',
     className: 'ui event segment',
-    template: Template.get('post/post_event_item'),
+    getTemplate: function(){
+      if(this.model.get('post_type') == 'p'){
+        return Template.get('post/post_event_item');
+      }else{
+        return Template.get('post/post_text_item');
+      }
+    },
     ui: {
       dropdown: '.ui.dropdown',
       date: '.date'
