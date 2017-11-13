@@ -17,8 +17,11 @@ module.exports = {
 			var __i = req.param('id');
 			Profile.findOne(__i).exec(function(err, profile){
 				if(err) return res.negotiate(err);
+				if(!profile) return res.notFound('Profile not found');
+
 				var __s = (req.param('id') === req.session.profile.id) ? true : false;
 				return res.view('profile/main', {__s: __s, __i: __i, menu: 'profile'});
+
 			});
 		}catch(err){
 			return res.notFound('Profile not found!');

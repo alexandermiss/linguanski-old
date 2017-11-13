@@ -10,12 +10,28 @@ module.exports = {
 
 	getUser: function (req, res, next){
 
-		User.find({}).populate('image').then(function(users){
-			return res.json({results: users});
-		})
-		.catch(function(err){
-			sails.log.debug('ERR getUser\n', err);
-			return res.json(err);
+		User.find({}).populate('image').exec(function(err, users){
+			if(err) {
+				sails.log.debug('ERR getUser users\n', err);
+				return res.serverError();
+			}
+			var ids = _.map(users, 'id');
+			Profile.find({user: ids}).exec(function(err, profiles){
+				if(err) {
+					sails.log.debug('ERR getUser profiles\n', err);
+					return res.serverError();
+				}
+				if(!users) return res.notFound();
+
+				users = _.map(users, function(u){
+					var p = _.find(profiles, {user: u['id']}) || {};
+					u['profile'] = p;
+					return u;
+				});
+
+				return res.json({results: users});
+			});
+
 		});
 
 	},
@@ -219,18 +235,17 @@ module.exports = {
 	},
 
 	updateActivation: function (req, res, next){
+		sails.log.debug('req.param(activated)', req.param('activated'));
 		try {
+			sails.log.debug('req.param(activated)', req.param('activated'));
 			User.update({id: req.param('id')}, {activated: req.param('activated')}).exec(function(err, user){
+				// sails.log.debug('user', user);
 				if(err) return res.notFound();
 				if(_.isArray(user)) user = user[0];
 
-				User.findOne(req.param('id')).populate('image').then(function(user){
-					return res.json(user);
-				})
-				.catch(function(err){
-					sails.log.debug('ERR updateActivation\n', err);
-					return res.json(err);
-				});
+				user['profile'] = req.param('profile');
+				user['image'] = req.param('image');
+				return res.json(user);
 
 			});
 		} catch (e) {
