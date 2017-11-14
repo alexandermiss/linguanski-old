@@ -19,8 +19,9 @@ module.exports = function(req, res, next) {
     Profile.getFullProfile({user: user.id}).then(function(profile){
       sails.log.debug('PROFILE getFullProfile', profile);
       req.session['profile'] = profile;
-      req.session['image'] = profile.image;
+      // req.session['image'] = profile.image;
       req.session['setting'] = profile.setting;
+      user['image'] = profile.user.image;
       return next();
     })
     .catch(function(err){

@@ -60,7 +60,7 @@ $(function (){
 
 	var PhraseView = Marionette.View.extend({
 		tagName: 'div',
-		className: 'three column row',
+		className: 'two column row',
 		template: Template.get('list'),
 		ui: {
 			phrase_native: '.phrase_native',

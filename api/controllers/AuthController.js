@@ -34,8 +34,9 @@ module.exports = require('waterlock').waterlocked({
             if(bcrypt.compareSync(params.password, user.auth.password)){
   						Profile.getFullProfile({user: user.id}).then(function(profile){
                 req.session['profile'] = profile;
-                req.session['image'] = profile.image;
+                // req.session['image'] = profile.image;
                 req.session['setting'] = profile.setting;
+                user['image'] = profile.user.image;
   							return waterlock.cycle.loginSuccess(req, res, user);
   						})
   						.catch(function(err){

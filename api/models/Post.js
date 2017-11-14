@@ -17,6 +17,7 @@ module.exports = {
       enum: ['t', 'p', 'c', 's'], // Text, Post, Comment, Share
     },
   	post_text: {type: 'string'},
+  	post_html: {type: 'string'},
 
     traduction: {model: 'traduction'},
     conversation: {model: 'conversation'},

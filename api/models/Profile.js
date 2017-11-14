@@ -33,7 +33,8 @@ module.exports = {
       .then(function(fichero){
         this.profile['setting']               = this.setting;
         this.profile.setting.country.language = this.language;
-        this.profile.image = fichero;
+        // this.profile.image = fichero;
+        this.profile.user['image'] = fichero;
         return this.profile;
       })
       .catch(function(e){

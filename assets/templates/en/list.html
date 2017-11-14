@@ -1,16 +1,14 @@
   {% if(phrase_native){ %}
-  <div class="seven wide column">
+  <div class="eight wide column">
     <div data-lang="{{ phrase_native_flag_prefix }}" class="ui fluid basic labeled icon button phrase_native">
       <i class="{{ phrase_native_flag_prefix }} flag"></i>
       {{ phrase_native }}
     </div>
   </div>
   {% } %}
-  <div class="two wide column">
-      <button class="ui fluid icon teal basic button"><i class="add icon"></i></button>
-  </div>
+
   {% if(phrase_language){ %}
-  <div class="seven wide column">
+  <div class="eight wide column">
     <div data-lang="{{ phrase_language_flag_prefix }}" class="ui fluid basic labeled icon button phrase_language">
       <i class="{{ phrase_language_flag_prefix }} flag"></i>
       {{ phrase_language }}
