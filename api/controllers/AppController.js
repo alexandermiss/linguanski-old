@@ -36,8 +36,8 @@ module.exports = {
 		});
 	},
 
-	practise: function (req, res, next){
-		return res.view('practise/index', {menu: 'practica'});
+	practice: function (req, res, next){
+		return res.view('practice/index', {menu: 'practica'});
 	},
 
 	info: function (req, res, next){

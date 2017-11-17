@@ -45,10 +45,10 @@ module.exports.routes = {
 
   // Menu
   'GET /dashboard'                        : 'DashboardController.init',
-  'GET /feed*'                             : 'AppController.feed',
+  'GET /feed*'                            : 'AppController.feed',
   'GET /traductions'                      : 'AppController.traductions',
   'GET /phrases*'                         : 'AppController.phrases',
-  'GET /practise'                         : 'AppController.practise',
+  'GET /practice'                         : 'AppController.practice',
   'GET /profile/:id'                      : 'ProfileController.getProfile',
   'GET /friends'                          : 'FriendController.list',
   'GET /requests'                         : 'FriendController.requests',
@@ -97,8 +97,4 @@ module.exports.routes = {
   'GET /api/v1/post'                  : 'PostController.listPost',
   'POST /api/v1/post'                 : 'PostController.addPost',
 
-  // API v1.1
-  'GET /api/v1.1/phrases'             : 'PhraseController.getJwtPhrases',
-  'GET /api/v1.1/friend'              : 'ApiController.getJwtFriends',
-  'GET /api/v1.1/maybe'               : 'ApiController.getJwtMaybe',
 };

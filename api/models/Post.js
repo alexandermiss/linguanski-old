@@ -69,8 +69,8 @@ module.exports = {
         var profiles  = this.profiles;
 
         posts = _.map(posts, function(post){
-          post['user']    = _.find(users, {id: post['user']}) || {};
-          post['profile'] = _.find(profiles, {user: post['user'].id});
+          post['user']    = _.pick(_.find(users, {id: post['user']}), 'image.secure_url', 'image.80x80');
+          post['profile'] = _.pick(_.find(profiles, {user: post['user'].id}), 'id');
           post['phrase_native'] = _.find(phrases, function(ph){
              return ph.traduction == post['traduction'] && post.native.id == ph.language.id;
            });
@@ -165,7 +165,7 @@ module.exports = {
 
         post['phrase_native'] = _.find(this.phrases, function(ph){
            return ph.traduction == post['traduction'] && opts.native.id == ph.language;
-         });
+        });
         post['phrase_learning'] = _.find(this.phrases, function(ph){
           return ph.traduction == post['traduction'] && opts.learning.id == ph.language;
         });
@@ -181,6 +181,6 @@ module.exports = {
 
     }
 
-  }
+  },
 
 };

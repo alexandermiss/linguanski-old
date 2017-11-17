@@ -21,7 +21,9 @@ $(function (){
   function updatePosts () {
     if( data_posts == 'da' ){
       if (getScrollTop() < getDocumentHeight() - window.innerHeight) return;
-      app.posts.fetch({ set: true, remove: false, data: {page: ++page, limit: 6}});
+      app.posts.fetch({ set: true, remove: false, data: {
+        page: ++page, limit: 6, access_token: L.Auth.getToken()
+      }});
     }
   };
 
@@ -71,7 +73,7 @@ $(function (){
           post_type: 'p'
 				});
 
-				post.save({},{success: function(post){
+				post.save({access_token: L.Auth.getToken()},{success: function(post){
           $('#divider-post').css('display', 'none');
           $('#divider-post-item').slideUp(150);
           app.posts.add(post.toJSON());
@@ -96,11 +98,11 @@ $(function (){
       post_type: 't'
     });
 
-    post.save({},{success: function(post){
+    post.save({access_token: L.Auth.getToken()},{success: function(post){
       $('#divider-post').css('display', 'none');
       $('#divider-post-item').slideUp(150);
       $('#text-post').val('');
-      app.posts.add(post.toJSON());
+      app.posts.add(post);
     }});
 
   });
@@ -112,6 +114,7 @@ $(function (){
   var PostCollection = Backbone.Collection.extend({
     url: '/api/v1/post',
     model: PostModel,
+    comparator: '-createdAt',
     parse: function(resp){
       data_posts = resp.data;
       return resp.results;
@@ -205,8 +208,12 @@ $(function (){
       $('#feedPostListContainer').html(v.render().el);
     },
     onStart: function(){
-      this.posts.fetch({reset: true, data: {page: page, limit: 6}});
-      this.maybe.fetch({reset: true, data: {limit: 5}});
+      this.posts.fetch({reset: true, data: {
+        page: page, limit: 6, access_token: L.Auth.getToken()}
+      });
+      this.maybe.fetch({reset: true, data: {
+        limit: 5, access_token: L.Auth.getToken()}
+      });
     }
   });
 

@@ -10,15 +10,14 @@ var _ = require('lodash');
 module.exports = {
 
 	getPhrases: function (req, res, next){
-
-		if (!req.isSocket){ return res.badRequest();}
 		var sett = req.session.setting;
 
-		var native_room 	= 'phrase__' + sett.country.language.prefix + '_' + sett.language.prefix;
-		var	language_room = 'phrase__' + sett.language.prefix + '_' + sett.country.language.prefix;
-
-		sails.sockets.join(req, native_room);
-		sails.sockets.join(req, language_room);
+		if (req.isSocket){
+			var native_room 	= 'phrase__' + sett.country.language.prefix + '_' + sett.language.prefix;
+			var	language_room = 'phrase__' + sett.language.prefix + '_' + sett.country.language.prefix;
+			sails.sockets.join(req, native_room);
+			sails.sockets.join(req, language_room);
+		}
 
 		var p = req.params.all();
 		Phrase.combineLanguages(_.extend(p, {country_language_id: sett.country.language.id, language_id: sett.language.id}), function(err, phrases){
@@ -28,7 +27,6 @@ module.exports = {
 	},
 
 	addPhrase: function (req, res, next){
-		if (!req.isSocket){ return res.badRequest();}
 		var p = req.params.all();
 		var sett = req.session.setting;
 
@@ -38,14 +36,16 @@ module.exports = {
 			phrase_language_flag_prefix: sett.language.prefix
 		}), function(err, phrases){
 			if(err) return res.negotiate(err);
-			var sent = {method: 'created', data: phrases};
-			var sett = req.session.setting;
 
-			var native_room 	= 'phrase__' + sett.country.language.prefix + '_' + sett.language.prefix;
-			var	language_room = 'phrase__' + sett.language.prefix + '_' + sett.country.language.prefix;
+			if (req.isSocket){
+				var sent = {method: 'created', data: phrases};
+				var sett = req.session.setting;
+				var native_room 	= 'phrase__' + sett.country.language.prefix + '_' + sett.language.prefix;
+				var	language_room = 'phrase__' + sett.language.prefix + '_' + sett.country.language.prefix;
 
-			sails.sockets.broadcast([native_room, language_room], 'phrase', sent);
-			return res.ok();
+				sails.sockets.broadcast([native_room, language_room], 'phrase', sent);
+			}
+			return res.created();
 		});
 	},
 
@@ -69,21 +69,6 @@ module.exports = {
 		}), function(err, data){
 			return res.json(data);
 		});
-	},
-
-	getJwtPhrases: function (req, res, next){
-		try{
-			sails.log.info(req.session.user);
-			var sett = req.session.setting;
-
-			var p = req.params.all();
-			Phrase.combineLanguages(_.extend(p, {country_language_id: sett.country.language.id, language_id: sett.language.id}), function(err, phrases){
-				if(err) return res.serverError(err);
-				return res.json(phrases);
-			});
-		}catch(e){
-				return res.serverError(e);
-		}
-	},
+	}
 
 };

@@ -77,7 +77,7 @@ $(function(){
       this.listenTo(this.profile, 'sync', this.printProfile);
     },
     onStart: function (){
-      this.profile.fetch({data:{id: $('#__i').val()}});
+      this.profile.fetch({data:{id: $('#__i').val(), access_token: L.Auth.getToken() }});
     },
     printProfile: function(){
       // var view = new ParentView({model: this.profile});

@@ -41,10 +41,16 @@ $(function(){
           .done(function(data){
             console.log('done', data);
             if(data && data.access_token){
+              L.Auth.saveSession(data);
               window.location.href='/dashboard';
             }
           }).fail(function(data){
               console.log('fail', data);
+
+              $('.mini.modal')
+                .modal('show')
+              ;
+
           });
 
       }

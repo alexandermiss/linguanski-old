@@ -130,13 +130,15 @@ $(function (){
 		pageNumber: function (id){
 			try{
 				id = parseInt(id);
-				this.collection.fetch({ reset: true, data: { page: id} });
+				this.collection.fetch({ reset: true, data: {
+					page: id, access_token: L.Auth.getToken()} });
 			}catch(err){
 				Backbone.history.navigate('/page/1', {trigger: true});
 			}
 		},
 		searchPhrase: function (q){
-			app.main.getView().collection.fetch({reset: true, data: {q: q}});
+			app.main.getView().collection.fetch({reset: true, data: {
+				q: q, access_token: L.Auth.getToken()}});
 		}
 	});
 

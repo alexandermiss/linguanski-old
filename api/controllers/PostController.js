@@ -11,14 +11,19 @@ module.exports = {
 
 	listPost: function ( req, res, next ){
 		var p = _.pick(req.params.all(), 'page', 'limit');
+		if(!_.has(p, 'page')) p.page = 1;
+		if(!_.has(p, 'limit')) p.limit = 10;
+
+		p = _.pick(p, 'page', 'limit');
+
 		Post.listPost(p, function(err, posts){
 			if(err){
 				sails.log.debug('listPost ERR\n', err);
 				return res.json(err);
 			}
 			if( posts.length )
-				return res.json({ data: 'da', page: p.page, limit: p.limit, results: posts});
-			return res.json({ data: 'niet', page: p.page, limit: p.limit, results: posts});
+				return res.json({ from: true, data: 'da', page: p.page, limit: p.limit, results: posts});
+			return res.json({ from: true, data: 'niet', page: p.page, limit: p.limit, results: posts});
 		});
 
 	},

@@ -32,11 +32,11 @@ $(function (){
     },
 
     confirmBtn: function (e){
-      this.model.save( {_action: 'confirm'} );
+      this.model.save( {_action: 'confirm', access_token: L.Auth.getToken()} );
     },
 
     cancelBtn: function (e){
-      this.model.save( {_action: 'cancel'} );
+      this.model.save( {_action: 'cancel', access_token: L.Auth.getToken()} );
     }
   });
 
@@ -60,7 +60,7 @@ $(function (){
       'click @ui.maybe': 'maybeBtn'
     },
     maybeBtn: function (e){
-      this.model.save();
+      this.model.save({access_token: L.Auth.getToken()});
     }
   });
 
@@ -90,8 +90,8 @@ $(function (){
       $('#maybeList').html(v.render().el);
     },
     onStart: function(){
-      this.friends.fetch({reset: true, data: {page: 1}});
-      this.maybe.fetch({reset: true, data: {page: 1}});
+      this.friends.fetch({reset: true, data: {page: 1, access_token: L.Auth.getToken()}});
+      this.maybe.fetch({reset: true, data: {page: 1, access_token: L.Auth.getToken()}});
     }
   });
 

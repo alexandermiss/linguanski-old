@@ -51,7 +51,7 @@ $(function (){
     },
     friendBtn: function (e){
       console.log(this.model.toJSON());
-      this.model.save();
+      this.model.save({access_token: L.Auth.getToken()});
     }
   });
 
@@ -107,8 +107,8 @@ $(function (){
       $('#maybeList').html(v.render().el);
     },
     onStart: function(){
-      this.request.fetch({reset: true, data: {page: 1}});
-      this.maybe.fetch({reset: true, data: {page: 1}});
+      this.request.fetch({reset: true, data: {page: 1, access_token: L.Auth.getToken()}});
+      this.maybe.fetch({reset: true, data: {page: 1, access_token: L.Auth.getToken()}});
     }
   });
 

@@ -105,7 +105,7 @@ $(function(){
       var col = new Letters()
       ,   phr = new Phrase({collection: col});
 
-      phr.fetch({data: {}});
+      phr.fetch({data: {access_token: L.Auth.getToken()}});
 
       phr.on('sync', function (){
         var phrase =phr.get('phrase_language');

@@ -37,7 +37,11 @@ module.exports.policies = {
   },
 
   AppController: {
-    '*': 'sessionAuth',
+    'feed': 'sessionAuth',
+    'traductions': 'sessionAuth',
+    'phrases': 'sessionAuth',
+    'practice': 'sessionAuth',
+    'authorizations': 'sessionAuth',
     'loginform': true,
     'registerform': true
   },
@@ -47,17 +51,21 @@ module.exports.policies = {
   },
 
   SettingController: {
-    '*': 'sessionAuth'
+    'firstConfiguration': 'sessionAuth',
+    'updateUser': 'hasJsonWebToken'
   },
 
   PhraseController: {
-    '*': ['sessionAuth', 'activatedUser'],
+    // '*': ['sessionAuth', 'activatedUser'],
+    'getPhrases': 'hasJsonWebToken',
+    'addPhrase': 'hasJsonWebToken',
+    'updatePhrase': 'hasJsonWebToken',
     'getJwtPhrases': 'hasJsonWebToken',
-    getOnePhrase: true
+    getOnePhrase: 'hasJsonWebToken'
   },
 
   FriendController: {
-    '*': ['sessionAuth', 'activatedUser']
+    '*': ['sessionAuth', 'activatedUser'],
   },
 
   DashboardController: {
@@ -65,17 +73,34 @@ module.exports.policies = {
   },
 
   ApiController: {
-    '*': ['sessionAuth', 'activatedUser'],
+    // '*': ['sessionAuth', 'activatedUser'],
+    'getUser': 'hasJsonWebToken',
+    'updateActivation': 'hasJsonWebToken',
+    'getFriends': 'hasJsonWebToken',
+    'createFriend': 'hasJsonWebToken',
+    'updateFriend': 'hasJsonWebToken',
+    'getRequests': 'hasJsonWebToken',
+    'updateRequest': 'hasJsonWebToken',
+    'getInvitations': 'hasJsonWebToken',
+    'updateInvitation': 'hasJsonWebToken',
+    'getMaybe': 'hasJsonWebToken',
+    'updateMaybe': 'hasJsonWebToken',
+
     'getJwtFriends': 'hasJsonWebToken',
     'getJwtMaybe': 'hasJsonWebToken'
   },
 
   ProfileController: {
-    '*': ['sessionAuth', 'activatedUser'],
+    'getProfile': 'sessionAuth',
+    'updatePhoto': 'sessionAuth',
+    'getFullProfile': 'hasJsonWebToken'
   },
 
   PostController: {
-    '*': ['sessionAuth', 'activatedUser'],
+    // '*': ['sessionAuth', 'activatedUser'],
+    'addPost': 'hasJsonWebToken',
+    'listPost': 'hasJsonWebToken',
+    'listApiPost': 'hasJsonWebToken'
   },
 
 };
