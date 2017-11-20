@@ -6,7 +6,6 @@
  */
 
 var _ = require('lodash');
-var Promise = require('bluebird');
 
 module.exports = {
   schema: true,
@@ -69,7 +68,7 @@ module.exports = {
         var profiles  = this.profiles;
 
         posts = _.map(posts, function(post){
-          post['user']    = _.pick(_.find(users, {id: post['user']}), 'image.secure_url', 'image.80x80');
+          post['user']    = _.pick(_.find(users, {id: post['user']}), 'name', 'image.secure_url', 'image.80x80');
           post['profile'] = _.pick(_.find(profiles, {user: post['user'].id}), 'id');
           post['phrase_native'] = _.find(phrases, function(ph){
              return ph.traduction == post['traduction'] && post.native.id == ph.language.id;

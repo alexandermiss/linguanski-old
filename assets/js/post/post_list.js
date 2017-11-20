@@ -76,7 +76,7 @@ $(function (){
 				post.save({access_token: L.Auth.getToken()},{success: function(post){
           $('#divider-post').css('display', 'none');
           $('#divider-post-item').slideUp(150);
-          app.posts.add(post.toJSON());
+          app.posts.add(post, {sort: false});
         }});
 
 				$('#phrase_native, #phrase_language').val('');
@@ -102,7 +102,7 @@ $(function (){
       $('#divider-post').css('display', 'none');
       $('#divider-post-item').slideUp(150);
       $('#text-post').val('');
-      app.posts.add(post);
+      app.posts.add(post, {sort: false});
     }});
 
   });
@@ -114,7 +114,7 @@ $(function (){
   var PostCollection = Backbone.Collection.extend({
     url: '/api/v1/post',
     model: PostModel,
-    comparator: '-createdAt',
+    comparator: 'createdAt',
     parse: function(resp){
       data_posts = resp.data;
       return resp.results;
@@ -145,11 +145,11 @@ $(function (){
     },
 
     onRender: function (){
-      var self = this;
+      var self = this, prefix = $('#prefix').val();
       self.ui.dropdown.dropdown();
 
       var getTime = function (){
-        moment.locale($('#prefix').val());
+        moment.locale(prefix);
         var createdAt = moment.tz(self.model.get('createdAt'), 'America/Merida').fromNow();
         self.ui.date.text(createdAt);
       }
@@ -165,7 +165,16 @@ $(function (){
     tagName: 'div',
     className: 'ui feed',
     childView: PostView,
-    emptyView: Marionette.View.extend({template: _.template('<div> No posts </div>')})
+    emptyView: Marionette.View.extend({template: _.template('<div> No posts </div>')}),
+    attachHtml: function attachHtml(collectionView, childView, index) {
+      if (collectionView._isBuffering) {
+        collectionView._bufferedChildren.splice(0, 0, childView);
+      } else {
+        if (!collectionView._insertBefore(childView, index)) {
+          collectionView._insertAfter(childView);
+        }
+      }
+    },
   });
 
   var MaybeView = Marionette.View.extend({

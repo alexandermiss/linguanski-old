@@ -38,7 +38,7 @@ module.exports = {
 		var obj = {
 			user: req.session.user,
 			profile: req.session.profile,
-			image: req.session.image,
+			image: req.session.user.image,
 			post_type: p.post_type,
 			post_text: p.post_text || '',
 			phrase_native: p.phrase_native || null,
