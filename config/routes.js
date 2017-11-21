@@ -42,6 +42,7 @@ module.exports.routes = {
   'GET /account/info'                     : 'AppController.info',
 
   'POST /auth/login'                      : 'AuthController.login',
+  'POST /auth/register'                   : 'AuthController.register',
 
   // Menu
   'GET /dashboard'                        : 'DashboardController.init',

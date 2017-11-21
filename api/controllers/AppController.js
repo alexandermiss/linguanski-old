@@ -12,7 +12,21 @@ module.exports = {
 	},
 
 	registerform: function ( req, res, next){
-		return res.view('auth/signup', {layout:'login_layout', title: 'Sign Up'});
+
+		Country.find({}).exec(function (err, countries){
+			if (err) res.serverError();
+
+			Language.find({}).exec(function(err, langs){
+				if (err) res.serverError();
+
+				return res.view('auth/signup', {
+					layout:'login_layout', title: 'Sign Up',
+					langs: langs, countries: countries
+				});
+
+			});
+		});
+
 	},
 
 	authorizations: function (req, res, next){
@@ -29,10 +43,7 @@ module.exports = {
 	phrases: function (req, res, next){
 		Language.find({}).exec(function (err, langs ){
 			if (err) { return res.negotiate(err); }
-			Source.find().exec(function(err, sources){
-				if (err) { return res.negotiate(err); }
-				return res.view('phrases/init', { langs: langs, sources: sources, menu: 'phrases' });
-			});
+			return res.view('phrases/init', { langs: langs, menu: 'phrases' });
 		});
 	},
 

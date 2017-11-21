@@ -3,16 +3,30 @@ $(function(){
   if( __n('#signupForm') ) return;
 
   $('.ui .checkbox').checkbox();
+  $('.dropdown').dropdown();
 
   $('form')
     .form({
       fields: {
+        name: {
+          identifier  : "name",
+          rules: [
+            {
+              type   : "empty",
+              prompt : "Please enter your name"
+            },
+            {
+              type   : "length[2]",
+              prompt : "Your password must be at least 8 characters"
+            }
+          ]
+        },
         email: {
           identifier  : "email",
           rules: [
             {
               type   : "empty",
-              prompt : "Please enter your name"
+              prompt : "Please enter your email"
             },
             {
               type   : "email",
@@ -33,16 +47,21 @@ $(function(){
             }
           ]
         },
-        password2: {
-          identifier  : "password2",
+        country: {
+          identifier  : 'country',
           rules: [
             {
-              type   : "empty",
-              prompt : "Please enter your password"
-            },
+              type   : 'empty',
+              prompt : 'Please enter your country'
+            }
+          ]
+        },
+        language: {
+          identifier  : 'language',
+          rules: [
             {
-              type   : "match[password]",
-              prompt : "Your password does not mismatch"
+              type   : 'empty',
+              prompt : 'Please enter your language'
             }
           ]
         },
@@ -62,14 +81,21 @@ $(function(){
           $.post('/auth/register', {
               email: fields.email,
               password: fields.password,
-              name: fields.name
+              name: fields.name,
+              country: fields.country,
+              language: fields.language
+              // access_token: L.Auth.getToken()
             })
             .done(function(data){
-              if(data && data.auth){
-                window.location.href='/settings/first/configuration';
+              console.log(data);
+              if(data && data.access_token){
+                L.Auth.saveSession(data);
+                window.location.href='/feed';
               }
             }).fail(function(data){
-                console.log('fail', data);
+              $('.mini.modal')
+                .modal('show')
+              ;
             });
 
       }

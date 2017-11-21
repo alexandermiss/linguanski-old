@@ -8,6 +8,7 @@
  * @docs        :: http://waterlock.ninja/documentation
  */
 
+var _ = require('lodash');
 var bcrypt = require('bcrypt');
 
 module.exports = require('waterlock').waterlocked({
@@ -34,7 +35,6 @@ module.exports = require('waterlock').waterlocked({
             if(bcrypt.compareSync(params.password, user.auth.password)){
   						Profile.getFullProfile({user: user.id}).then(function(profile){
                 req.session['profile'] = profile;
-                // req.session['image'] = profile.image;
                 req.session['setting'] = profile.setting;
                 user['image'] = profile.user.image;
   							return waterlock.cycle.loginSuccess(req, res, user);
@@ -44,13 +44,58 @@ module.exports = require('waterlock').waterlocked({
   						});
 
             }else{
-              waterlock.cycle.loginFailure(req, res, user, {error: 'Invalid email or password'});
+              waterlock.cycle.loginFailure(req, res, null, {error: 'Invalid email or password'});
             }
           }else{
             waterlock.cycle.loginFailure(req, res, null, {error: 'User not found'});
           }
         });
   	},
+
+    register: function (req, res){
+      var params = req.params.all();
+
+      waterlock.engine.findAuth({email: params.email}, function(err, user) {
+        if (user) {
+          waterlock.cycle.registerFailure(req, res, null, {
+            error: scope.type + ' is already in use'
+          });
+        }
+
+        waterlock.engine.findOrCreateAuth({email: params.email}, params, function(err, user){
+          if(err) {
+            if(err.code === 'E_VALIDATION'){
+              return res.status(400).json(err);
+            }else{
+              return res.serverError(err);
+            }
+          }
+          sails.log.debug('user', user);
+          if(user){
+            var p = _.extend({}, {id: user.id}, params);
+            User.generateSetting(p, function(err, _user){
+              if( _.isArray(_user) ) _user = _user[0];
+
+              Profile.getFullProfile({user: user.id}).then(function(profile){
+                req.session['profile'] = profile;
+                req.session['setting'] = profile.setting;
+                user['image'] = profile.user.image;
+                return waterlock.cycle.loginSuccess(req, res, user);
+              })
+              .catch(function(err){
+                return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
+              });
+
+            });
+          }else{
+            return waterlock.cycle.loginFailure(req, res, null, {error: 'User not found'});
+          }
+
+        }); // findOrCreateAuth
+
+      }); // findAuth
+  	},
+
 
     logout: function (req, res){
   		if( req.session['setting'] ) delete req.session['setting'];

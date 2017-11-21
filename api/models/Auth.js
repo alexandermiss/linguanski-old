@@ -7,7 +7,7 @@
  */
 
 module.exports = {
-
+  schema: true,
   attributes: require('waterlock').models.auth.attributes({
 
     /* e.g.

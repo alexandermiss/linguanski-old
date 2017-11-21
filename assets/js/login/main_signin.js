@@ -42,7 +42,7 @@ $(function(){
             console.log('done', data);
             if(data && data.access_token){
               L.Auth.saveSession(data);
-              window.location.href='/dashboard';
+              window.location.href='/feed';
             }
           }).fail(function(data){
               console.log('fail', data);
