@@ -42,9 +42,9 @@ module.exports.connections = {
   mongoDbServerProd: {
     adapter: 'sails-mongo',
     host: '127.0.0.1',
-    port: 27017,
+    port: 22030,
     user: 'linguanski',
-    password: '93247bc6677bd0663ab4485da30f5a70',
+    password: 'eaa82381aa5d3329490e2805745b19acf782106a78dbb267',
     database: 'linguanski'
   },
 
