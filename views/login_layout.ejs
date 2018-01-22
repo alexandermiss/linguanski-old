@@ -6,50 +6,18 @@
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-
-    <!--
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
-
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/semantic.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64643522-4"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64643522-4"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'UA-64643522-4');
-    </script> -->
-
-    <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-7162184586303556",
-        enable_page_level_ads: true
-      });
-    </script> -->
+    </script>
   </head>
 
   <body>
@@ -101,7 +69,7 @@
     -->
 
     <!--TEMPLATES-->
-    <script type="text/javascript" src="/jst.js?20171026060446"></script>
+    <script type="text/javascript" src="/jst.js?20180121120734"></script>
     <!--TEMPLATES END-->
 
 
@@ -137,6 +105,8 @@
     <script src="/js/dependencies/sails.io.backbone.js"></script>
     <script src="/js/dependencies/backbone.radio.js"></script>
     <script src="/js/dependencies/backbone.marionette.js"></script>
+    <script src="/js/dependencies/moment.js"></script>
+    <script src="/js/dependencies/moment-timezone.js"></script>
     <script src="/js/dependencies/L.js"></script>
     <script src="/js/dependencies/FileUpload.js"></script>
     <script src="/js/accounts/authorization.js"></script>
@@ -147,6 +117,7 @@
     <script src="/js/login/main_signin.js"></script>
     <script src="/js/login/main_signup.js"></script>
     <script src="/js/phrase/index.js"></script>
+    <script src="/js/post/post_list.js"></script>
     <script src="/js/practise/index.js"></script>
     <script src="/js/profile/main.js"></script>
     <!--SCRIPTS END-->
