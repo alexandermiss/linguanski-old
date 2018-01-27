@@ -89,7 +89,7 @@ module.exports.routes = {
   // Phrases
   'GET /api/v1/phrases'               : 'PhraseController.getPhrases',
   'GET /api/v1/getOnePhrase'          : 'PhraseController.getOnePhrase',
-  'POST /api/v1/add_phrase'           : 'PhraseController.addPhrase',
+  'POST /api/v1/add_phrase'           : 'PhraseController.addJwtPhrase',
   'PUT /api/v1/add_phrase/:id'        : 'PhraseController.updatePhrase',
 
   // API v1.1

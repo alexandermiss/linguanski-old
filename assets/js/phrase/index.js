@@ -51,7 +51,7 @@ $(function (){
 
 	var Phrases = Backbone.Collection.extend({
 		model: Phrase,
-		url: '/api/v1/phrases',
+		url: '/api/v1/phrases/?limit=10',
 		parse: function (resp){
 			_.extend( this, _.omit(resp, 'results') );
 			return _.pick(resp, 'results').results;

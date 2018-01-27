@@ -19,7 +19,7 @@ module.exports = {
   combineLanguages: function (opts, cb){
 
     if ( !_.has(opts, 'page') || isNaN(opts.page) ) opts.page = 1;
-    if ( !_.has(opts, 'limit') ) opts.limit = 5;
+    //if ( !_.has(opts, 'limit') ) opts.limit = 5;
 
     var skip;
 
@@ -119,6 +119,10 @@ module.exports = {
         }
       ];
 
+      try{
+
+
+
       Phrase.create(_.map(phrases, function(phra){return _.omit(phra, 'native');})).exec(function(err, phs){
         if (err){
           return cb(err);
@@ -131,8 +135,12 @@ module.exports = {
           phrase_language_flag_prefix: opts.phrase_language_flag_prefix
         });
         sails.log.debug('opts', opts);
-        return cb(null, _.omit(opts, 'comment_text', 'country_language_id', 'language_id', 'source'));
+        return cb(null, _.omit(opts, 'comment_text', 'country_language_id', 'language_id', 'source','phrase_language_id'));
       });
+
+      }catch (err){
+        console.log(err);
+      }
 
     });
   },
