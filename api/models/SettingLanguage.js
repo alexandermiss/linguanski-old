@@ -10,6 +10,6 @@ module.exports = {
   attributes: {
     setting: { model: 'setting' },
     language: { model: 'language' },
-    current: { type: 'binary', defaultsTo: 1}
+    current: { type: 'boolean', defaultsTo: true}
   }
 };

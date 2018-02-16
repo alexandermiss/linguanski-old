@@ -13,7 +13,7 @@ module.exports = {
     user: {model: 'user'},
   	post_type: {
       type: 'string',
-      enum: ['t', 'p', 'c', 's'], // Text, Post, Comment, Share
+      isIn: ['t', 'p', 'c', 's'], // Text, Post, Comment, Share
     },
   	post_text: {type: 'string'},
   	post_html: {type: 'string'},

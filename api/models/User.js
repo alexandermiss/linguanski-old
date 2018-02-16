@@ -16,10 +16,10 @@ module.exports = {
     // defaultsTo: 'https://res.cloudinary.com/linguanski/image/upload/v1505708822/anon_user_suokqd.png'
     image: { model: 'fichero' },
 
-    role: {type: 'string', enum: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'},
-    suscription: {type: 'string', enum: ['premium', 'free'], defaultsTo: 'free'},
-    activated: {type: 'boolean', defaultsTo: 0},
-    verified: {type: 'boolean', defaultsTo: 0}
+    role: {type: 'string', isIn: ['superadmin', 'admin', 'basic'], defaultsTo: 'basic'},
+    suscription: {type: 'string', isIn: ['premium', 'free'], defaultsTo: 'free'},
+    activated: {type: 'boolean', defaultsTo: false},
+    verified: {type: 'boolean', defaultsTo: false}
   }),
 
   beforeCreate: require('waterlock').models.user.beforeCreate,

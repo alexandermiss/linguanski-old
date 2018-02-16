@@ -1,5 +1,5 @@
 /**
- * `buildProd`
+ * `tasks/register/buildProd.js`
  *
  * ---------------------------------------------------------------
  *
@@ -7,17 +7,15 @@
  * run `sails www` in a production environment, e.g.:
  * `NODE_ENV=production sails www`
  *
- * This generates a folder containing your compiled (and usually minified)
- * assets.  The most common use case for this is bundling up files to
- * deploy to a CDN.
- *
  * For more information see:
- *   http://sailsjs.org/documentation/anatomy/my-app/tasks/register/build-prod-js
+ *   https://sailsjs.com/anatomy/tasks/register/build-prod.js
  *
  */
 module.exports = function(grunt) {
   grunt.registerTask('buildProd', [
+    // 'polyfill:prod', //« Remove this to skip transpilation in production (not recommended)
     'compileAssets',
+    // 'babel',         //« Remove this to skip transpilation in production (not recommended)
     'concat',
     'uglify',
     'cssmin',
@@ -26,4 +24,3 @@ module.exports = function(grunt) {
     'copy:build'
   ]);
 };
-

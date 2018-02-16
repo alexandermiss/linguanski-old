@@ -9,11 +9,15 @@
 module.exports = {
 
   attributes: require('waterlock').models.resetToken.attributes({
-    
+
     /* e.g.
     nickname: 'string'
     */
-    
+
+    token: {
+      type: 'string'
+    }
+
   }),
 
   beforeCreate: require('waterlock').models.resetToken.beforeCreate,

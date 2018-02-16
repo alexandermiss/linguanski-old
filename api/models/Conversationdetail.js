@@ -10,7 +10,6 @@ module.exports = {
   attributes: {
   	conversation: {model: 'conversation'},
   	traduction: {model: 'traduction'},
-  	order: {type: 'integer'}
+  	order: {type: 'number'}
   }
 };
-

@@ -20,7 +20,7 @@ module.exports = {
     signature: {type: 'string'},
     type: {type: 'string'},
     format: {type: 'string'},
-    bytes: {type: 'integer'},
+    bytes: {type: 'number'},
 
     photo80x80: {type: 'string'}
   },

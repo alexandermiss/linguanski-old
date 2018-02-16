@@ -8,7 +8,6 @@
 module.exports = {
 
   attributes: {
-    user: {type: 'model'},
-    post: {type: 'model'}
+    post: {model: 'post'}
   }
 };

@@ -12,7 +12,7 @@ module.exports = {
   attributes: {
     friend_one: {model: 'user'},
     friend_two: {model: 'user'},
-    status: {enum: ['pending', 'friend', 'canceled', 'me'], defaultsTo: 'pending'}
+    status: {type: 'string', isIn: ['pending', 'friend', 'canceled', 'me'], defaultsTo: 'pending'}
   },
 
   addFriend: function (opts, cb){
