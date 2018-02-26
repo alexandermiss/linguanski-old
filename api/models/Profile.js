@@ -15,33 +15,22 @@ module.exports = {
     info: { type: 'string', defaultsTo: 'No info'}
   },
 
-  getFullProfile: Promise.method(function (opts){
+  async getFullProfile( opts ){
 
-    return Promise.bind({}, Profile.findOne(opts).populate('user'))
-      .then(function(profile){
-        this.profile = profile;
-        return Setting.findOne({user: profile.user.id}).populateAll();
-      })
-      .then(function(setting){
-        this.setting = setting;
-        return Language.findOne(setting.country.language);
-      })
-      .then(function(language){
-        this.language = language;
-        return Fichero.findOne({user:this.profile.user.id}).sort('createdAt DESC');
-      })
-      .then(function(fichero){
-        this.profile['setting']               = this.setting;
-        this.profile.setting.country.language = this.language;
-        // this.profile.image = fichero;
-        this.profile.user['image'] = fichero;
-        return this.profile;
-      })
-      .catch(function(e){
-        return e;
-      });
+    var profile   = await Profile.findOne(opts).populate('user');
+    var setting   = await Setting.findOne({user: profile.user.id}).populateAll();
+    var language  = await Language.findOne(setting.country.language);
+    var fichero   = await Fichero.find({user:profile.user.id});
+    fichero = fichero.sort('createdAt DESC')[0];
 
-  }),
+    var data = {};
+
+    data = _.clone(profile);
+    data['setting'] = _.clone(setting);
+    data.setting.country.language = _.clone(language);
+    data.user['image'] = _.clone(fichero);
+    return data;
+  },
 
   getBasicData: Promise.method(function(opts){
 

@@ -37,7 +37,7 @@ module.exports = {
 	},
 
 	getFriends: function( req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, status: 'friend'}, req.query);
 		Friend.getFriends(p,
 			function(err, friends){
@@ -48,7 +48,7 @@ module.exports = {
 	},
 
 	getRequests: function( req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
 		Friend.getRequests(p,
 			function(err, requests){
@@ -59,7 +59,7 @@ module.exports = {
 	},
 
 	getInvitations: function( req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, status: 'pending'}, req.query);
 		Friend.getInvitations(p,
 			function(err, invitations){
@@ -70,7 +70,7 @@ module.exports = {
 	},
 
 	createFriend: function ( req, res, next ){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		Friend.addFriend(p,
@@ -86,7 +86,7 @@ module.exports = {
 	},
 
 	updateFriend: function ( req, res, next ){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		if( p.status == 'friend' ){
@@ -124,7 +124,7 @@ module.exports = {
 	},
 
 	getMaybe: function (req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id}, req.query);
 		Friend.getMaybes(p,
 			function(err, maybes){
@@ -134,7 +134,7 @@ module.exports = {
 	},
 
 	updateMaybe: function (req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, friend_two: p.user_id});
 
 		if(p.friendship == 'maybe'){
@@ -167,7 +167,7 @@ module.exports = {
 	},
 
 	updateRequest: function (req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 
 		sails.log.debug('updateRequest');
 		sails.log.debug('STATUS ', p.status);
@@ -206,7 +206,7 @@ module.exports = {
 
 	// Update Invitation
 	updateInvitation: function (req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 
 		sails.log.debug('updateInvitation');
 		sails.log.debug('method', req.method);

@@ -9,10 +9,10 @@
 module.exports = {
 
   attributes: require('waterlock').models.jwt.attributes({
-    
-    /* e.g.
-    nickname: 'string'
-    */
-    
+
+    token: {
+      type: 'string'
+    },
+
   })
 };

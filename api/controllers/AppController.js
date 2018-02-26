@@ -8,7 +8,7 @@
 module.exports = {
 
 	loginform: function ( req, res, next){
-		return res.view('auth/signin', {layout:'login_layout', title: 'Sign In'});
+		return res.view('auth/signin', {layout:'layouts/login_layout', title: 'Sign In'});
 	},
 
 	registerform: function ( req, res, next){
@@ -20,7 +20,7 @@ module.exports = {
 				if (err) res.serverError();
 
 				return res.view('auth/signup', {
-					layout:'login_layout', title: 'Sign Up',
+					layout:'layouts/login_layout', title: 'Sign Up',
 					langs: langs, countries: countries
 				});
 

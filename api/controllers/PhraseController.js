@@ -5,7 +5,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('lodash');
+// var _ = require('lodash');
 
 module.exports = {
 
@@ -19,7 +19,7 @@ module.exports = {
 			sails.sockets.join(req, language_room);
 		}
 
-		var p = req.params.all();
+		var p = req.allParams();
 		Phrase.combineLanguages(_.extend(p, {country_language_id: sett.country.language.id, language_id: sett.language.id}), function(err, phrases){
 			if(err) return res.negotiate(err);
 			res.json(phrases);
@@ -27,7 +27,7 @@ module.exports = {
 	},
 
 	addPhrase: function (req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		var sett = req.session.setting;
 
 		Phrase.addPhrase(_.extend(p, {
@@ -53,13 +53,13 @@ module.exports = {
 		Language.findOne({prefix: req.param('lang')}).exec(function (err, lang){
 			Phrase.update({traduction: req.param('id'), language: lang.id}, {phrase: req.param('phrase_'+lang.prefix)}).exec(function(err, phrase){
 				if(err) return res.negotiate(err);
-				return res.json(_.omit(req.params.all(), 'lang'));
+				return res.json(_.omit(req.allParams(), 'lang'));
 			});
 		});
 	},
 
 	getOnePhrase: function (req, res, next){
-		var p = req.params.all();
+		var p = req.allParams();
 		var sett = req.session.setting;
 
 		Phrase.getOnePhrase(_.extend(p, {

@@ -40,12 +40,10 @@ module.exports.policies = {
   },
 
   PhraseController: {
-    // '*': ['sessionAuth', 'activatedUser'],
     'getPhrases': 'hasJsonWebToken',
     'addPhrase': 'hasJsonWebToken',
     'updatePhrase': 'hasJsonWebToken',
-    'getJwtPhrases': 'hasJsonWebToken',
-    getOnePhrase: 'hasJsonWebToken'
+    'getOnePhrase': 'hasJsonWebToken'
   },
 
   FriendController: {
@@ -57,7 +55,6 @@ module.exports.policies = {
   },
 
   ApiController: {
-    // '*': ['sessionAuth', 'activatedUser'],
     'getUser': 'hasJsonWebToken',
     'updateActivation': 'hasJsonWebToken',
     'getFriends': 'hasJsonWebToken',
@@ -68,10 +65,7 @@ module.exports.policies = {
     'getInvitations': 'hasJsonWebToken',
     'updateInvitation': 'hasJsonWebToken',
     'getMaybe': 'hasJsonWebToken',
-    'updateMaybe': 'hasJsonWebToken',
-
-    'getJwtFriends': 'hasJsonWebToken',
-    'getJwtMaybe': 'hasJsonWebToken'
+    'updateMaybe': 'hasJsonWebToken'
   },
 
   ProfileController: {
@@ -81,10 +75,8 @@ module.exports.policies = {
   },
 
   PostController: {
-    // '*': ['sessionAuth', 'activatedUser'],
     'addPost': 'hasJsonWebToken',
-    'listPost': 'hasJsonWebToken',
-    'listApiPost': 'hasJsonWebToken'
+    'listPost': 'hasJsonWebToken'
   },
 
 };

@@ -30,7 +30,7 @@ module.exports = {
 	},
 
 	getFullProfile: function (req, res, next){
-		var id = _.get(_.extend(req.params.all(), req.query), 'id');
+		var id = _.get(_.extend(req.allParams(), req.query), 'id');
 
 		Profile.getFullProfile({id: id}).then(function(profile){
 			return res.json(profile);

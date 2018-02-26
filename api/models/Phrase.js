@@ -37,7 +37,7 @@ module.exports = {
       if(q){
         var r = '/'+q+'/i';
         query = [
-          {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
+          {$match: {$or: [{ language: Language._adapter.mongodb.ObjectId(opts.country_language_id)},{ language: Language._adapter.mongodb.ObjectId(opts.language_id)}]}},
           {$group: {_id: "$traduction", phrase: {$push: "$phrase"}, lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
           {$match: {counter: {$gt: 1}, phrase: eval(r)}},
           {$sort: {_id: -1}},
@@ -47,7 +47,7 @@ module.exports = {
       }else{
 
         query = [
-          {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
+          {$match: {$or: [{ language: Language._adapter.mongodb.ObjectId(opts.country_language_id)},{ language: Language._adapter.mongodb.ObjectId(opts.language_id)}]}},
           {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
           {$match: {counter: {$gt: 1}}},
           {$sort: {_id: -1}},
@@ -140,22 +140,22 @@ module.exports = {
 
     Phrase.native(function(err, _Phrase){
       _Phrase.aggregate([
-        {$match: {$or: [{ language: Language.mongo.objectId(opts.country_language_id)},{ language: Language.mongo.objectId(opts.language_id)}]}},
+        {$match: {$or: [{ language: Language._adapter.mongodb.ObjectId(opts.country_language_id)},{ language: Language._adapter.mongodb.ObjectId(opts.language_id)}]}},
         {$group: {_id: "$traduction", lenguaje: {$push: "$language"}, counter: {$sum: 1}}},
         {$match: {counter: {$gt: 1}}},
         {$sample: {size: 1} }
       ]).toArray(function(err, __trad){
         if (err) return cb(err);
         __trad = _.isArray(__trad) ? __trad[0] : __trad;
-        _Phrase.find({ traduction: Traduction.mongo.objectId(__trad._id) }).toArray(function(err, phrases){
+        _Phrase.find({ traduction: Traduction._adapter.mongodb.ObjectId(__trad._id) }).toArray(function(err, phrases){
           if (err) return cb(err);
           sails.log.debug('phrases', phrases);
           _.extend(opts, {
             id: __trad._id,
-            phrase_native_id: _.find(phrases, {language: Language.mongo.objectId(opts.country_language_id)})._id,
-            phrase_native: _.find(phrases, {language: Language.mongo.objectId(opts.country_language_id)}).phrase,
-            phrase_language_id: _.find(phrases, {language: Language.mongo.objectId(opts.language_id)})._id,
-            phrase_language: _.find(phrases, {language: Language.mongo.objectId(opts.language_id)}).phrase,
+            phrase_native_id: _.find(phrases, {language: Language._adapter.mongodb.ObjectId(opts.country_language_id)})._id,
+            phrase_native: _.find(phrases, {language: Language._adapter.mongodb.ObjectId(opts.country_language_id)}).phrase,
+            phrase_language_id: _.find(phrases, {language: Language._adapter.mongodb.ObjectId(opts.language_id)})._id,
+            phrase_language: _.find(phrases, {language: Language._adapter.mongodb.ObjectId(opts.language_id)}).phrase,
             phrase_native_flag_prefix: opts.phrase_native_flag_prefix,
             phrase_language_flag_prefix: opts.phrase_language_flag_prefix
           });

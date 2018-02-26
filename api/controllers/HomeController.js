@@ -18,7 +18,7 @@ module.exports = {
 		})
 		.then(function(languages){
 			return res.view('homepage', {
-				layout: 'landing_layout',
+				layout: 'layouts/landing_layout',
 				users: this.users,
 				phrases: this.phrases,
 				languages: languages

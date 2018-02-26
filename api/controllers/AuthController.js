@@ -20,8 +20,8 @@ module.exports = require('waterlock').waterlocked({
 
     // Custom login with waterlock
     login: function (req, res){
-      var params = req.params.all();
-
+      var params = req.allParams();
+      console.log('params', params);
   		waterlock.engine.findAuth({email: params.email}, function (err, user){
           if(err) {
             if(err.code === 'E_VALIDATION'){
@@ -33,15 +33,21 @@ module.exports = require('waterlock').waterlocked({
 
           if(user){
             if(bcrypt.compareSync(params.password, user.auth.password)){
-  						Profile.getFullProfile({user: user.id}).then(function(profile){
-                req.session['profile'] = profile;
-                req.session['setting'] = profile.setting;
-                user['image'] = profile.user.image;
-  							return waterlock.cycle.loginSuccess(req, res, user);
-  						})
-  						.catch(function(err){
-  							return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
-  						});
+              try {
+                Profile.getFullProfile({user: user.id}).then(function(profile){
+                  // console.log('Profile', profile);
+                  req.session['profile'] = profile;
+                  req.session['setting'] = profile.setting;
+                  user['image'] = profile.user.image;
+                  return waterlock.cycle.loginSuccess(req, res, user);
+                }).catch(function(e){
+                  // console.log('ePromise', e);
+                  return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
+                });
+              } catch (e) {
+                // console.log('e', e);
+                return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
+              }
 
             }else{
               waterlock.cycle.loginFailure(req, res, null, {error: 'Invalid email or password'});
@@ -53,7 +59,7 @@ module.exports = require('waterlock').waterlocked({
   	},
 
     register: function (req, res){
-      var params = req.params.all();
+      var params = req.allParams();
 
       waterlock.engine.findAuth({email: params.email}, function(err, user) {
         if (user) {

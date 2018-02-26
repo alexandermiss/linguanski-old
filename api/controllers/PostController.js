@@ -5,12 +5,12 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
-var _ = require('lodash');
+// var _ = require('lodash');
 
 module.exports = {
 
 	listPost: function ( req, res, next ){
-		var p = _.pick(req.params.all(), 'page', 'limit');
+		var p = _.pick(req.allParams(), 'page', 'limit');
 		if(!_.has(p, 'page')) p.page = 1;
 		if(!_.has(p, 'limit')) p.limit = 10;
 
@@ -29,7 +29,7 @@ module.exports = {
 	},
 
 	addPost: function ( req, res, next ){
-		var p = req.params.all();
+		var p = req.allParams();
 		var s = req.session.setting;
 
 		sails.log.debug('P\n', p);

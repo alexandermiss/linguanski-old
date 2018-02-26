@@ -71,7 +71,7 @@ module.exports = {
   },
 
   getFriends: function (opts, cb){
-    var user_id = User.mongo.objectId(opts.friend_one);
+    var user_id = User._adapter.mongodb.ObjectId(opts.friend_one);
     var status = opts.status;
     sails.log.debug('STATUS', status);
     Friend.native(function(err, _Friend){
@@ -126,7 +126,7 @@ module.exports = {
   },
 
   getRequests: function (opts, cb){
-    var user_id = User.mongo.objectId(opts.friend_one);
+    var user_id = User._adapter.mongodb.ObjectId(opts.friend_one);
     var status = opts.status;
 
     Friend.native(function(err, _Friend){
@@ -183,7 +183,7 @@ module.exports = {
 
 
   getInvitations: function (opts, cb){
-    var user_id = User.mongo.objectId(opts.friend_one);
+    var user_id = User._adapter.mongodb.ObjectId(opts.friend_one);
     var status = opts.status;
     sails.log.debug('INVITATIONS');
     // sails.log.debug('STATUS', status);
@@ -242,7 +242,7 @@ module.exports = {
   },
   // Get maybes
   getMaybes: function (opts, cb){
-    var user_id = User.mongo.objectId(opts.friend_one);
+    var user_id = User._adapter.mongodb.ObjectId(opts.friend_one);
     Friend.native(function(err, _Friend){
       var friends = _Friend.aggregate([
         { $match: { status: { $nin: ['me', 'canceled'] } }},
