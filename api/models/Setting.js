@@ -8,11 +8,20 @@
 module.exports = {
 
   attributes: {
-    country: { model: 'country' },    // Native
-    language: { model: 'language' },  // Learning
     user: { model: 'user' },
-    learning: { collection: 'settinglanguage', via: 'setting'}
+    language: { model: 'language' },  // Naive
+    learning: { model: 'language' }, // Learning
+    // learning: { collection: 'settinglanguage', via: 'setting'},
+    country: { model: 'country' },
   },
+
+  // byUser: async function (user_id){
+  //   // let user = await User.findOne({id: opts.id});
+  //   let setting = await Setting.findOrCreate({user: opts.id}, {user: opts.id, learning: opts.learning, language: opts.language});
+  //   var data = {user, setting};
+  //   console.log('DATADATA', data);
+  //   return data;
+  // }
 
   // getConfigLangs: function (opts, cb){
   //

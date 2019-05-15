@@ -13,7 +13,7 @@
     <div style="color:#ffffff;" class="right menu">
 
       <a style="color:#ffffff;" class="item" href="/profile/<%= req.session.profile.id %>">
-        <img id="avatar" class="ui avatar image" src="<%= req.session.user.image.photo80x80 %>">
+        <img id="avatar" class="ui avatar image" src="<%= req.session.user.image_url %>">
         <%= req.session.user.name %>
       </a>
       <div class="ui pointing dropdown link item">

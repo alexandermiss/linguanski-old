@@ -7,7 +7,8 @@ $(function (){
   });
 
   var FriendCollection = L.Collection.Default.extend({
-    url: '/api/v1/friend'
+    url: '/api/v1/friend',
+    model: FriendModel
   });
 
   var MaybeModel = L.Model.Friend.extend({
@@ -15,7 +16,8 @@ $(function (){
   });
 
   var MaybeCollection = L.Collection.Default.extend({
-    url: '/api/v1/maybe'
+    url: '/api/v1/maybe',
+    model: MaybeModel
   });
 
   var FriendView = L.View.FriendView.extend({

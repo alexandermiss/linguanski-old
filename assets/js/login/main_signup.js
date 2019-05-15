@@ -82,9 +82,8 @@ $(function(){
               email: fields.email,
               password: fields.password,
               name: fields.name,
-              country: fields.country,
-              language: fields.language
-              // access_token: L.Auth.getToken()
+              language: fields.native,
+              learning: fields.learning
             })
             .done(function(data){
               console.log(data);

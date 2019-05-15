@@ -45,6 +45,8 @@ module.exports.routes = {
   'GET /requests'                         : 'FriendController.requests',
   'GET /invitations'                      : 'FriendController.invitations',
 
+  'GET /auth/datas'                       : 'AppController.getAuthDatas',
+
   // Admin
   'GET /admin/authorizations'             : 'AppController.authorizations',
 
@@ -89,6 +91,8 @@ module.exports.routes = {
   // Post
   'GET /api/v1/post'                  : 'PostController.listPost',
   'POST /api/v1/post'                 : 'PostController.addPost',
+
+  'GET /api/v1/user/native'           : 'UserController.listnative',
 
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗

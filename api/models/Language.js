@@ -11,6 +11,5 @@ module.exports = {
   	name: 		{type: 'string'},
     prefix:   {type: 'string'},
     flag:     {type: 'string'},
-  	countries: 	{collection: 'country', via: 'language'}
   }
 };

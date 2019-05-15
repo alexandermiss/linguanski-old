@@ -8,7 +8,7 @@
  * @docs        :: http://waterlock.ninja/documentation
  */
 
-module.exports = require('waterlock').actions.user({
+module.exports = {
 
   _config: {
     actions: true,
@@ -16,9 +16,19 @@ module.exports = require('waterlock').actions.user({
     shortcuts: true
   },
 
-  /* e.g.
-    action: function(req, res){
+  listnative: async function (req, res){
+    var ds = User.getDatastore().manager;
 
+    var db = ds.collection(User.tableName);
+
+    try{
+      db.find({}).toArray(function(err, users){
+        console.log(users);
+        return res.json(users);
+      });
+    }catch(ex){
+      console.log('EXX', ex);
     }
-  */
-});
+  }
+
+};

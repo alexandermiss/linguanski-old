@@ -1,0 +1,38 @@
+[
+    {
+        "id" : "5c61111d8462e63ed0f89d49",
+        "email" : "alexandermiss@mail.ru",
+        "password" : "$2b$10$TNUpBiGyt6.nPBAI8nV/xeI9VZVlUT6T4AJhtl1SBR/AKERHdBrLS",
+        "name" : "Alexander",
+        "image_url" : "https://res.cloudinary.com/linguanski/image/upload/c_thumb,w_80/v1510528855/fu5liml4eovmeasl0ihr.jpg",
+        "role" : "basic",
+        "suscription" : "free",
+        "activated" : true,
+        "verified" : false,
+        "image" : "5a08d7582f1f745b1080f6bf"
+    },
+    {
+        "id" : "5c61127f185e4a1c981335c4",
+        "email" : "intmainreturn@yandex.com",
+        "password" : "$2b$10$TNUpBiGyt6.nPBAI8nV/xeI9VZVlUT6T4AJhtl1SBR/AKERHdBrLS",
+        "name" : "Otro",
+        "image_url" : "https://res.cloudinary.com/linguanski/image/upload/c_thumb,w_80/v1510528855/fu5liml4eovmeasl0ihr.jpg",
+        "role" : "basic",
+        "suscription" : "free",
+        "activated" : true,
+        "verified" : false,
+        "image" : "5a08d7582f1f745b1080f6bf"
+    },
+    {
+        "id" : "5c62170ef53c5912a4214eb4",
+        "email" : "c6486xh@gmail.com",
+        "password" : "$2b$10$TNUpBiGyt6.nPBAI8nV/xeI9VZVlUT6T4AJhtl1SBR/AKERHdBrLS",
+        "name" : "Alex",
+        "image_url" : "https://res.cloudinary.com/linguanski/image/upload/c_thumb,w_80/v1510528855/fu5liml4eovmeasl0ihr.jpg",
+        "role" : "basic",
+        "suscription" : "free",
+        "activated" : true,
+        "verified" : false,
+        "image" : "5a08d7582f1f745b1080f6bf"
+    }
+]

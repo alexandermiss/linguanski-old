@@ -45,28 +45,28 @@ L.Function = {};
 L.Behavior = {};
 
 
-L.View.EmptyBasicView 									= Marionette.View.extend({
-																						template: '<div>No items</div>'});
+L.View.EmptyBasicView 		= Marionette.View.extend({
+								template: '<div>No items</div>'});
 
-L.View.DefaultBasicView 								= Marionette.View.extend({
-																						initialize: function (opts){
-																							this.model = opts.model;
-																						}
-																					});
+L.View.DefaultBasicView 	= Marionette.View.extend({
+								initialize: function (opts){
+									this.model = opts.model;
+								}
+							});
 
-L.Model.Default 												= Backbone.Model;
+L.Model.Default 			= Backbone.Model;
 
-L.Model.Friend 													= L.Model.Default;
+L.Model.Friend 				= L.Model.Default;
 
-L.Collection.Default 										= Backbone.Collection.extend({
+L.Collection.Default 		= Backbone.Collection.extend({
 	parse: function (resp){
 		return resp.results;
 	}
 });
 
-L.Collection.Friend 										= L.Collection.Default;
+L.Collection.Friend 					= L.Collection.Default;
 
-L.View.FriendView 											= Marionette.View;
+L.View.FriendView 						= Marionette.View;
 L.CollectionView.FriendCollectionView 	= Marionette.CollectionView;
 
 L.Auth = {
@@ -82,15 +82,15 @@ L.Auth = {
 
 		var n = new Date();
 
-		if(_auth && _auth.expires){
-			if( n > _auth.expires ){
-				L.Auth.destroySession();
-				window.location.href = '/account/signin';
-			}else{
-				return _auth;
-			}
-		}
-
+		// if(_auth && _auth.expires){
+		// 	if( n > _auth.expires ){
+		// 		L.Auth.destroySession();
+		// 		window.location.href = '/account/signin';
+		// 	}else{
+		// 		return _auth;
+		// 	}
+		// }
+		return _auth;
 	},
 
 	saveSession: function (s){

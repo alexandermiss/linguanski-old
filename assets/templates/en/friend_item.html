@@ -1,11 +1,11 @@
   <a href="/profile/{{ id }}" class="ui tiny bordered middle aligned image">
-    <img src="{{ image.photo80x80 }}">
+    <img src="{{ user.image_url }}">
   </a>
   <div style="position:relative;" class="middle aligned content">
     <a href="/profile/{{ id }}" class="header">
-        {{ name }}
+        {{ user.name }}
     </a>
-    {% if(verified){ %}
+    {% if(user.verified){ %}
       <i style="position:absolute;top:-5px;" class="asterisk small icon blue"></i>
     {% } %}
 
@@ -26,8 +26,8 @@
         {% } %}
 
         <div class="ui label">
-          <i class="{{ country.flag }} flag"></i>
-          {{ country.name }}
+          <i class="{{ language.flag }} flag"></i>
+          {{ language.name }}
         </div>
     </div>
   </div>

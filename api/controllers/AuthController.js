@@ -8,10 +8,10 @@
  * @docs        :: http://waterlock.ninja/documentation
  */
 
-var _ = require('lodash');
+// var _ = require('lodash');
 var bcrypt = require('bcrypt');
 
-module.exports = require('waterlock').waterlocked({
+module.exports = {
     _config:{
       actions: true,
       rest: true,
@@ -19,87 +19,105 @@ module.exports = require('waterlock').waterlocked({
     },
 
     // Custom login with waterlock
-    login: function (req, res){
+    login: async function (req, res){
       var params = req.allParams();
       console.log('params', params);
-  		waterlock.engine.findAuth({email: params.email}, function (err, user){
-          if(err) {
-            if(err.code === 'E_VALIDATION'){
-              return res.status(400).json(err);
-            }else{
-              return res.serverError(err);
-            }
+
+      const email = req.param('email');
+      const pass = req.param('password');
+
+      if(!email || !pass){
+        return res.json(401, {message: 'Email and password incorrect.'});
+      }
+
+      const user = await User.findOne({email: email});
+
+      if(!user) {
+        return res.json(401, {message: 'User does not exists'});
+      }
+
+      const comp = bcrypt.compareSync(pass, user.password);
+
+      if (!comp){
+        return res.json(401, {message: 'Password incorrect'});
+      }
+      
+      const token = await sails.helpers.createToken(user.id);
+
+      if(!token) { return res.json(401, {message: 'Token error'})};
+
+      // return res.json({token: token.token});
+
+      if(user){
+        if(bcrypt.compareSync(params.password, user.password)){
+          
+          try{
+            var setting = await Setting.findOne({user: user.id});
+            if( _.isArray(setting) ) setting = setting[0];
+
+            var profile = await Profile.getFullProfile({user: user.id});
+            req.session.authenticated = true;
+            req.session.user = user;
+            req.session['profile'] = profile.profile;
+            req.session['setting'] = setting;
+  
+            user['image'] = profile.image;
+            user['setting'] = setting;
+            return res.json({ access_token: token.token, user: user });
+          }
+          catch(ex){
+            console.log(ex);
+            return res.status(500).send("Sorry!");
           }
 
-          if(user){
-            if(bcrypt.compareSync(params.password, user.auth.password)){
-              try {
-                Profile.getFullProfile({user: user.id}).then(function(profile){
-                  // console.log('Profile', profile);
-                  req.session['profile'] = profile;
-                  req.session['setting'] = profile.setting;
-                  user['image'] = profile.user.image;
-                  return waterlock.cycle.loginSuccess(req, res, user);
-                }).catch(function(e){
-                  // console.log('ePromise', e);
-                  return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
-                });
-              } catch (e) {
-                // console.log('e', e);
-                return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
-              }
-
-            }else{
-              waterlock.cycle.loginFailure(req, res, null, {error: 'Invalid email or password'});
-            }
-          }else{
-            waterlock.cycle.loginFailure(req, res, null, {error: 'User not found'});
           }
-        });
+        }
+              
   	},
 
-    register: function (req, res){
+    register: async function (req, res){
       var params = req.allParams();
+      
+      const email = req.param('email');
+      const pass = req.param('password');
 
-      waterlock.engine.findAuth({email: params.email}, function(err, user) {
-        if (user) {
-          waterlock.cycle.registerFailure(req, res, null, {
-            error: scope.type + ' is already in use'
-          });
-        }
+      if (!email || !pass) return res.status(400).json({message: 'Bad request'});
 
-        waterlock.engine.findOrCreateAuth({email: params.email}, params, function(err, user){
-          if(err) {
-            if(err.code === 'E_VALIDATION'){
-              return res.status(400).json(err);
-            }else{
-              return res.serverError(err);
-            }
-          }
-          sails.log.debug('user', user);
-          if(user){
-            var p = _.extend({}, {id: user.id}, params);
-            User.generateSetting(p, function(err, _user){
-              if( _.isArray(_user) ) _user = _user[0];
+      var user_exists = await User.findOne({email: email});
 
-              Profile.getFullProfile({user: user.id}).then(function(profile){
-                req.session['profile'] = profile;
-                req.session['setting'] = profile.setting;
-                user['image'] = profile.user.image;
-                return waterlock.cycle.loginSuccess(req, res, user);
-              })
-              .catch(function(err){
-                return waterlock.cycle.loginFailure(req, res, null, {error: 'Profile not found'});
-              });
+      if(user_exists) {
+        return res.status(401).json({message: 'Email exists'});
+      }
 
-            });
-          }else{
-            return waterlock.cycle.loginFailure(req, res, null, {error: 'User not found'});
-          }
+      const hash = await sails.helpers.generatePassword(pass);
 
-        }); // findOrCreateAuth
+      var user = await User.create({
+        email: email, name: params.name, password: hash
+      }).fetch();
 
-      }); // findAuth
+      const token = await sails.helpers.createToken(user.id);
+
+      if(user){
+        var p = _.extend({}, {id: user.id}, params);
+        var user_setting = await User.generateSetting(p);
+        if( _.isArray(user_setting) ) user_setting = user_setting[0];
+
+        console.log('user_settinguser_setting', user_setting);
+
+        var profile = await Profile.getFullProfile({user: user.id});
+        req.session.authenticated = true;
+        req.session.user = user_setting.user;
+        req.session['profile'] = profile.profile;
+        req.session['setting'] = user_setting.setting;
+
+        user['image'] = profile.image;
+        user['setting'] = user_setting.setting;
+        return res.json({ access_token: token.token, user: user });
+
+      }else{
+        return res.status(500).send("User not found!");
+      }
+
   	},
 
 
@@ -107,9 +125,11 @@ module.exports = require('waterlock').waterlocked({
   		if( req.session['setting'] ) delete req.session['setting'];
   		if( req.session['user'] ) delete req.session['user'];
   		if( req.session['image'] ) delete req.session['image'];
-  		if( req.session['profile'] ) delete req.session['profile'];
+      if( req.session['profile'] ) delete req.session['profile'];
+      
+      req.session.authenticated = false;
 
-  		return waterlock.cycle.logout(req, res);
+  		return res.json({login: false});
   	}
 
-});
+};

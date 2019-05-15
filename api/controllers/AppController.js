@@ -11,22 +11,15 @@ module.exports = {
 		return res.view('auth/signin', {layout:'layouts/login_layout', title: 'Sign In'});
 	},
 
-	registerform: function ( req, res, next){
+	registerform: async function ( req, res, next){
 
-		Country.find({}).exec(function (err, countries){
-			if (err) res.serverError();
+		var langs = await Language.find({});
 
-			Language.find({}).exec(function(err, langs){
-				if (err) res.serverError();
-
-				return res.view('auth/signup', {
-					layout:'layouts/login_layout', title: 'Sign Up',
-					langs: langs, countries: countries
-				});
-
-			});
+		return res.view('auth/signup', {
+			layout:'layouts/login_layout', title: 'Sign Up',
+			langs: langs
 		});
-
+	
 	},
 
 	authorizations: function (req, res, next){
@@ -58,5 +51,9 @@ module.exports = {
 	feed: function (req, res, next){
 		return res.view('post/post_index', {menu: 'feed', secondary: 'feed'});
 	},
+
+	getAuthDatas: function (req, res){
+		return res.json(req.session);
+	}
 
 };

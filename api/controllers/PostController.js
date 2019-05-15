@@ -16,16 +16,23 @@ module.exports = {
 
 		p = _.pick(p, 'page', 'limit');
 
-		Post.listPost(p, function(err, posts){
-			if(err){
-				sails.log.debug('listPost ERR\n', err);
-				return res.json(err);
-			}
-			if( posts.length )
-				return res.json({ from: true, data: 'da', page: p.page, limit: p.limit, results: posts});
-			return res.json({ from: true, data: 'niet', page: p.page, limit: p.limit, results: posts});
-		});
-
+		// Post.listPost(p, function(err, posts){
+		// 	if(err){
+		// 		sails.log.debug('listPost ERR\n', err);
+		// 		return res.json(err);
+		// 	}
+		// 	if( posts.length )
+		// 		return res.json({ from: true, data: 'da', page: p.page, limit: p.limit, results: posts});
+		// 	return res.json({ from: true, data: 'niet', page: p.page, limit: p.limit, results: posts});
+		// });
+		// var posts = await Post.listPost();
+		// return posts;
+			Post.listPost({page: 3, limit: 10}).then(function(posts){
+				return res.json(posts);
+			})
+			.catch(function(e){
+				return res.notFound(e);
+			});
 	},
 
 	addPost: function ( req, res, next ){

@@ -43,12 +43,12 @@
           </div>
           <div class="field">
             <div class="ui fluid search selection dropdown">
-              <input name="country" type="hidden">
+              <input name="native" type="hidden">
               <i class="dropdown icon"></i>
-              <div class="default text"><%= __('What is your country?') %></div>
+              <div class="default text"><%= __('What is your native language?') %></div>
               <div class="menu">
-                <% _.each(countries, function (country){ %>
-                <div class="item" data-value="<%= country.id %>"><i class="<%= country.flag %> flag"></i><%= country.name %></div>
+                <% _.each(langs, function (lang){ %>
+                <div class="item" data-value="<%= lang.id %>"><i class="<%= lang.flag %> flag"></i><%= lang.name %></div>
                 <% }) %>
               </div>
              </div>
@@ -56,7 +56,7 @@
 
           <div class="field">
             <div class="ui fluid search selection dropdown">
-              <input name="language" type="hidden">
+              <input name="learning" type="hidden">
               <i class="dropdown icon"></i>
               <div class="default text"><%= __('I want to learn...') %></div>
               <div class="menu">

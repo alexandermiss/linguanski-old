@@ -25,4 +25,16 @@ module.exports = {
     photo80x80: {type: 'string'}
   },
 
+  getImageByUser: async function(user_id) {
+    var fichero;
+    fichero   = await Fichero.find({user: user_id}).sort('createdAt DESC');
+
+    if (!fichero)
+      fichero   = await Fichero.find({id: '5a08d7582f1f745b1080f6bf'}).sort('createdAt DESC');
+
+      if (_.isArray(fichero)) fichero = fichero[0];
+
+      return fichero;
+  },
+
 };

@@ -36,15 +36,17 @@ module.exports = {
 
 	},
 
-	getFriends: function( req, res, next){
+	getFriends: async function( req, res){
 		var p = req.allParams();
 		_.extend(p, {friend_one: req.session.user.id, status: 'friend'}, req.query);
-		Friend.getFriends(p,
-			function(err, friends){
-				sails.log.info('friends\n', friends);
-				if(err) return res.json(err);
-				return res.json(friends);
-		});
+
+		var friends_data = await Friend.getFriends(p);
+
+		if (friends_data.err) {
+			return res.json({err: friends_data.err});
+		}
+
+		return res.json(friends_data);
 	},
 
 	getRequests: function( req, res, next){
@@ -123,14 +125,11 @@ module.exports = {
 		}
 	},
 
-	getMaybe: function (req, res, next){
+	getMaybe: async function (req, res){
 		var p = req.allParams();
-		_.extend(p, {friend_one: req.session.user.id}, req.query);
-		Friend.getMaybes(p,
-			function(err, maybes){
-				if(err) return res.json(err);
-				return res.json(maybes);
-		});
+		_.extend(p, {friend_one: req.user.id}, req.query);
+		var maybes = await Friend.getMaybes(p);
+		return res.json({results: maybes});
 	},
 
 	updateMaybe: function (req, res, next){

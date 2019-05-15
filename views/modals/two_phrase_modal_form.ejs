@@ -5,14 +5,14 @@
       <div class="ui error message"></div>
       <div class="two fields">
         <div class="field">
-          <label><%= session.setting.country.language.name %> </label>
-          <textarea type="text" id="phrase_native" name="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.country.language.name) %>" rows="3"></textarea>
-          <input type="hidden" id="phrase_native_flag_prefix" name="phrase_native_flag_prefix" value="<%= session.setting.country.language.prefix %>">
+          <label><%= session.setting.language.name %> </label>
+          <textarea type="text" id="phrase_native" name="phrase_native" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>" rows="3"></textarea>
+          <input type="hidden" id="phrase_native_flag_prefix" name="phrase_native_flag_prefix" value="<%= session.setting.language.prefix %>">
         </div>
         <div class="field">
-          <label><%= session.setting.language.name %> </label>
-          <textarea type="text" id="phrase_language" name="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.language.name) %>" rows="3"></textarea>
-          <input type="hidden" id="phrase_language_flag_prefix" name="phrase_language_flag_prefix" value="<%= session.setting.language.prefix %>">
+          <label><%= session.setting.learning.name %> </label>
+          <textarea type="text" id="phrase_language" name="phrase_language" placeholder="<%= __('Write a %s phrase', session.setting.learning.name) %>" rows="3"></textarea>
+          <input type="hidden" id="phrase_language_flag_prefix" name="phrase_language_flag_prefix" value="<%= session.setting.learning.prefix %>">
         </div>
       </div>
     </form>

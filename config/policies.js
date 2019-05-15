@@ -27,7 +27,8 @@ module.exports.policies = {
     'practice': 'sessionAuth',
     'authorizations': 'sessionAuth',
     'loginform': true,
-    'registerform': true
+    'registerform': true,
+    'getAuthDatas': true
   },
 
   HomeController: {
@@ -36,14 +37,14 @@ module.exports.policies = {
 
   SettingController: {
     'firstConfiguration': 'sessionAuth',
-    'updateUser': 'hasJsonWebToken'
+    'updateUser': 'checkToken'
   },
 
   PhraseController: {
-    'getPhrases': 'hasJsonWebToken',
-    'addPhrase': 'hasJsonWebToken',
-    'updatePhrase': 'hasJsonWebToken',
-    'getOnePhrase': 'hasJsonWebToken'
+    'getPhrases': 'checkToken',
+    'addPhrase': 'checkToken',
+    'updatePhrase': 'checkToken',
+    'getOnePhrase': 'checkToken'
   },
 
   FriendController: {
@@ -55,28 +56,28 @@ module.exports.policies = {
   },
 
   ApiController: {
-    'getUser': 'hasJsonWebToken',
-    'updateActivation': 'hasJsonWebToken',
-    'getFriends': 'hasJsonWebToken',
-    'createFriend': 'hasJsonWebToken',
-    'updateFriend': 'hasJsonWebToken',
-    'getRequests': 'hasJsonWebToken',
-    'updateRequest': 'hasJsonWebToken',
-    'getInvitations': 'hasJsonWebToken',
-    'updateInvitation': 'hasJsonWebToken',
-    'getMaybe': 'hasJsonWebToken',
-    'updateMaybe': 'hasJsonWebToken'
+    'getUser': 'checkToken',
+    'updateActivation': 'checkToken',
+    'getFriends': 'checkToken',
+    'createFriend': 'checkToken',
+    'updateFriend': 'checkToken',
+    'getRequests': 'checkToken',
+    'updateRequest': 'checkToken',
+    'getInvitations': 'checkToken',
+    'updateInvitation': 'checkToken',
+    'getMaybe': 'checkToken',
+    'updateMaybe': 'checkToken'
   },
 
   ProfileController: {
     'getProfile': 'sessionAuth',
     'updatePhoto': 'sessionAuth',
-    'getFullProfile': 'hasJsonWebToken'
+    'getFullProfile': 'checkToken'
   },
 
   PostController: {
-    'addPost': 'hasJsonWebToken',
-    'listPost': 'hasJsonWebToken'
+    'addPost': 'checkToken',
+    'listPost': 'checkToken'
   },
 
 };

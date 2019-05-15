@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= req.session.setting ? req.session.setting.country.language.prefix: 'en' %>">
+<html lang="<%= req.session.setting ? req.session.setting.language.prefix: 'en' %>">
   <head>
     <title><%=typeof title == 'undefined' ? 'Linguanski' : 'Linguanski - ' + title%> (beta)</title>
 

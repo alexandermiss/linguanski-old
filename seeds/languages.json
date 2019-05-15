@@ -1,0 +1,30 @@
+[
+    {
+        "id": "5cbf6ab2f019b942b45a26ba",
+        "name": "English",
+        "prefix": "en",
+        "flag": "en",
+        "icon": "usa"
+    },
+    {
+        "id" : "5c0a3de053a7c1224401a63a",
+        "name" : "Spanish",
+        "prefix" : "es",
+        "flag" : "es",
+        "icon" : "spain"
+    },
+    {
+        "id": "5cbf6ab2f019b942b45a26bb",
+        "name" : "Spanish (Mexico)",
+        "prefix" : "es-mx",
+        "flag" : "mx",
+        "icon" : "mexico"
+    },
+    {
+        "id" : "5c0a427cbfd0731ca87d109f",
+        "name" : "Russia",
+        "prefix" : "ru",
+        "flag" : "ru",
+        "icon" : "russia"
+    }
+]
