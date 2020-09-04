@@ -25,7 +25,7 @@
     "grunt-sync": "0.5.2",
     "include-all": "~0.1.6",
     "lodash": "^4.17.4",
-    "mongodb": "^2.2.26",
+    "mongodb": "^3.6.1",
     "rc": "1.0.1",
     "sails": "^0.12.14",
     "sails-disk": "~0.10.9",
