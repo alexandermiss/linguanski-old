@@ -7,7 +7,7 @@
   "dependencies": {
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
-    "async": "2.0.1",
+    "async": "2.6.4",
     "bcrypt": "^3.0.2",
     "cloudinary": "^1.9.1",
     "connect-multiparty": "^2.1.0",
